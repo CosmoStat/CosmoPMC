@@ -1,0 +1,64 @@
+### Basic part ###
+
+version		1.2
+
+### Parameter section ###
+npar            8
+n_ded           0
+spar            Omega_m w_0_de sigma_8 h_100  z_rescale M     alpha  beta
+min             0.0   -3.5     0.2     0.4    0.9       19.1  0.5   -3.5
+max             1.2    0.5     1.5     1.0    1.1       19.8  2.6   -0.8
+
+### Data section ###
+ndata           3
+sdata           SNIa
+sdata		Lensing
+sdata		BAO
+
+# SN data
+datname		sne_union_marek.list
+sdatformat	SN_SALT
+schi2mode	chi2_simple
+add_logdetCov	0
+model_file	cosmo_SN.par
+sspecial	none
+
+# Lensing
+slensdata       xipm
+sformat         angle_wquadr
+a1              0.0004664
+a2              0.0044118
+datname         xipm_0.9_analyseI_weight0_prefilter15.txt.cut_1_7
+scov_scaling	cov_const
+covname         COSMOS_v0.7_090907_cov_analysisI_p6_nz6_252x252.tab.cut_1_7
+corr_invcov     0.439024
+model_file      cosmo_lens_I_lrg0_5.par
+sspecial        none
+
+# BAO
+smethod         distance_A
+datname         bao_Reid10_A_0.35
+model_file      cosmoDP.par
+sspecial        none
+
+# Data end
+
+sprior          -
+
+### PMC part ###
+nsamples        5000
+fsfinal         1
+niter           8
+nclipw          0
+
+### Proposal section ###
+df              -1
+ncomp           9
+sdead_comp	revive
+
+sinitial        fisher_eigen
+fshift          0.1
+fvar            1.8
+
+### Histogram section ###
+nbinhist        64

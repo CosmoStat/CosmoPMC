@@ -1,0 +1,297 @@
+#  ssccsdwssdsddfvdfxscs   
+
+for(i in 1:50) {
+    filename=paste("proposal_testA_" 
+    prop=read.table("proposal_1_4")
+    plot(prop[,2]~prop[,1],xlim=c(-45,45),ylim=c(-60,20))
+    dim=10
+    nsimu=50000
+    indices=sample(1:nsimu,size=nsimu,prob=prop[,dim+1],replace=T)
+    finalsample=matrix(NA,nrow=nsimu,ncol=dim)
+    finalsample=prop[indices,]
+
+
+points(finalsample[,2]~finalsample[,1],col="blue")
+
+
+# for simulations (to calculate confidence intervals)
+
+#   R code for simulations
+
+#setwd("D:/Current_Work/Astronomy/Simulation_Output/")
+#library(MASS)
+dim=dimbe=10
+N=150000
+burnin=N/2
+acc95d10=acc68d10=matrix(NA,nrow=N,ncol=dim)
+#acc95d2=acc68d2=matrix(NA,nrow=N,ncol=2)
+#acc95d2CI1=acc68d2CI1=matrix(NA,nrow=N,ncol=2)
+namesci=c("acc95d10","acc68d10","acc95d2","acc68d2","acc95d2CI1","acc68d2CI1")
+
+# function to compute CI's
+target_mvn_banana_CI=function(x,b,dimbe){
+  var<-c(200,rep(1,(dimbe-1)))
+  sigma<-matrix(diag(var),nrow=dimbe,ncol=dimbe,byrow=T)
+  xtwist<-c(x[1],x[2]+b*x[1]^2-b*100,x[3:dimbe])
+  # evaluate
+  t(xtwist)%*%solve(sigma)%*%xtwist
+}
+
+# function to compute CI's
+target_mvn_banana_CI_d2=function(x,b){
+  var<-c(200,1)
+  sigma<-diag(var,nrow=2,ncol=2)
+  xtwist<-c(x[1],x[2]+b*x[1]^2-b*100)
+  # evaluate
+  t(xtwist)%*%solve(sigma)%*%xtwist
+}
+
+Nvec=c(40000,90000,140000,190000)
+for(k in 1:4) {
+  k1=Nvec[k]/1000
+  
+  }
+
+
+##############################################
+# for AMC (this is working as of 31 March)
+
+namesci=c("acc95d10","acc68d10","acc95d2","acc68d2","acc95d2CI1","acc68d2CI1")
+write(namesci,paste("CI_percentages_var100_AMC_b01B_d30_250k",".txt",sep=""),ncolumns=6)
+  
+for(t in 1:20) {
+ print(t)
+ # for AMC
+ filename=paste("chain_long_var100_b01d30_",(t-1),sep="")
+ res=read.table(filename)
+ N=250000;
+ burnin=N/2;
+ dim=dim(res)[2]-2
+ resmat=as.matrix(res[burnin:N,3:(dim+2)])
+
+ # mean and variance
+ write(apply(resmat,2,mean),"means_var100_AMC_b01B_d30_250k.txt",ncolumns=dim,append=T)
+ write(apply(resmat,2,var),"vars_var100_AMC_b01B_d30_250k.txt",ncolumns=dim,append=T)
+
+ #par(mfrow=c(1,3),x11(width=9,height=7),mar=c(1.2,1.2,0,0)+0.5, mgp=c(2,0.75,0))
+ #plot(resmat[burnin:Nvec[1],2]~resmat[burnin:Nvec[1],1],xlim=c(-45,45),ylim=c(-60,30),col="blue")
+ #plot(resmat[burnin:Nvec[2],2]~resmat[burnin:Nvec[2],1],xlim=c(-45,45),ylim=c(-60,30),col="blue")
+ #plot(resmat[burnin:Nvec[3],2]~resmat[burnin:Nvec[3],1],xlim=c(-45,45),ylim=c(-60,30),col="blue")
+ #savePlot(paste("plot2d_test2_",(t-1),sep=""),type="ps")
+ 
+ filename1=paste("CIfile_var100_b01d30_",(t-1),sep="")
+ cidata=read.table(filename1)
+ civalue=as.vector(cidata[,2])
+ civalued2=as.vector(cidata[,3])
+ print("finished CI thing")
+ 
+ # resetting parameters to zero
+ acc95d10ind=acc68d10ind=acc95d2ind=acc68d2ind=acc95d2CI1ind=acc68d2CI1ind=0
+
+ #for(k in 1:1) {
+  #k1=Nvec[k]/1000
+
+  civaluek=civalue[burnin:N]; civalued2k=civalued2[burnin:N]
+                  
+          # confidence interval in dimension 10                                                   
+         acc95d10ind=length(civaluek[civaluek<=qchisq(0.95,df=dim)])  #acc95d10ind+1
+         acc68d10ind=length(civaluek[civaluek<=qchisq(0.683,df=dim)])    #acc68d10ind+1
+         # confidence interval in dimension 2
+         acc95d2ind=length(civalued2k[civalued2k<=qchisq(0.95,df=2)]) #acc95d2ind+1
+         acc68d2ind=length(civalued2k[civalued2k<=qchisq(0.683,df=2)]) #acc68d2ind+1
+
+      x1=as.vector(resmat[,1])
+      acc95d2CI1ind=length(x1[x1<=qnorm(0.975,sd=sqrt(100))&x1>=qnorm(0.025,sd=sqrt(100))])
+      acc68d2CI1ind=length(x1[x1<=qnorm(0.8415,sd=sqrt(100))&x1>=qnorm(0.1585,sd=sqrt(100))])
+    
+    resci=1/(N-burnin+1)*c(acc95d10ind,acc68d10ind,acc95d2ind,acc68d2ind,acc95d2CI1ind,acc68d2CI1ind)
+    write(resci,paste("CI_percentages_var100_AMC_b01B_d30_250k",".txt",sep=""),append=T,ncolumns=6)
+    #}  # end of k loop
+    #write.matrix(acc95d10,paste("acc95d10_",(t-1),".txt",sep=""))
+  } # end of t simulations
+
+
+
+
+############################################################
+# for PMC
+
+  for(t in 1:100) {
+     print(t)
+     # for AMC
+     filename=paste("proposal_testA_" 
+     prop=read.table("proposal_1_4")
+     #plot(prop[,2]~prop[,1],xlim=c(-45,45),ylim=c(-60,20))
+     dim=10
+     nsimu=50000
+     indices=sample(1:nsimu,size=nsimu,prob=prop[,dim+1],replace=T)
+     finalsample=matrix(NA,nrow=nsimu,ncol=dim)
+     finalsample=prop[indices,]
+
+     # mean and variance
+     write(apply(finalsample,2,mean),"means.txt",ncolumns=dim,append=T)
+     write(apply(finalsample,2,var),"vars.txt",ncolumns=dim,append=T)
+    
+     #par(mfrow=c(1,3),x11(width=9,height=7),mar=c(1.2,1.2,0,0)+0.5, mgp=c(2,0.75,0))
+     #plot(resmat[burnin:Nvec[1],2]~resmat[burnin:Nvec[1],1],xlim=c(-45,45),ylim=c(-60,30),col="blue")
+     #plot(resmat[burnin:Nvec[2],2]~resmat[burnin:Nvec[2],1],xlim=c(-45,45),ylim=c(-60,30),col="blue")
+     #plot(resmat[burnin:Nvec[3],2]~resmat[burnin:Nvec[3],1],xlim=c(-45,45),ylim=c(-60,30),col="blue")
+     #savePlot(paste("plot2d_test2_",(t-1),sep=""),type="ps")
+     
+     filename1=paste("CIfile_testA_",(t-1),sep="")
+     cidata=read.table(filename1)
+     civalue=as.vector(cidata[,2])
+     civalued2=as.vector(cidata[,3])
+     print("finished CI thing")
+     
+     # resetting parameters to zero
+     acc95d10ind=acc68d10ind=acc95d2ind=acc68d2ind=acc95d2CI1ind=acc68d2CI1ind=0
+    
+     for(k in 1:4) {
+      k1=Nvec[k]/1000
+      civaluek=civalue[1:Nvec[k]]; civalued2k=civalued2[1:Nvec[k]]
+      #for(i in 1:Nvec[k]) {
+          # N dim CI
+          #if(civalue[i]<=qchisq(0.95,df=dim)) {
+             #acc95d10[i,]=resmat[i,]
+             acc95d10ind=length(civaluek[civaluek<=qchisq(0.95,df=dim)])  #acc95d10ind+1
+             #}
+          #if(civalue[i]<=qchisq(0.683,df=dim)) {
+             #acc68d10[i,]=resmat[i,]
+             acc68d10ind=length(civaluek[civaluek<=qchisq(0.683,df=dim)])    #acc68d10ind+1
+             #}
+          # 2 dim CI
+          #if(civalued2[i]<=qchisq(0.95,df=2)) {
+             #acc95d2[i,]=resmat[i,]
+             acc95d2ind=length(civalued2k[civalued2k<=qchisq(0.95,df=2)]) #acc95d2ind+1
+             #}
+          #if(civalued2[i]<=qchisq(0.683,df=2)) {
+             #acc68d2[i,]=resmat[i,]
+              acc68d2ind=length(civalued2k[civalued2k<=qchisq(0.683,df=2)]) #acc68d2ind+1
+             #}
+          #1 dim CI
+          #if(civalued2[i]<=qchisq(0.95,df=1)) {
+             #acc95d2CI1[i,]=resmat[i,]
+             acc95d2CI1ind=length(civalued2k[civalued2k<=qchisq(0.95,df=1)]) #acc95d2CI1ind+1
+             #}
+          #if(civalued2[i]<=qchisq(0.683,df=1)) {
+             #acc68d2CI1[i,]=resmat[i,]
+             acc68d2CI1ind=length(civalued2k[civalued2k<=qchisq(0.683,df=1)]) #acc68d2CI1ind+1
+             #}
+        #}
+        
+        resci=(1/Nvec[k])*c(acc95d10ind,acc68d10ind,acc95d2ind,acc68d2ind,acc95d2CI1ind,acc68d2CI1ind)
+        write(resci,paste("CI_percentages_TestA_",k1,".txt",sep=""),append=T,ncolumns=6)
+        }  # end of k loop
+        #write.matrix(acc95d10,paste("acc95d10_",(t-1),".txt",sep=""))
+  } # end of t simulations
+
+
+for(t in 1:10) {
+
+  filename=paste("perplex_",(t-1),sep="")
+  perpl=read.table(filename)
+  perplresv=as.vector(perpl[,1])
+  
+  if(t==1) { perplres=cbind(perplresv);
+  postscript("plot_perplexity.ps",horizontal=F)
+  plot(as.ts(perplres[,1]),xlab="Iteration",ylab="Perplexity")
+   }
+  if(t>1) { perplres=cbind(perplres,perplresv) }
+  
+  lines(x=seq(1,10,by=1),y=perplresv,col=t)
+
+  }
+dev.off()
+
+
+# for PMC
+
+# R code for simulations - PMC
+
+# function to compute CI's
+target_mvn_banana_CI=function(x,b,dim){
+  var<-c(200,rep(1,(dim-1)))
+  sigma<-matrix(diag(var),nrow=dim,ncol=dim,byrow=T)
+  xtwist<-c(x[1],x[2]+b*x[1]^2-b*100,x[3:dim])
+  # evaluate
+  t(xtwist)%*%solve(sigma)%*%xtwist
+}
+
+# function to compute CI's
+target_mvn_banana_CI_d2=function(x,b){
+  var<-c(200,1)
+  sigma<-diag(var,nrow=2,ncol=2)
+  xtwist<-c(x[1],x[2]+b*x[1]^2-b*100)
+  # evaluate
+  t(xtwist)%*%solve(sigma)%*%xtwist
+}
+
+setwd("D:/Current_Work/Astronomy/Simulation_Output/Simulation_PMC/")
+
+namesci=c("acc95d10","acc68d10","acc95d2","acc68d2","acc95d2CI1","acc68d2CI1")
+write(namesci,"CI_percentages.txt",ncolumns=6)
+
+# start of loop
+for(t in 1:100) {
+  
+  print(t)    
+  filename=paste("proposal_testA_2_",(t-1),sep="")
+  prop=read.table(filename)
+  dim=dim(prop)[2]-1
+  nsimu=dim(prop)[1]
+  # resampling to obtain final sample
+  indices=sample(1:nsimu,size=nsimu,prob=prop[,(dim+1)],replace=T)
+  finalsample=matrix(NA,nrow=nsimu,ncol=dim)
+  finalsample=prop[indices,]
+  plot(prop[,2]~prop[,1],xlim=c(-45,45),ylim=c(-60,20))
+  points(finalsample[,2]~finalsample[,1],col="blue")
+
+  write(apply(finalsample[,1:dim],2,mean),"means.txt",ncolumns=dim,append=T)
+  write(apply(finalsample[,1:dim],2,var),"vars.txt",ncolumns=dim,append=T)
+
+  # confidence intervals
+  cid10=apply(finalsample,1,target_mvn_banana_CI,b=0.1,dim=dim)
+  cid2=apply(finalsample[,1:2],1,target_mvn_banana_CI_d2,b=0.1)
+  civalue=as.vector(cid10)
+  civalued2=as.vector(cid2)
+  print("finished CI thing")
+
+  # resetting parameters to zero
+  acc95d10ind=acc68d10ind=acc95d2ind=acc68d2ind=acc95d2CI1ind=acc68d2CI1ind=0
+  acc95d10ind=length(civalue[civalue<=qchisq(0.95,df=dim)])
+  acc68d10ind=length(civalue[civalue<=qchisq(0.683,df=dim)])
+  acc95d2ind=length(civalued2[civalued2<=qchisq(0.95,df=2)])
+  acc68d2ind=length(civalued2[civalued2<=qchisq(0.683,df=2)])
+  acc95d2CI1ind=length(civalued2[civalued2<=qchisq(0.95,df=1)])
+  acc68d2CI1ind=length(civalued2[civalued2<=qchisq(0.683,df=1)])
+  resci=(1/nsimu)*c(acc95d10ind,acc68d10ind,acc95d2ind,acc68d2ind,acc95d2CI1ind,acc68d2CI1ind)
+  write(resci,"CI_percentages.txt",append=T,ncolumns=6)
+  
+  }
+  
+  
+# individual runs
+# start of iteration loop
+for(i in 1:9) {
+
+  filename=paste("proposal_testA_",i,"_0",sep="")
+  prop=read.table(filename)
+  dim=dim(prop)[2]-1
+  nsimu=dim(prop)[1]
+  # resamepling to obtain final sample
+  indices=sample(1:nsimu,size=nsimu,prob=prop[,(dim+1)],replace=T)
+  finalsample=matrix(NA,nrow=nsimu,ncol=dim)
+  finalsample=prop[indices,]
+  write(apply(finalsample[,1:dim],2,mean),"means_ind.txt",ncolumns=dim,append=T)
+  write(apply(finalsample[,1:dim],2,var),"vars_ind.txt",ncolumns=dim,append=T)
+  
+  }
+
+means=read.table("means_ind.txt")
+plot(as.ts(means[,3]))
+
+
+
+
+  

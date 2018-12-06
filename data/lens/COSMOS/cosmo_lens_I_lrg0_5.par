@@ -1,0 +1,14 @@
+### Lensing parameter file ###
+
+
+# Cosmological parameters
+cosmo_file      cosmo5.par
+
+# Redshift distribution
+nofz_file       nofz_I_lrg0.par
+
+# Lensing parameters
+stomo		tomo_all
+sreduced	none
+sia		none
+

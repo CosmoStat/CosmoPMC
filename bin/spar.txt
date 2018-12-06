@@ -1,0 +1,69 @@
+# Parameter	& yorick	& gnuplot				& TeX				& R		&
+Omega_m		& !W_m		& {/Symbol W}_m				& \Omega_{\textrm{m}}		& Omega[m]	&
+Omega_c		& !W_c		& {/Symbol W}_c				& \Omega_{\textrm{c}}		& Omega[c]	&
+Omega_b		& !W_b		& {/Symbol W}_b				& \Omega_{\textrm{b}}		& Omega[b]	&
+Omega_de	& !W_de		& {/Symbol W}_{de}			& \Omega_{\textrm{de}}		& Omega[de]	&
+Omega_K		& !W_K		& {/Symbol W}_K				& \Omega_K    			& Omega[K]	&
+Omega_nu_mass	& !W_!n, mass	& {/Symbol W}_{{/Symbol n}, mass}	& \Omega_{\nu,\,\textrm{mass}} & Omega[n, mass] &
+omega_m		& !w_m		& {/Symbol w}_m				& \omega_{\textrm{m}}		& omega[m]	&
+omega_c		& !w_c		& {/Symbol w}_c				& \omega_{\textrm{c}}		& omega[c]	& 
+omega_b		& !w_b		& {/Symbol w}_b				& \omega_{\textrm{b}}		& omega[b]	& 
+100_omega_b	& 100!w_b	& 100{/Symbol \327 w}_b			& 100\cdot\omega_{\textrm{b}}	& 100*omega[b]	& 
+omega_K		& !w_K		& {/Symbol w}_K				& \omega_K			& omega[K]	& 
+omega_nu_mass	& !w_!n, mass	& {/Symbol w}_{{/Symbol n}, mass}	& \omega_{\nu,\,\textrm{mass}} & omega[n, mass] &
+w_0_de		& w		& w_0					& w_0				& w[0]		&
+w_1_de		& w_1		& w_1					& w_1				& w[1]		&
+h_100		& h		& h					& h				& h		&
+sigma_8		& !s_8		& {/Symbol s}_8				& \sigma_8			& sigma[8]	&
+Delta_2_R	& 10^9^!D^2_R	& 10^9{/Symbol D}^2_R			& 10^9\Delta^2_R		& 10^9*Delta[R]^2 &
+n_s		& n_s		& n_s					& n_{\textrm{s}}		& n[s]		&
+N_eff_nu_mass	& N_!n, mass	& N_{{/Symbol n}, mass}			& N_{\nu,\,\textrm{mass}}	& N[nu, mass]	&
+tau		& !t		& {/Symbol t}				& \tau				& tau		&
+alpha_s		& !a_s		& {/Symbol a}_s				& \alpha_{\textrm{s}}		& alpha[s]	&
+N_eff_nu_0	& N_!n		& N_{{/Symbol n}}			& N_{\nu}			& N[nu]		&
+n_t		& n_t		& n_t					& n_{\textrm{t}}		& n[t]		&
+r		& r		& r					& r				& r		&
+ln_r		& ln r		& ln r					& \ln{r}			& ln r		&
+a_ymmk		& a 		& a					& a				& a		&
+b_ymmk		& b 		& b					& b				& b		&
+c_ymmk 		& c		& c					& c				& c		&
+c0_ymmk0const 	& c_0		& c_0					& c_0				& c[0]		&
+a_jonben	& a 		& a					& a				& a		&
+b_jonben	& b 		& b					& b				& b		&
+c_jonben	& c		& c					& c				& c		&
+alpha_ludo	& !a_p 		& {/Symbol a}_p				& \alpha_{\textrm{p}}		& alpha[p]	&
+beta_ludo	& !b_p 	  	& {/Symbol b}_p				& \beta_{\textrm{p}}		& beta[p]	&
+z0_ludo		& z_0		& z_0					& z_0				& z[0]		&
+M		& -M		& -M					& -M				& -M		&
+alpha		& !a		& {/Symbol a}				& \alpha			& alpha		&
+beta		& -!b		& -{/Symbol b}				& -\beta			& -beta		&
+theta_10	& !q_10 = !D g	& {/Symbol q}_{10}={/Symbol D}g		& \theta_{10}=\Delta{g}		& theta[10]	&
+theta_11	& !q_11 = !D r	& {/Symbol q}_{11}={/Symbol D}r		& \theta_{11}=\Delta{r}		& theta[11]	&
+theta_12	& !q_12 = !D i	& {/Symbol q}_{12}={/Symbol D}i		& \theta_{12}=\Delta{i}		& theta[12]	&
+theta_13	& !q_13 = !D z	& {/Symbol q}_{13}={/Symbol D}z 	& \theta_{13}=\Delta{z}		& theta[13]	&
+theta_14	& !q_14 = !D U	& {/Symbol q}_{14}={/Symbol D}U 	& \theta_{14}=\Delta{U}		& theta[14]	&
+theta_15	& !q_15 = !D B	& {/Symbol q}_{15}={/Symbol D}B 	& \theta_{15}=\Delta{B}		& theta[15]	&
+theta_16	& !q_16	= !D V	& {/Symbol q}_{16}={/Symbol D}V 	& \theta_{16}=\Delta{V}		& theta[16]	&
+theta_17	& !q_17 = !D (B-R)_Vega & {/Symbol q}_{17}={/Symbol D}(B-R)_{Vega} & \theta_{17}=\Delta(B-R)_{\rm\,Vega} & theta[17] &
+beta_z		& !b_z          & {/Symbol b}_z				& \beta_{\textrm{z}}		& beta[z]	&
+beta_d		& !b_d    	& {/Symbol b}_d	   		        & \beta_{\textrm{d}}            & beta[d]       &
+Mmin		& M_min		& M_{min}				& M_{\textrm{min}}		& M[min]	&
+log_10Mmin	& log_10_M_min	& log_{10}M_{min}			& \log_{10}M_{\textrm{min}}	& log[10]M[min] &
+M1		& M_1		& M_1					& M_1				& M[1]		&
+log10M1		& log_10_M_1	& log_{10}M_1				& \log_{10}M_1			& log[10]M[1]	&
+M0		& M_0		& M_0					& M_0				& M[0]		&
+log10M0		& log_10_M_0	& log_{10}M_0				& \log_{10}M_0			& log[10]M[0]	&
+sigma_log_M	& !s_logM	& {/Symbol s}_{log_{10} M}		& \sigma_{\log_{10}M}		& sigma[log[10]M &
+alpha_halo	& !a		& {/Symbol a}				& \alpha			& alpha		&
+z_rescale	& f_z	        & f_z                                   & f_z                           & f[z]          &
+Sigma		& !S_8          & {/Symbol S}_8                         & \Sigma_8                      & Sigma[8]      &
+q_acc		& q_0             & q_0	   				& q_0				& q[0]		&
+Omega_L		& !W_!L		& {/Symbol W}_{/Symbol L}		&\Omega_\Lambda			& Omega[Lambda] &
+Mhalo_av	& <M_halo_>     & <M_{halo}>                            & \langle{M_{\textrm{halo}}}\rangle & <M[halo]> &
+bhalo_av	& <b_halo_>	& <b_{halo}>				& \langle{b_{\textrm{halo}}}\rangle & <bhalo> &
+Ngal_av		& <N_gal_>	& <N_{gal}>				& \langle{N_{\textrm{gal}}}\rangle  & <b[gal]>  &
+fr_sat   	& <fr_sat_>	& <fr_{sat}>				& \langle{fr_{\textrm{sat}}}\rangle & <b[gal]>  &
+ngal_den	& n_gal		& n_{gal}				& n_{\textrm{gal}}		& n[gal]	&
+A_SZ		& A_SZ		& A_{SZ}				& A_{\textrm{SZ}}		& A[SZ]		&
+A_ia		& A_IA		& A_{IA}				& A_{\textrm{IA}}		& A[IA]		&
+kb		& b		& b					& b				& b		&

@@ -1,0 +1,46 @@
+### Basic part ###
+
+version		1.2
+
+### Parameter section ###
+npar            6
+n_ded           1
+#               0       1       2     3     4         5         (6)
+spar            Omega_b Omega_m tau   n_s   Delta_2_R h_100     sigma_8
+min             0.02    0.15   0.04   0.8   1.8       0.4       0.5
+max             0.10    0.50   0.20   1.2   3.5       1.3       1.2
+
+### Data section ###
+ndata           1
+sdata           CMB
+
+# CMB
+scamb_path      scamb
+data_path       WMAP		# WMAP data in WMAP/data 
+Cl_SZ_file	wmap_clsz_V_l=2-10000_v4.txt
+lmax            1200
+accurate	0	# Sets CAMB flags 'accurate_polarization' and 'accurate_reionization'
+model_file      cosmoDP.par
+
+### Prior section ###
+sprior          -
+
+### PMC part ###
+
+nsamples        5000
+fsfinal         1
+niter           5
+nclipw          5
+
+### Proposal section ###
+df              -1
+ncomp           12
+sdead_comp	revive
+
+sinitial        fisher_rshift
+fshift          0.05
+fvar            1.1
+
+### Histogram section ###
+nbinhist        64
+

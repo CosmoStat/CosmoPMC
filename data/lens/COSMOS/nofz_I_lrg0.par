@@ -1,0 +1,6 @@
+### Redshift parameter file ###
+
+Nzbin		6
+snzmode		nz_read_from_files
+nzfile		nofz_I_lrg0_1 nofz_I_lrg0_2 nofz_I_lrg0_3 nofz_I_lrg0_4 nofz_I_lrg0_5 nofz_I_6
+

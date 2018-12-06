@@ -1,0 +1,42 @@
+### Basic part ###
+
+version		1.2
+
+### Parameter section ###
+npar		2
+n_ded		0
+spar		Omega_m Omega_de
+min             0.0     0.0
+max             1.2     2.0 
+
+### Data section
+ndata		1
+sdata		BAO
+
+# BAO
+smethod         distance_A
+datname         bao_Reid10_A_0.35
+model_file	cosmoDP.par
+sspecial	none
+# data end
+
+### Prior section ###
+sprior		-
+
+### PMC part ###
+nsamples        2000
+fsfinal         1
+niter           5
+nclipw          0
+
+### Proposal section ###
+df              -1
+ncomp           5
+sdead_comp	bury
+
+sinitial        fisher_rshift
+fshift          0.1
+fvar		1.2
+
+### Histogram section ###
+nbinhist        64

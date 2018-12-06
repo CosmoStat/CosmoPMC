@@ -1,0 +1,78 @@
+# -*- makefile -*-
+# Makefile.no_host
+
+### Use the script './configure.py' to copy this makefile to
+### 'Makefile.host', and to set the host-specific flags.
+
+#############################
+### Compilers and linkers ###
+#############################
+# CC        =
+# MPICC     =
+# LD        =
+# AR        =
+# F90       =
+
+######################
+### Path to pmclib ###
+######################
+# PMCLIB    =
+
+######################
+### Path to nicaea ###
+######################
+NICAEA    = ~/.local
+
+### Add compiler flags
+# MKCFLAGS += ...
+
+### Add linker flags
+# MKLFLAGS += ...
+
+### Debug info
+# DEBUG =
+
+###############################################
+### Directories for external packages       ###
+### Path for include files: $(FFTW)/include ###
+### Path for libraries: $(FFTW)/lib         ###
+### Analogously for $(GSL)                  ###
+###############################################
+# FFTW =
+# GSL  =
+
+#######################################
+### MPI (Message Parsing Interface) ###
+#######################################
+### Include flags
+# INC_MPI = -I...
+### Library directories
+# LDIRS_MPI = -L...
+### Non-standard MPI libraries
+# LIBS_MPI
+
+###########################
+### CMB (CAMB and WMAP) ###
+###########################
+
+### Enable/Disable WMAP support
+# DOWMAP = 0/1
+### Path to camb
+# MY_CAMB =
+### Path to wmap likelihood
+# MY_WMAP =
+### Library paths
+### Intel Math Kernel libraries (libmkl, libmkl_lapack etc.)
+# LAPACKDIR  =
+### libguide
+# GUIDEDIR   =
+### libifcore
+# IFCOREDIR  =
+
+### libcfitsio
+# CFITSIODIR = 
+
+### CAMB libraries
+# LIBF90 =
+
+### End of file

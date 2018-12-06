@@ -1,0 +1,41 @@
+### Basic part ###
+
+version		1.2
+
+### Parameter section ###
+npar		5
+n_ded		0
+spar		Omega_b Omega_m Omega_de w0_de   h_100
+min             0.01    0.15    0.4      -2.0    0.5
+max             0.08    0.45    1.0       0.0    0.9
+
+### Data section
+ndata		1
+sdata           CMBDistPrior
+
+# 1 CMBDistPrior
+
+# WMAP5
+#datname	wmap5DistPrior_ML_covinv
+
+# WMAP7
+datname		wmap7DistPrior_ML_covinv
+
+model_file	cosmoDP.par
+sspecial	none
+# data end
+
+sprior		-
+
+### MCMC part ###
+nchain          0
+ncov            0
+fburnin         0.0
+ndecorr         0
+fudge           2.4
+sinitial        Fisher
+sstart          fid
+fid             0.045  0.3    0.7      -1    0.7
+
+### Histogram section ###
+nbinhist        64

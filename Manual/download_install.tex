@@ -1,0 +1,100 @@
+% download_install.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SUBSECTION{Download and install \pmclib}
+\label{sec:install_pmclib}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+The package \pmclib\ can be downloaded from the \CosmoPMC\ site
+%\url{http://www2.iap.fr/users/kilbinge/CosmoPMC}.
+\url{http://www.cosmopmc.info}.
+
+After downloading, unpack the gzipped tar archive
+%
+\command{tar xzf pmclib\_x.y.tar.gz}
+%
+This creates the \pmclib\ root directory \direc{pmclib\_x.y}.
+\pmclib\ uses \progr{waf}\footnote{\url{http://code.google.com/p/waf}}
+instead of configure/make to compile and build the software. Change to
+that directory and type
+%
+\command{./waf --local configure}
+%
+See \progr{./waf --help} for options. The packages \progr{lua},
+\progr{hdf5} and \progr{lapack} are optionally linked with \pmclib\
+but are not necessary to run \CosmoPMC. Corresponding warnings of
+missing files can be ignored. Instead of a local installation
+(indicated by \progr{--local}), a install prefix can be specified
+with \progr{--prefix=PREFIX} (default \direc{/usr/local}).
+
+%%% Patch 1.1_1.01
+
+%Finally, run
+%
+%\command{./waf build install}
+%
+%to build the \pmclib\ dynamic libraries.
+%See
+%\url{http://www2.iap.fr/users/kilbinge/CosmoPMC/pmclib} for more
+%details about the PMC library.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SUBSECTION{Patch \pmclib}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For \CosmoPMC\ v $\ge 1.2$ and pmclib v1.x, a patch of the
+latter is necessary. From \url{http://www.cosmopmc.info} , download
+\file{patch\_pmclib\_1.x\_1.2.tar.gz} and follow the instructions in
+the readme file \file{readme\_patch\_pmclib\_1.x\_1.2.txt}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SUBSECTION{Download and install \CosmoPMC}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The newest version of \CosmoPMC\ can be downloaded from the site
+\url{http://www.cosmopmc.info}.
+
+First, unpack the gzipped tar archive
+%
+\command{tar xzf CosmoPMC\_v\CosmoPMCVersion.tar.gz}
+%
+This creates the the \CosmoPMC\ root directory
+\direc{CosmoPMC\_v\CosmoPMCVersion}. Change to that directory and run
+%
+\command{[python] ./configure.py}
+%
+This (poor man's) configure script copies the file
+\file{Makefile.no\_host} to \file{Makefile.host} and sets
+host-specific variables and flags as given by the command-line
+arguments. For a complete list, see `\progr{configure.py --help}'.
+
+Alternatively, you can copy by hand the file
+\file{Makefile.no\_host} to \file{Makefile.host} and edit it. If the
+flags in this file are not sufficient to successfully compile the code,
+you can add more flags by rerunning \progr{configure.py}, or by
+manually editing \file{Makefile.main}. Note that a flag in
+\file{Makefile.main} is overwritten if the same flag is present in
+\file{Makefile.host}.
+
+
+To compile the code, run
+%
+\command{make; make clean}
+%
+On success, symbolic links to the binary executables (in \direc{./exec}) will be
+set in \direc{./bin}.
+
+It is convenient to define the environment variable \envvar{COSMOPMC}
+and to set it to the main
+\CosmoPMC\ directory. For example, in the C-shell:
+%
+\command{setenv COSMOPMC /path/to/CosmoPMC\_v\CosmoPMCVersion}
+%
+This command can be placed into the startup file
+(e.g.~\file{\symbol{126}/.cshrc} for the C-shell).
+One can also add \direc{\COSMOPMCDIR/bin} to
+the \envvar{PATH} environment variable.
+

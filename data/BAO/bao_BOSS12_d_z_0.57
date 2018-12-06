@@ -1,0 +1,11 @@
+1 -1 1 0
+0.07315
+721850
+
+# From 1203.6594
+# D_v / r_s (z=0.57) = 13.67 pm 0.22 (combined real and Fourier)
+# Converting to r_s / D_v gives
+# r_s / D_v (z=0.57) = 0.07315 pm 0.001177
+
+# Redshift
+z	0.57

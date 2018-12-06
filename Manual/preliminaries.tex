@@ -1,0 +1,133 @@
+% preliminaries.tex
+
+
+
+%%%%%%%%%%%%%%%%%%%% Martin's shortcuts %%%%%%%%%%%%%%%%%%%%%
+
+% maths
+
+\newcommand{\dd}{{\mathrm d}}
+\newcommand{\J}{{\mathrm J}}
+\newcommand{\HH}{{\mathrm H}}
+\newcommand{\average}[1]{\left\langle #1 \right\rangle}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+\newcommand{\vt}{\vartheta}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\vp}{\varphi}
+\newcommand{\ii}{{\rm i}}
+\newcommand{\ee}{{\rm e}}
+
+\newcommand{\ontop}[2]{
+  \renewcommand{\arraystretch}{0.2}
+  \begin{array}{c}
+  #1 \\ #2
+  \end{array}
+  \renewcommand{\arraystretch}{1.0}
+}
+\newcommand{\lsim}{\ontop{<}{\sim}}
+\newcommand{\gsim}{\ontop{>}{\sim}}
+
+% lensing
+
+\newcommand{\gammat}{\gamma_{\rm t}}
+\newcommand{\Map}{M_{\rm ap}}
+
+% cosmology
+
+\newcommand{\Omegam}{\Omega_{\rm m}}
+\newcommand{\Omegac}{\Omega_{\rm c}}
+\newcommand{\Omegade}{\Omega_{\rm de}}
+\newcommand{\Omegab}{\Omega_{\rm b}}
+\newcommand{\Omeganumass}{\Omega_{\nu, {\rm mass}}}
+
+\newcommand{\omegam}{\omega_{\rm m}}
+\newcommand{\omegac}{\omega_{\rm c}}
+\newcommand{\omegade}{\omega_{\rm de}}
+\newcommand{\omegab}{\omega_{\rm b}}
+\newcommand{\omeganumass}{\omega_{\nu, {\rm mass}}}
+
+\newcommand{\ns}{n_{\rm s}}
+\newcommand{\Neffnumass}{N_{{\rm eff}, \nu, {\rm mass}}}
+\newcommand{\Neffnuzero}{N_{{\rm eff}, \nu, 0}}
+
+% misc.
+
+\newcommand{\rul}{\rule[-2.25mm]{0mm}{7mm}}
+
+% colors
+
+\definecolor{greenthree}{rgb}{0.0,0.68,0.0}
+\definecolor{darkgreen}{rgb}{0.1,0.5,0.1}
+\definecolor{darkblue}{rgb}{0.1,0.1,0.6}
+\definecolor{lightblue}{rgb}{0.30,0.50,1.00}
+\definecolor{darkolivegreen3}{rgb}{0.64,0.80,0.35}
+\definecolor{indianred4}{rgb}{0.55,0.23,0.23}
+\definecolor{warmred}{rgb}{0.7, 0.1, 0.2}
+
+
+%%%%%%%%%%%%%%% end Martin's shortcuts %%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\transp}{{\rm T}}
+% Indicator or characteristic function
+\newcommand{\indicator}{{\mathbf 1}}
+
+\newcommand{\CosmoPMC}{{\textsc{CosmoPMC}}}
+\newcommand{\pmclib}{\textsc{pmclib}}
+\newcommand{\nicaea}{\textsc{nicaea}}
+\newcommand{\COSMOPMCDIR}{\$COSMOPMC}
+
+% Version from temporary file, created and deleted after use in Makefile
+\newcommand*\CosmoPMCVersion{%
+   \edef\RestoreEndlinechar{\endlinechar=\the\endlinechar\relax}%
+   \endlinechar=-1 %
+   \input{CosmoPMCVersion.tmp}%
+   \RestoreEndlinechar
+}
+
+
+
+%\newcommand{\progr}[1]{\texttt{#1}}
+%\newcommand{\direc}[1]{\texttt{#1}}
+%\newcommand{\file}[1]{\texttt{#1}}
+%\newcommand{\envvar}[1]{\texttt{#1}}
+
+\newcommand{\progr}[1]{\texttt{\textcolor{indianred4}{#1}}}
+\newcommand{\direc}[1]{\texttt{\textcolor{darkblue}{#1}}}
+\newcommand{\file}[1]{\texttt{\textcolor{darkgreen}{#1}}}
+\newcommand{\envvar}[1]{\texttt{\textcolor{cyan}{#1}}}
+
+\newcommand{\ded}{$^*$}
+
+\newcommand{\command}[1]{%
+\begin{flushleft}
+\texttt{\textcolor{indianred4}{>\hspace{1ex}#1}}
+\end{flushleft}
+}
+
+\newcommand{\commandthree}[3]{%
+\begin{flushleft}
+\texttt{\textcolor{indianred4}{%
+    >\hspace{1ex}#1\\
+    >\hspace{1ex}#2\\
+    >\hspace{1ex}#3%
+  }}
+\end{flushleft}
+}
+
+\newcommand{\verbinput}[1]{{\footnotesize\input{usage_#1}}}
+
+
+\newlength{\spalteeins}
+\setlength{\spalteeins}{0.15\textwidth}
+\newlength{\spaltezwei}
+\setlength{\spaltezwei}{0.25\textwidth}
+\newlength{\spaltedrei}
+\setlength{\spaltedrei}{0.6\textwidth}
+
+\newcommand{\rien}{$\,\,\!\!$}
+
+\newcommand{\TODO}[1]{\textcolor{blue}{\textbf{#1}}}
+
+\newcommand{\newsetcounter}[1]{\addcounter{#1}\setcounter{#1}{1}}
+

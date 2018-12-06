@@ -1,0 +1,39 @@
+### Basic part ###
+
+version		1.2
+
+### Parameter section
+npar            5
+n_ded           0
+spar            Omega_m w_0_de M     alpha beta
+min             0.0     -3.5   19.1  0.9   -3.0
+max             1.2      0.5   19.8  2.6   -0.8
+
+### Data section ###
+ndata           1
+sdata           SNIa
+
+# SN data
+datname		sne_union_marek.list
+sdatformat	SNLS_firstyear
+schi2mode	chi2_simple
+add_logdetCov	0
+model_file	cosmo_SN.par
+sspecial	none
+# Data end
+
+### Prior section ###
+sprior          -
+
+### MCMC part ###
+nchain          10000
+ncov            1000
+fburnin         0.2
+ndecorr         1
+fudge           1.0
+sinitial	Fisher_diag
+sstart          fid
+fid             0.6 -1.5 19.45 1.75 -1.9
+
+### Histogram section ###
+nbinhist        64

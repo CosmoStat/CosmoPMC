@@ -1,0 +1,27 @@
+\documentclass[11pt]{scrartcl}
+
+%\pagestyle{empty}
+\usepackage{psfrag, color, epsfig, amsmath}
+\usepackage[pagebackref, breaklinks]{hyperref}
+\usepackage[hyperpageref]{backref} 
+
+\input preliminaries
+
+\newcommand*{\ttrefc}[3]{\progr{#2}}
+\newcommand{\SUBSECTION}[1]{\subsection*{#1}}
+\newcommand{\REF}[3]{}
+
+\begin{document}
+
+\section*{\CosmoPMC\ --- a short guide}
+
+\SUBSECTION{Versions}
+
+This short guide corresponds to \CosmoPMC\ version \CosmoPMCVersion,
+and \pmclib\ version 1.01.
+
+\input download_install
+
+\input quick_ref
+
+\end{document}

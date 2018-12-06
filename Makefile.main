@@ -1,0 +1,241 @@
+# -*- makefile -*-
+#
+# $COSMOPMC/Makefile.main
+# Main Makefile, containing variables and settings, no rults. To be included
+# by Makefiles in subdirectories
+# Martin Kilbinger, Karim Benabed 2007-2010
+#
+# To specify machine- or user-specific settings, e.g. paths to packages,
+# 'Makefile.Host' is included below.
+
+
+#########################
+# Compilers and linkers #
+#########################
+CC	   = gcc
+MPICC	   = mpicc
+LD         = gcc
+AR         = ar
+F90        = ifort
+
+# Optimisation and Debugging
+#OPTIM      =  -O2
+OPTIM       =
+# Sometimes debugging does not work with -fPIC
+FPIC       = -fPIC
+DEBUG      = -g -DCOMM_DEBUG
+
+# Compiler flags
+WARNINGS   = -Wunused
+#WARNINGS   += -Wall -pedantic
+
+# Packages
+GSL        = /opt/local
+FFTW       = /usr/local
+
+# Shared or static linking
+# (Shared does not work at the moment)
+DOSHARED   = 0
+
+
+#############################
+# Flags to include packages #
+#############################
+
+# PMC library extern?
+PMCLIB_EXT  = 1
+
+# CAMB+WMAP likelihood extern?
+CMB_EXT     = 0
+
+
+#####################
+# Basic directories #
+#####################
+
+TOOLS      = $(COSMOPMC)/tools
+WRAPPERS   = $(COSMOPMC)/wrappers
+
+ifeq ($(PMCLIB_EXT),1)
+   # $(PMCLIB) is set in Makefile.host
+   PMC     = $(PMCLIB)
+   LIB_PMC = -Wl,-rpath,$(PMC)/lib -L$(PMC)/lib 
+   INC_PMC = -I$(PMC)/include
+else
+   PMC     = $(COSMOPMC)/pmclib
+   LIB_PMC = -L$(PMC)
+   INC_PMC = -I$(PMC)/include -I$(TOOLS)/include
+endif
+
+DEMO       = $(COSMOPMC)/Demo
+EXEC       = $(COSMOPMC)/exec
+
+####################################################################
+# Additional directories for cosmology and likelihood calculations #
+####################################################################
+
+# Add directory of new module here
+# NEWMODULE = $(COSMOPMC)/newmodule
+
+
+##############################
+# CMB section: WMAP and camb #
+##############################
+
+# With or without WMAP?
+DOWMAP     = 1
+
+# WMAP3, WMAP5 or WMAP7
+NYR	   = 7
+
+# Intel math kernel linker flags, needed by WMAP likelihood
+LAPACKDIR  = /usr/local/lib
+LIBLAPACK  =  -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide  -lpthread 
+GUIDEDIR   = /usr/local/lib
+CFITSIODIR = /usr/local/lib
+IFCOREDIR  = /usr/local/lib
+
+# F90 flags for CAMB
+LIBF90     = -lifcore -limf  -lsvml -lirc 
+FLIBPATH   = /opt/intel/Compiler/11.1/080/lib/intel64
+FFLAGS_CMB = -openmp -O2 -vec_report0
+ifeq ($(F90), "ifort")
+   FFLAGS_CMB += -fpp
+endif
+
+#-openmp -O2 -ip -W0 -WB -fpp2 -vec_report0 
+
+# OpenMP flags for CAMB
+OPENMP	   = -openmp
+
+
+###############################################################
+### The following includes may overwrite some of the above  ###
+### defined variables.					    ###
+###############################################################
+
+# Platform-specific flags
+# Supported so far: Linus, Darwin (Mac OS X), AIX(?)
+
+ifeq ("$(shell uname)", "Darwin")
+   ARCH         = MacOSX
+
+   LIBLAPACK    = -lmkl_lapack -lguide -lpthread
+   LIBLAPACK  += -framework vecLib
+   LAPACKDIR    = /opt/intel/Compiler/11.1/080/mkl/lib/em64t
+   GUIDEDIR     = /opt/intel/Compiler/11.1/080/lib
+   FLIBPATH     = /usr/lib
+
+   #CFITSIODIR  = /usr/lib
+   #IFCOREDIR    = /usr/lib
+
+   FFTW          = /opt/local/
+endif
+
+
+###############################################################
+### Host-specific Makefile to set paths, compilers, etc.    ###
+### Edit by hand or use './configure.py'.		    ###
+###############################################################
+
+-include $(COSMOPMC)/Makefile.host
+
+
+###############################################################
+### Change this section only if you know what you're doing! ###
+###############################################################
+
+# Library extensions
+EXT_STATIC = a
+ifeq ($(ARCH),MacOSX)
+   EXT_DYN  = dylib
+   XSHARED  = -dynamiclib -single_module
+else
+   EXT_DYN  = so
+   XSHARED  = -shared
+endif
+ifeq ($(DOSHARED),1)
+   EXT        = $(EXT_DYN)
+   SHARED     = $(XSHARED)
+else
+   # Static
+   EXT        = a
+   SHARED     = 
+endif
+
+# Omission flags, to be passed on to the preprocessor. Excludes some packages
+
+# More flags for WMAP
+WMAPFLAGS  = -DOPTIMIZE
+FFLAGS     = $(WMAPFLAGS) $(FPIC) $(OPENMP) -ip -O2 -Vaxlib -W0 -WB -fpp2
+
+
+#############
+# Libraries #
+#############
+
+LIBWRAP    = libwr.$(EXT)
+LIBERROR   = liberrorio.$(EXT)
+LIBMVDENS  = libmvdens.$(EXT)
+
+ifeq ($(PMCLIB_EXT),1)
+   LIBPMC     = libpmc.$(EXT_DYN)
+   LIBPMC_MPI = libpmc_mpi.$(EXT_DYN)
+else
+   LIBPMC     = libpmc.$(EXT)
+   LIBPMC_MPI = libpmc_mpi.$(EXT)
+endif
+LIBPARAM   = libparam.$(EXT)
+LIBCMBBAO  = libcmbbao.$(EXT)
+LIBLENSING = liblensing.$(EXT)
+LIBNOFZ    = libnofz.$(EXT)
+LIBSNIA    = libsn1a.$(EXT)
+LIBWMAP    = libwmap$(NYR).$(EXT) libwmap$(NYR)_wrap.$(EXT)
+LIBHALO    = libhalomodel.$(EXT)
+LIBCOYOTE  = libcoyote.$(EXT)
+#LIBBIAS    = libbias.$(EXT)
+
+# Add library of new module here:
+# LIBNEWMODULE = libnewmodule.$(EXT)
+
+
+###########################################
+# Combined cosmo include and linker flags #
+###########################################
+
+# Add paths for new module here:
+# IINCDIRS += -I$(NEWMODULE)/include
+# LLIBDIRS += -L$(NEWMODULE)
+# LLIBS    += -lnewmodule
+
+ifeq ($(DOWMAP),1)
+   IINCDIRS += -I$(CMB) 
+   LLIBDIRS += -L$(MY_WMAP)
+endif
+IINCDIRS   += -I$(NICAEA)/include
+LLIBDIRS   += -L$(NICAEA)/lib
+LLIBS      += -lnicaea
+
+
+# Targets in exec
+EXEC_TARGETS  = cosmo_mcmc cosmo_pmc max_post go_fishing meanvar_sample histograms_sample meanvar_mixmvdens \
+                add_pmc_proposal cl_one_sided importance_sample  getHODModel sample_GalCorr add_deduced_halomodel \
+		add_deduced_cosebis
+#haloplot
+
+ifeq ($(DOWMAP),1)
+   EXEC_TARGETS += sample_cmb
+endif
+
+
+# Avoid some common 'icc' compiler warnings
+ifeq ($(CC),icc)
+   WARNINGS  += -wd981 -wd869 -wd188 -wd47
+else
+   ARCHFLAGS += -std=gnu9x
+endif
+
+
+###############################################################
+STATUS        = "DEVEL"
+###############################################################

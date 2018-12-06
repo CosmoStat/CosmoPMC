@@ -1,0 +1,36 @@
+### Basic part ###
+
+version		1.02
+
+### Parameter section ###
+npar		2
+n_ded		0
+spar		Omega_m w_0_de
+min             0.15    -3.0
+max             0.45     0.5
+
+### Data section ###
+ndata		1
+sdata		BAO
+
+# BAO
+smethod         distance_A
+datname         bao_Reid10_A_0.35
+model_file	cosmoDP.par
+sspecial	none
+# data end
+
+sprior		-
+
+### MCMC part ###
+nchain          5000
+ncov            1000
+fburnin         1.0
+ndecorr         1
+fudge           2.4
+sinitial        Fisher
+sstart          fid
+fid             0.25  -1.00
+
+### Histogram section ###
+nbinhist        64

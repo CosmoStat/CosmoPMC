@@ -1,0 +1,27 @@
+### Cosmological parameters ###
+
+Omega_m		0.25
+Omega_de	0.75
+w0_de		-1.0
+w1_de		0.0
+h_100		0.72
+Omega_b		0.044
+Omega_nu_mass	0.0
+Neff_nu_mass	0.0
+normalization	0.78	# This is sigma_8
+n_spec		0.96
+
+### Flags ###
+snonlinear	smith03
+stransfer	eisenhu
+sgrowth		growth_de
+sde_param	linder
+
+#sde_param       poly_DE
+#N_poly_de       1
+#w_poly_de       -0.9
+
+normmode	0
+
+a_min		0.15	# Value not used, a_min will be set by z_max
+

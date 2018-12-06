@@ -1,0 +1,62 @@
+%%
+%% This is file `texititel.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% texititel.dtx  (with options: `style')
+%% 
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{texititel}
+              [1994/12/26 v1.2
+               Titelpage as with Texinfo]
+\ifx\undefined\titlepage
+  \newenvironment{titlepage}
+    {%
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse\newpage
+      \fi
+      \thispagestyle{empty}%
+    }%
+    {\if@restonecol\twocolumn \else \newpage \fi
+    }
+\else
+  \renewenvironment{titlepage}
+    {%
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse\newpage
+      \fi
+      \thispagestyle{empty}%
+    }%
+    {\if@restonecol\twocolumn \else \newpage \fi
+    }
+\fi
+
+\newcommand{\TexiSubTitle}{}
+%\newcommand{\subtitle}[1]{\newcommand{\TexiSubTitle}{#1}}
+\renewcommand\maketitle{\begin{titlepage}%
+    \setlength{\parindent}{0pt}
+    \vspace*{\stretch{1}}
+    \parbox[b][\totalheight][t]{\textwidth}{%
+      \makebox[\textwidth][l]{\Large\textbf{\@title}}}
+    \par\vspace{-\baselineskip}\vspace{6pt}
+    \rule[-2pt]{\textwidth}{4pt}
+    \parbox[t]{\textwidth}{%
+      \makebox[\textwidth][r]{\TexiSubTitle}}
+    \par\vspace{\stretch{3}}
+    \parbox[b][\totalheight][t]{\textwidth}{%
+      \makebox[\textwidth][l]{\large\textbf{\@author}}}
+    \par\vspace{-\baselineskip}\vspace{4pt}
+    \rule[-2pt]{\textwidth}{2pt}
+    \par\vspace{\stretch{1}}
+  \end{titlepage}%
+  \let\thanks\relax\let\maketitle\relax
+  \let\TexiSubTitle\relax\let\subtitle\relax
+  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}}
+\endinput
+%%
+%% End of file `texititel.sty'.
