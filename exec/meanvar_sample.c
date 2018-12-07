@@ -12,9 +12,10 @@
 #include <unistd.h>
 
 #include "pmclib/pmc.h"
-#include "param.h"
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
 #include "pmclib/tools.h"
+
+#include "param.h"
 #include "exec_helper.h"
 
 

@@ -11,8 +11,8 @@
 #include <poll.h>
 #include <signal.h>
 
-#include "errorlist.h"
-#include "io.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/io.h"
 
 
 

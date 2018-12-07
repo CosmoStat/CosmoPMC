@@ -11,8 +11,8 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "errorlist.h"
-#include "io.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/io.h"
 
 
 #define conf_base  -400

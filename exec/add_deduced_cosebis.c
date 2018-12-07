@@ -11,15 +11,16 @@
 
 
 #include "pmclib/pmc.h"
-#include "param.h"
-#include "errorlist.h"
-#include "io.h"
-#include "math.h"
-#include "types.h"
-#include "exec_helper.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/io.h"
+#include "pmctools/maths.h"
 
 #include "nicaea/lensing.h"
+
 #include "lens.h"
+#include "types.h"
+#include "exec_helper.h"
+#include "param.h"
 
 
 

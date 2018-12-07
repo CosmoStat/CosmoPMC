@@ -1,7 +1,7 @@
 #ifndef __INIT_WRAPPERS_H
 #define __INIT_WRAPPERS_H
 
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
 #include "par.h"
 
 typedef enum {none, unity, de_conservative} special_t;

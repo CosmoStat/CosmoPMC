@@ -15,14 +15,15 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_rng.h>
 
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
+#include "pmclib/pmc.h"
+
 #include "param.h"
 #include "config.h"
-
-#include "nicaea/hod.h"
 #include "halo.h"
 
-#include "pmclib/pmc.h"
+#include "nicaea/hod.h"
+
 #include "exec_helper.h"
 
 

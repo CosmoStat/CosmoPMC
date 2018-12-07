@@ -11,12 +11,13 @@
 #include <sys/times.h>
 #include <unistd.h>
 
-#include "exec_helper.h"
 #include "pmclib/pmc.h"
 #include "pmclib/pmc_mpi.h"
-#include "param.h"
-#include "errorlist.h"
 #include "pmclib/tools.h"
+#include "pmctools/errorlist.h"
+
+#include "param.h"
+#include "exec_helper.h"
 
 /* ============================================================ *
  * Importance sampling of the points in the PMC simulation psim *
@@ -249,7 +250,7 @@ int main(int argc, char *argv[])
 
       /* Send importance weights */
       if (! quiet) fprintf(stderr, "proc %d >> send weights\n" ,myid);
-      send_importance_weight(myid, nproc, psim, nok, err);    quitOnError(*err, __LINE__, stderr);
+      send_importance_weight(myid, nproc, psim, nok);
 
    } else {     /* master */
 

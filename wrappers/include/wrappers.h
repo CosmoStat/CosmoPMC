@@ -6,7 +6,7 @@
 #ifndef __WRAPPERS_H
 #define __WRAPPERS_H
 
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
 #include "types.h"
 #include "init_wrappers.h"
 #include "all_wrappers.h"

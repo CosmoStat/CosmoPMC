@@ -10,12 +10,12 @@
 #include <gsl/gsl_rng.h>
 
 #include "pmclib/pmc.h"
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/maths.h"
 #include "config.h"
 #include "stdnames.h"
 #include "types.h"
 #include "par.h"
-#include "maths.h"
 #include "init_wrappers.h"
 
 

@@ -18,13 +18,13 @@
 #include <gsl/gsl_rng.h>
 
 #include "config.h"
-#include "errorlist.h"
-#include "io.h"
-#include "maths.h"
 #include "nhist.h"
-#include "mvdens.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/io.h"
+#include "pmctools/maths.h"
+#include "pmctools/mvdens.h"
 #include "pmclib/pmc.h"
-//#include "mcmc.h"
+#include "pmclib/mcmc.h"
 
 #include "types.h"
 #include "wrappers.h"
@@ -100,10 +100,17 @@ typedef enum {mcmcini_fisher_inv, mcmcini_fisher, mcmcini_fisher_diag, mcmcini_p
 /* What to do with dead proposal components */
 typedef enum {bury, revive} dead_comp_t;
 #define sdead_comp_t(i) ( \
-  i==bury   ?"bury"     : \
+  i==bury   ? "bury"    : \
   i==revive ? "revive"  : \
   "")
 #define Ndead_comp_t 2
+
+typedef enum {tempering_none, tempering_linear} tempering_t;
+#define stempering_t(i) ( \
+  i==tempering_none   ? "none" : \
+  i==tempering_linear ? "linear" : \
+  "")
+#define Ntempering_t 2
 
 /* Basic configuration file information */
 typedef struct {
@@ -140,6 +147,9 @@ typedef struct {
   double fshift, fvar, fsfinal, fmin, fmax;
   dead_comp_t dead_comp;
   int df;
+  char stempering[64];
+  tempering_t tempering;
+  double t_min;
 } config_pmc;
 
 /* Config info for max_post and Fisher matrix */
@@ -185,7 +195,7 @@ void write_config_pmc_file(FILE *OUT, config_pmc config, error **err);
 parabox *parabox_from_config(int npar, const double *min, const double *max, error **err);
 
 double get_default_log_prior(const double *min, const double *max, int npar, error **err);
-double likelihood_log_pdf_single(void *extra, const double *x, data_t data, error **err);
+double likelihood_log_pdf_single(void *extra, const double *x, error **err);
 double posterior_log_pdf_common(config_base *config, const double *x,  error **err);
 double posterior_log_pdf_common_void(void *config, const double *x, error **err);
 double prior_log_pdf_special(special_t special, const par_t *par, const double *min,

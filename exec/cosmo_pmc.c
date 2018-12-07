@@ -7,7 +7,7 @@
 #include "cosmo_pmc.h"
 
 
-void clean_previous_run(int iter, int niter, const char iterdirname[])
+void clean_previous_run(int iter, int niter)
 {
    int i;
    char name[NSTR];
@@ -263,7 +263,7 @@ void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, in
       fprintf(FLOG, "=== Iteration #%d ===\n", iter);
       if (! quiet) fprintf(stderr, "=== Iteration #%d ===\n", iter);
 
-      clean_previous_run(iter, config->niter, iterdirname);
+      clean_previous_run(iter, config->niter);
 
       /* Increase size in case of final iteration */
       pmc_simu_realloc(psim, this_nsamples, err);
@@ -294,10 +294,29 @@ void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, in
    /* Calculation of the PMC weights (server and clients) */
 
    fprintf(FLOG, "proc %d >> work on %ld samples (iter %d)\n", myid, psim->nsamples, iter);
+
+   /* Tempering */
+   double t_iter;
+   switch (config->tempering) {
+      case tempering_none :
+         t_iter = 1.0;
+         break;
+      case tempering_linear :
+         if (iter == config->niter - 1) {
+            t_iter = 1.0;
+         } else {
+            t_iter = (double)iter / (config->niter - 2.0) * (1.0 - config->t_min) + config->t_min;
+         }
+         break;
+      default:
+         addErrorVA(mcmc_unknown, "Unknown tempering type (%s)", *err, __LINE__, config->stempering);
+         return;
+   }
+
    /* Compute importance weights */
    nok = generic_get_importance_weight_and_deduced_verb(psim, proposal, mix_mvdens_log_pdf_void,
-         posterior_log_pdf_common_void, retrieve_ded,
-         (void*)&(config->base), quiet, err);
+							posterior_log_pdf_common_void, retrieve_ded,
+							(void*)&(config->base), t_iter, quiet, err);
    forwardError(*err, __LINE__,);
    fprintf(FLOG, "proc %d >> finished importance weights (iter %d), nok=%d\n", myid, iter, nok);
 
@@ -307,7 +326,7 @@ void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, in
 
       /* Send importance weights */
       fprintf(FLOG, "proc %d >> send weights (iter %d)\n" ,myid, iter);
-      send_importance_weight(myid, nproc, psim, nok, err);    forwardError(*err, __LINE__,);
+      send_importance_weight(myid, nproc, psim, nok);
 
       /* Receive updated proposal */
 

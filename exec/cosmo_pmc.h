@@ -23,16 +23,16 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_rng.h>
 
-#include "pmclib/parabox.h"
-#include "errorlist.h"
-#include "mvdens.h"
-#include "config.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/mvdens.h"
 #include "pmclib/tools.h"
-
-#include "nhist.h"
-#include "param.h"
 #include "pmclib/pmc.h"
 #include "pmclib/pmc_mpi.h"
+#include "pmclib/parabox.h"
+
+#include "config.h"
+#include "nhist.h"
+#include "param.h"
 #include "stdnames.h"
 #include "exec_helper.h"
 
@@ -43,7 +43,7 @@
 
 #define NSTR 128
 
-void clean_previous_run(int iter, int niter, const char iterdirname[]);
+void clean_previous_run(int iter, int niter);
 
 void write_proposal(mix_mvdens *proposal, FILE *F1, FILE *F2, int n, const char *iterdirname, error **err);
 void write_perplexity_and_ess(pmc_simu *psim, int iter, int sum_nsamples, double *sum_ess, FILE *PERP,

@@ -12,15 +12,16 @@
 
 
 #include "pmclib/pmc.h"
-#include "param.h"
-#include "errorlist.h"
-#include "io.h"
-#include "math.h"
-#include "types.h"
-#include "exec_helper.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/io.h"
+#include "pmctools/maths.h"
 
 #include "nicaea/halomodel.h"
+
+#include "param.h"
 #include "halo.h"
+#include "types.h"
+#include "exec_helper.h"
 
 double calculate_deduced_halomodel(cosmo_hm *hm, par_t par, double zm, error **err)
 {

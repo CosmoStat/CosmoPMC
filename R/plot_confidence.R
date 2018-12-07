@@ -1,11 +1,8 @@
-#!/opt/local/bin/Rscript
-
-
 # Martin Kilbinger, Darren Wraith 2008
 # 2013
 # Plots 1D density and 2D Confidence levels from a list of sample/chain files
 
-# Arguments: sample1 [sample2 [sample3 [...]]] [shade]
+# Arguments: sample1 [sample2 [sample3 [...]]]
 # The config file is in read from current directory. If the sample files have a different
 # number of parameters, the config file should correspond to the one with the smallest npar.
 
@@ -13,7 +10,7 @@
 library(lattice)
 library(MASS)
 library(coda)
-library(emdbook)
+#library(emdbook)
 library(getopt)
 library(methods)
 library(optparse)
@@ -23,6 +20,8 @@ library(optparse)
 # Command line options
 parser = OptionParser(usage = "plot_confidence.R [options]") #, option_list = option_list)
 
+parser = add_option(parser, c("-W","--weights"), action="store_true", default=FALSE,
+  help="Use weights in 0th column (default: FALSE, input file is already resampled")
 parser = add_option(parser, c("-N", "--Ngrid"), type="integer", default=100,
   help="Number of grid points for smoothing (kde2d) (default %default). Use <=30 for\n\t\tfast-but-dirty plots")
 parser = add_option(parser, c("-g", "--gsmooth"), default="30",
@@ -51,6 +50,8 @@ parser = add_option(parser, c("-s", "--sigma"), type="integer", default=3,
   help="Plot SIGMA confidence levels (default 3)")
 parser = add_option(parser, c("-F", "--color_scheme"), type="integer", default=0,
   help="Color scheme (0 ... 7; default 0)")
+parser= add_option(parser, c("-o", "--output"), default="pdf",
+ help="Output file format, FORMAT=ps|pdf (default: pdf)")
 parser = add_option(parser, c("-m", "--marker"), default="",
   help="Plots a mark at position PAR (e.g. best-fit). Separate items with '_'.")
 parser = add_option(parser, c("-e", "--marker_error"), default="",
@@ -59,14 +60,15 @@ parser = add_option(parser, c("--pmin"), default="",
   help="Lower limits for plot. Default: Read from config file (= sample limits). Separate items with '_'.")
 parser = add_option(parser, c("--pmax"), default="",
   help="Upper limits for plot. Default: Read from config file (= sample limits). Separate items with '_'.")
-#parser = add_option(parser, c("-C", "--shade"), default="1",
-#  help="With shade 0 or 1 (option '-C').")
+parser = add_option(parser, c("-C", "--shade"), default="1",
+  help="With shade 0 or 1, default=1")
 
 
 
 cl     = parse_args(parser, positional_arguments = TRUE)
 
 
+use_weights = cl$options$weights
 N          = cl$options$N
 ssmooth    = cl$options$gsmooth
 fsmooth    = as.numeric(unlist(strsplit(ssmooth, "_")))
@@ -81,14 +83,16 @@ index_i    = cl$options$index_i
 index_j    = cl$options$index_j
 sigma      = cl$options$sigma
 color_scheme = cl$options$color_scheme
+output_format = cl$options$output
 marker     = cl$options$marker
 marker_error = cl$options$marker_error
 brace      = cl$options$brace
 pmins      = cl$options$pmin
 pmaxs      = cl$options$pmax
-#shade     = cl$options$shade
+shade     = cl$options$shade
 
-tmpname   = "tmptmp.ps"
+#tmpname   = "tmptmp.ps"
+tmpname   = paste("tmptmp", output_format, sep=".")
 
 blue      =  8/12
 green     =  4/12
@@ -163,9 +167,35 @@ MK.colors = function (n, alpha = 1, ncol = 1)
   else character(0)
 }
 
+get_weights = function (psample)
+{
+  # See sample_from_pmcsimu.R
+  pmax   = max(psample[,1])
+  prob   = exp(psample[,1] - pmax)
+  prob / sum(prob)
+}
+
+kde2d.weighted <- function (x, y, w, h, n = 25, lims = c(range(x), range(y))) {
+  nx <- length(x)
+  if (length(y) != nx) 
+    stop("data vectors must be the same length")
+  if (length(w) != nx & length(w) != 1)
+    stop("weight vectors must be 1 or length of data")
+  gx <- seq(lims[1], lims[2], length = n) # gridpoints x
+  gy <- seq(lims[3], lims[4], length = n) # gridpoints y
+  if (missing(h)) 
+    h <- c(bandwidth.nrd(x), bandwidth.nrd(y));
+  if (missing(w)) 
+    w <- numeric(nx)+1;
+  h <- h/4
+  ax <- outer(gx, x, "-")/h[1] # distance of each point to each grid point in x-direction
+  ay <- outer(gy, y, "-")/h[2] # distance of each point to each grid point in y-direction
+  z <- (matrix(rep(w,n), nrow=n, ncol=nx, byrow=TRUE)*matrix(dnorm(ax), n, nx)) %*% t(matrix(dnorm(ay), n, nx))/(sum(w) * h[1] * h[2]) # z is the density
+  return(list(x = gx, y = gy, z = z))
+}
 
 # Performs a kernel-density smoothing and plots the density as image (shade=T) or contour (shade=F)
-HPDregionplotDW = function (x, vars = 1:2, h = c(1, 1), n = 50, lump = TRUE, prob = 0.95,
+HPDregionplotDW = function (x, vars = 1:2, h = c(1, 1), n = 50, lump = TRUE, prob = 0.95, weights = NULL,
   xlab = NULL, ylab = NULL, ncol = 1, Xlim = NULL, Ylim = NULL, pXlim = NULL, pYlim = NULL, first = T, shade = F, cex.lab=2,
   cex.axis=1.5, ...)
 {
@@ -198,9 +228,18 @@ HPDregionplotDW = function (x, vars = 1:2, h = c(1, 1), n = 50, lump = TRUE, pro
 
 
   if (!mult) {
-    post1 = kde2d(var1, var2, n = n, h = h, lims = c(Xlim[1], Xlim[2], Ylim[1], Ylim[2]))
+    if (! is.null(weights)) {
+      post1 = kde2d.weighted(var1, var2, n = n, h = h, lims = c(Xlim[1], Xlim[2], Ylim[1], Ylim[2]), weights)
+    } else {
+      post1 = kde2d(var1, var2, n = n, h = h, lims = c(Xlim[1], Xlim[2], Ylim[1], Ylim[2]))
+    }
   } else {
-    post1 = mapply(kde2d, var1, var2, MoreArgs = list(n = n))
+    #if (is.list(weights) & length(weights) == 0) {
+    if (! is.null(weights)) {
+      post1 = mapply(kde2d.weighted, var1, var2, MoreArgs = list(n = n), weights)
+    } else {
+      post1 = mapply(kde2d, var1, var2, MoreArgs = list(n = n))
+    }
   }
 
   dx = diff(post1$x[1:2])
@@ -328,14 +367,12 @@ do_mark = function (marker, marker_error, n, i, j) {
 
   marker_error_a = as.numeric(unlist(strsplit(marker_error, "_")))
   len_error = length(marker_error_a)
-  if (len_error == 0) return
   if (len_error != n) {
     stop("Wrong length ", len_error, " of parameters for marker_error, has to be ", n)
   }
   if (len != len_error) {
     stop("marker and marker_error: Inconsistent lengths of parameters (", len, len_error, ")")
   }
-
 
   x = c(marker_a[i] - marker_error_a[i], marker_a[i] + marker_error_a[i])
   y = c(marker_a[j], marker_a[j])
@@ -359,6 +396,7 @@ samples = list()
 myplot  = list()
 i = 1
 ok = T
+# Reading all input sample files
 while (ok==T) {
   name = args[i]
   if (file.exists(name)) {
@@ -371,7 +409,7 @@ while (ok==T) {
   i = i+1
 }
 
- shade = 1
+#shade = 1
 if (ok==F) {
   if (pmatch("noshade", args[i-1], nomatch=0)!=0) {
     shade = 0
@@ -385,7 +423,8 @@ if (nsamples == 0) {
 }
 
 cat(paste("Plotting", nsamples, "file(s), "))
-cat(paste("2d plots: shade =", shade, "\n"))
+cat(paste("2d plots: shade = ", shade))
+cat(paste(", use_weights = ", use_weights, "\n"))
 
 
 len = length(fsmooth) 
@@ -461,7 +500,6 @@ axisf = 1.2		# Axis annotation scaling
 #fontf  = 2.5
 #axisf  = 2.5
 
-
 # 1D confidence levels
 for (i in 1:npar) {
 
@@ -473,7 +511,11 @@ for (i in 1:npar) {
   Min = pmin[i]
   Max = pmax[i]
 
-  postscript(tmpname, encoding = "TeXtext.enc", paper="special", width=5, height=5, horizontal=F)
+  if (output_format == "ps") {
+  	postscript(tmpname, encoding = "TeXtext.enc", paper="special", width=5, height=5, horizontal=F)
+  } else if (output_format == "pdf") {
+  	pdf(tmpname, paper="special", width=5, height=5)
+  }
 
   first = T
   for (ns in 1:nsamples) {
@@ -485,7 +527,14 @@ for (i in 1:npar) {
       next;
     }
 
-    t = density(psample[,i+2])
+    # New (02/07/2018), use weights
+    if (use_weights == TRUE) {
+        weights = get_weights(psample)
+    } else {
+        weights = NULL
+    }
+
+    t = density(psample[,i+2], weights=weights)
     if (is.na(Min)) {
       # Deduced parameters
       Min = min(t$x)
@@ -498,9 +547,6 @@ for (i in 1:npar) {
     if (solid == TRUE) { lty = 1 }
     else { lty = ns }
 
-    #print(lab[i])
-
-
     myplot(t$x, t$y/max(t$y), type="l", xlab=parse(text=lab[i]), ylab="posterior",
            xlim=c(Min,Max), ylim=c(0,1), cex.lab=fontf, cex.axis=axisf, lwd=lwd, lty=lty)
 
@@ -509,8 +555,11 @@ for (i in 1:npar) {
   }
 
   tmp = paste("like1d", i-1, sep="_")
-  outname = paste(tmp, "ps", sep=".")
-  cmd = sprintf("add_comment_to_ps.pl -o %s %s", outname, tmpname)
+  outname = paste(tmp, output_format, sep=".")
+  if (output_format == "ps") {
+     cmd = sprintf("add_comment_to_ps.pl -o %s %s", outname, tmpname)
+  }
+  cmd = paste("mv", tmpname, outname, sep=" ")
   system(cmd)
 
   
@@ -540,7 +589,11 @@ for  (i in 1:(npar-1)) {
     yMax = max[j]
     yLab = lab[j]
 
-    postscript(tmpname, encoding = "TeXtext.enc", paper="special", width=5, height=5, horizontal=F)
+    if (output_format == "ps") {
+      postscript(tmpname, encoding = "TeXtext.enc", paper="special", width=5, height=5, horizontal=F)
+    } else if (output_format == "pdf") {
+      pdf(tmpname, paper="special", width=5, height=5)
+    }
 
     # Axes limits
 
@@ -563,16 +616,21 @@ for  (i in 1:(npar-1)) {
 
       for (ns in 1:nsamples) {
 
-      z = samples[[ns]][,c(i+2,j+2)]   
-        xSmooth = (xMax-xMin)/fsmooth[ns]
-        ySmooth = (yMax-yMin)/fsmooth[ns]
+        z = samples[[ns]][,c(i+2,j+2)]   
+          xSmooth = (xMax-xMin)/fsmooth[ns]
+          ySmooth = (yMax-yMin)/fsmooth[ns]
 
-
+        # New (02/07/2018), use weights
+        if (use_weights == TRUE) {
+            weights = get_weights(samples[ns])
+        } else {
+            weights = list()
+        }
 
         if (min(z[,1])<max(z[,1]) && min(z[,2])<max(z[,2])) {
           NCOL = ns
 
-          try(HPDregionplotDW(mcmc(z), n=N, h=c(xSmooth, ySmooth), prob=prob, ncol=NCOL,
+          try(HPDregionplotDW(mcmc(z), n=N, h=c(xSmooth, ySmooth), prob=prob, ncol=NCOL, weights=weights,
                               xlab=parse(text=xLab), ylab=parse(text=yLab), Xlim=c(xMin, xMax),
                               Ylim=c(yMin, yMax), pXlim=c(pmin[i], pmax[i]), pYlim=c(pmin[j], pmax[j]),
 			      cex.lab=fontf, cex.axis=axisf, lwd=lwd, first=first, shade=T), silent=F)
@@ -594,7 +652,7 @@ for  (i in 1:(npar-1)) {
         xSmooth = (xMax-xMin)/fsmooth[ns]
         ySmooth = (yMax-yMin)/fsmooth[ns]
 
-        try( HPDregionplotDW(mcmc(z), n=N, h=c(xSmooth, ySmooth), prob=prob, ncol=NCOL,
+        try( HPDregionplotDW(mcmc(z), n=N, h=c(xSmooth, ySmooth), prob=prob, ncol=NCOL, weights=weights,
                             xlab=parse(text=xLab), ylab=parse(text=yLab), Xlim=c(xMin, xMax),
                             Ylim=c(yMin, yMax), pXlim=c(pmin[i], pmax[i]), pYlim=c(pmin[j], pmax[j]),
                             cex.axis=axisf, lty=lty, lwd=lwd, first=first, shade=F), silent=F)
@@ -615,14 +673,23 @@ for  (i in 1:(npar-1)) {
    
     title(main = title)
     # Marker
-    if (nchar(marker) > 0) do_mark(marker, marker_error, npar, i, j)
+    if (nchar(marker) > 0) {
+       if (marker_error == "") {
+          # Set default error bar
+	  for (i in 1:npar) {
+             marker_error = paste(marker_error, (pmax[i]-pmin[i])/20, "_", sep="")
+	  }
+       }
+       do_mark(marker, marker_error, npar, i, j)
+    }
     
 
     dev.off()
 
     tmp = paste("cont2d", i-1, j-1, sep="_")
-    outname = paste(tmp, "ps", sep=".")
-    cmd = sprintf("add_comment_to_ps.pl -o %s %s", outname, tmpname)
+    outname = paste(tmp, output_format, sep=".")
+    #cmd = sprintf("add_comment_to_ps.pl -o %s %s", outname, tmpname)
+    cmd = paste("mv", tmpname, outname, sep=" ")
     system(cmd)
 
   }
@@ -634,8 +701,15 @@ cat("\n")
 
 # New: Create triangle plot and clean up (from plot_confidence.sh)
 if (index_i == -1 && index_j == -1) {
-  system("all_vs_all.pl -b cont2d -e ps -l like1d > all_cont2d.tex")
-  system("ldp.sh all_cont2d.tex -q")
+  #system("all_vs_all.pl -b cont2d -e ps -l like1d > all_cont2d.tex")
+  cmd = paste("all_vs_all.pl -b cont2d -e", output_format, "-l like1d > all_cont2d.tex", sep=" ")
+  system(cmd)
+
+  if (output_format == "ps") {
+    system("ldp.sh all_cont2d.tex -q")
+  } else if (output_format == "pdf") {
+    system("pdflatex all_cont2d.tex")
+  }
   system("rm -f all_cont2d.{log,dvi,aux} tmptmp.ps Rplots.pdf")
 }
 

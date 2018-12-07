@@ -7,9 +7,9 @@
 #define __NZ_H
 
 #include "timexec.h"
-#include "io.h"
-#include "maths.h"
-#include "errorlist.h"
+#include "pmctools/maths.h"
+#include "pmctools/io.h"
+#include "pmctools/errorlist.h"
 #include "nicaea/cosmo.h"
 #include "nicaea/nofz.h"
 #include "param.h"

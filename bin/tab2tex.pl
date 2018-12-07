@@ -102,7 +102,8 @@ while (<>) {
     if ( !$array && ( ($lines_r =~ "a" || ($zeile == 0 && $lines_r =~ "h") ) ||
                 !$lines_r =~ "n" ) ) {
         #print "\\hline";
-        for ($i=1; $i<=$Ntab; $i++) {
+        # MKDEBUG: $Ntab+1
+        for ($i=1; $i<=$Ntab+1; $i++) {
             print "\\cline{$i-$i}" unless $i ~~ @list_multi;
         }
 # After-header line

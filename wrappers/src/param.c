@@ -317,6 +317,24 @@ void read_config_pmc_file(config_pmc *config, const char *cname, mix_mvdens **pr
    /* The nclipw largest weights are clipped */
    CONFIG_READ(config, nclipw, i, F, c, err);
 
+   /* === Tempering (new in v1.3) === */
+   if (config->base.version >= 1.3) {
+      
+      CONFIG_READ_S(config, stempering, s, F, c, err);
+      STRING2ENUM(config->tempering, config->stempering, tempering_t, stempering_t, j, Ntempering_t, err);
+      switch (config->tempering) {
+         case tempering_none :
+	    break;
+         case tempering_linear :
+            CONFIG_READ(config, t_min, d, F, c, err);
+            break;
+         default:
+            addErrorVA(mcmc_unknown, "Unknown tempering type (%s)", *err, __LINE__, config->stempering);
+            return;
+      }
+
+   }
+
    /* === Proposal === */
 
    /* Degrees of freedom (-1: mv normal) */
@@ -335,6 +353,8 @@ void read_config_pmc_file(config_pmc *config, const char *cname, mix_mvdens **pr
 
    read_initial_proposal_from_config(F, config, proposal, rng, no_init, err); 
    forwardError(*err, __LINE__,);
+
+   /* === Histogram === */
 
    /* Number of bins in histogram */
    CONFIG_READ(&config->base, nbinhist, i, F, c, err);
@@ -912,7 +932,7 @@ parabox *parabox_from_config(int npar, const double *min, const double *max, err
  * cholesky_decomposition.					*
  * ============================================================ */
 
-double likelihood_log_pdf_single(void *extra, const double *x, data_t data, error **err)
+double likelihood_log_pdf_single(void *extra, const double *x, error **err)
 {
    double res;
    common_like *like;
@@ -921,8 +941,6 @@ double likelihood_log_pdf_single(void *extra, const double *x, data_t data, erro
  
    res = like->func_wrapper->func_likeli(like, x, err);
    forwardError(*err, __LINE__, MC_LOGBIG);
-
-   //print_parameter(stderr, like->npar, x);
 
    return res;
 }
@@ -954,7 +972,7 @@ double posterior_log_pdf_common(config_base *config, const double *x, error **er
       like = (common_like*)(config->data_extra[i]);
       if (config->data[i]==Lensing && sigma_8!=-1) ((lens_state*)(like->state))->sigma_8 = sigma_8;
 
-      logl = likelihood_log_pdf_single(config->data_extra[i], x, config->data[i], err);
+      logl = likelihood_log_pdf_single(config->data_extra[i], x, err);
       forwardError(*err, __LINE__, 0);
       
       /* After CMB likelihood: save sigma_8 */
@@ -1468,7 +1486,7 @@ double likeli_Mvdens(common_like *like, const double *params, error **err)
 {
    double res;
 
-   res = mvdens_log_pdf_void((void *)like, params, err);
+   res = mvdens_log_pdf_void((void *)(like->state), params, err);
    forwardError(*err, __LINE__, -1.0);
 
    return res;
@@ -1504,6 +1522,7 @@ void read_from_config_MixMvdens(void **state, FILE *F, error **err)
       forwardError(*err, __LINE__,);
       g->wght[k] = 1.0/g->ncomp;
    }
+
    mix_mvdens_cholesky_decomp(g, err);              forwardError(*err, __LINE__,);
 
    *state = g;
@@ -1512,7 +1531,7 @@ void read_from_config_MixMvdens(void **state, FILE *F, error **err)
 double likeli_MixMvdens(common_like *like, const double *params, error **err)
 {
    double res;
-   res = mix_mvdens_log_pdf_void((void *)like, params, err);
+   res = mix_mvdens_log_pdf_void((void *)(like->state), params, err);
    forwardError(*err, __LINE__, -1.0);
    return res;
 }

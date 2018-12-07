@@ -11,10 +11,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "errorlist.h"
-#include "mvdens.h"
-#include "math.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/mvdens.h"
+#include "pmctools/maths.h"
+
 #include "nicaea/cmb_bao.h"
+
 #include "param.h"
 #include "wrappers.h"
 #include "types.h"

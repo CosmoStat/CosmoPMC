@@ -29,7 +29,7 @@ void read_from_config_Lensing(void **state, FILE *F, error **err)
    CONFIG_READ_S(lensstate, slensdata, s, F, c, err);
    STRING2ENUM(lensstate->lensdata, lensstate->slensdata, lensdata_t, slensdata_t, j, Nlensdata_t, err);
    switch (lensstate->lensdata) {
-      case xipm: case xip: case xim: case map2poly: case map2gauss: case gsqr: case decomp_eb: case nofz:
+      case xipm: case xip: case xim: case map2poly: case map2gauss: case gsqr: case decomp_eb: case nofz: case pkappa:
          lensstate->order = second_order;
          break;
       case map3gauss: case map3gauss_diag: case map2gauss_map3gauss_diag: case map2gauss_map3gauss:

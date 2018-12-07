@@ -9,7 +9,7 @@ use Cwd;
 
 ### Command line options
 %options=();
-getopts("p:c:f:rm:M:dDaA:n:S:s:P:eO:qh", \%options);
+getopts("p:c:f:rm:dDaA:n:S:s:P:eO:qh", \%options);
 
 usage() if defined $options{h};
 
@@ -28,7 +28,6 @@ $seed        = defined $options{s} ? $options{s} : -1;
 $fid_flag    = defined $options{f} ? "-f \"$options{f}\"" : "";
 $plot_mode   = defined $options{p} ? "$options{p}" : "y";
 $opt_plot    = defined $options{O} ? $options{O} : "";
-$mult        = defined $options{M} ? $options{M} : 2;
 $quiet       = defined $options{q} ? "-q" : "";
 
 $mpi_cmd     = $ncpu == 1 ? "" : "mpirun -n $ncpu ";
@@ -158,8 +157,7 @@ if ($plot_mode =~ "y") {
 }
 if ($plot_mode =~ "R") {
   # R
-  runpr("Rscript $ENV{COSMOPMC}/R/sample_from_pmcsimu.R pmcsim -M $mult") unless -e "sample";
-  runpr("$ENV{COSMOPMC}/bin/plot_confidence.sh sample -c ../$config_pmc $opt_plot");
+  runpr("Rscript $ENV{COSMOPMC}/bin/plot_confidence.R pmcsim -c ../$config_pmc -W $opt_plot");
 }
 chdir "..";
 

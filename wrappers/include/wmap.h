@@ -8,9 +8,9 @@
 #include <unistd.h>
 
 #include "timexec.h"
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
 #include "param.h"
-#include "math.h"
+#include "pmctools/maths.h"
 #include "nicaea/cmb_bao.h"
 
 #ifdef DOWMAP

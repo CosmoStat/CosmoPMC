@@ -15,19 +15,21 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_rng.h>
 
-#include "io.h"
-#include "maths.h"
-#include "errorlist.h"
+#include "pmctools/io.h"
+#include "pmctools/maths.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/mvdens.h"
+
 #include "pmclib/parabox.h"
+#include "pmclib/mcmc.h"
+#include "pmclib/tools.h"
+
 #include "config.h"
-#include "mvdens.h"
 
 //#include "cosmo.h"
 //#include "sn1a.h"
 
 #include "param.h"
-#include "pmclib/mcmc.h"
-#include "pmclib/tools.h"
 #include "stdnames.h"
 
 #include "wrappers.h"

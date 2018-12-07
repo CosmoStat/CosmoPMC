@@ -88,14 +88,15 @@ open (GNU, ">$gname") or die "Could not create file $gname: $!";
 print GNU "unset logs\n";
 print GNU "unset grid\n";
 print GNU "set xtics 1\n";
-print GNU "set term post eps enhanced color 32\n";
+#print GNU "set term post eps enhanced color 32\n";
+print GNU "set term pdfcairo dashed enhanced font 'Arial' fontscale 0.5\n";
 
 foreach $idim (0 .. $ndim-1) {
   print GNU "set xlabel 'iteration'\n";
   print GNU "set ylabel '{/Symbol s}($parlist[$idim])'\n";
   $name = sprintf("%s_%02d", $out, $idim);
   $name_out = $name;
-  print GNU "set output '$name_out.eps'\n";
+  print GNU "set output '$name_out.pdf'\n";
   print GNU "pl ";
   foreach $icomp (0 .. $ncomp-1) {
     if ($valid[$idim][$icomp]!=0) {
@@ -110,8 +111,9 @@ close GNU;
 
 #if (! defined $options{n}) {
 `gnuplot $gname`;
-`$ENV{COSMOPMC}/bin/allps2tex.pl -t "Proposal variances" > all_vars.tex`;
-`$ENV{COSMOPMC}/bin/ldp.sh all_vars -q`;
+`$ENV{COSMOPMC}/bin/allps2tex.pl -f pdf -t "Proposal variances" > all_vars.tex`;
+#`$ENV{COSMOPMC}/bin/ldp.sh all_vars -q`;
+`pdflatex all_vars -q`;
 `rm -f all_vars.log all_vars.dvi all_vars.aux`;
 #}
 
@@ -175,7 +177,7 @@ sub check_for_yorick {
   chomp($res);
   unlink "cytmp.i";
 
-  if ($res == 6 and $ex == 0) { return 0; }
+  if ($res ne "" and $res == 6 and $ex == 0) { return 0; }
   return 1;
 }
 

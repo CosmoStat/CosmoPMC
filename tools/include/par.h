@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-#include "errorlist.h"
-#include "io.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/io.h"
 #include "config.h"
 
 /* Parameters */

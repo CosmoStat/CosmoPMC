@@ -2,7 +2,7 @@
 #define __XCORR_H
 
 #include "timexec.h"
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
 #include "param.h"
 //#include "mathstuff.h"
 

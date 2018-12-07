@@ -11,7 +11,7 @@
 #include <gsl/gsl_rng.h>
 
 #include "math.h"
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
 #include "nicaea/sn1a.h"
 #include "param.h"
 #include "wrappers.h"

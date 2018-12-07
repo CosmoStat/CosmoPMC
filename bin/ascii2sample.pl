@@ -9,7 +9,7 @@
 use Getopt::Std;
 
 my %options = ();
-getopts("c:w:t:ps:h", \%options);
+getopts("c:w:t:ps:N:h", \%options);
 
 usage(0) if defined $options{h};
 usage(1) if $#ARGV != 0;
@@ -26,6 +26,7 @@ die "Option '-c' is not compatible with option '-p'" if defined $options{p} and 
 my $c_w = (defined $options{w} ? $options{w} : (defined $options{p} ? 0 : -1));
 my $offset = ! defined $options{p} ? 0 : 2;
 my $wtype = defined $options{t} ? $options{t} : "LOG";
+my $n_head = defined $options{N} ? $options{N} : 0;
 
 die "Wrong weight type (options 't') $wtype" unless $wtype eq "LOG" or $wtype eq "LIN";
 
@@ -39,9 +40,14 @@ while (<$in_fh>) {
 
     my @F = split(" ", $_);
 
+    if ($i < $n_head) {
+        $i ++;
+        next;
+    }
+
     # First line: count parameters, write header
-    if ($i == 0) {
-        if (defined @columns) {
+    if ($i == $n_head) {
+        if (@columns) {
             $npar = $#columns + 1;
         } else {
             $npar = $#F +1 - $offset;
@@ -99,6 +105,7 @@ sub usage {
     print STDERR "                  that not specified as weight columns)\n";
     print STDERR "  -s NAMES       String of parameter names to be written in header\n";
     print STDERR "  -p             File is in PMC sample format, columns: log(weight) comp param_0 param_1 ...\n";
+    print STDERR "  -N             N header lines to ignore (default: 0)\n)";
     print STDERR "  -h             This message\n";
     print STDERR "The specification of a weight column implies option '-c'\n";
 

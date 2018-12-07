@@ -11,9 +11,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "errorlist.h"
-#include "mvdens.h"
-#include "math.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/mvdens.h"
+#include "pmctools/maths.h"
 
 #include "wrappers.h"
 #include "param.h"

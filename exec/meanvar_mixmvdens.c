@@ -14,10 +14,11 @@
 #include <unistd.h>
 
 #include "pmclib/pmc.h"
+#include "pmctools/errorlist.h"
+#include "pmctools/io.h"
+#include "pmctools/maths.h"
+
 #include "param.h"
-#include "errorlist.h"
-#include "io.h"
-#include "math.h"
 #include "exec_helper.h"
 
 

@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "errorlist.h"
+#include "pmctools/errorlist.h"
 
 #include "nicaea/cosmo.h"
 #include "nicaea/lensing.h"

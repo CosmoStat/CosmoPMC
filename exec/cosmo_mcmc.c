@@ -115,7 +115,7 @@ double posterior_log_pdf_common_MPI(config_base *config, const double *x, error 
        like = (common_like*)(config->data_extra[i]);
        if (config->data[i]==Lensing && sigma_8!=-1) ((lens_state*)(like->state))->sigma_8 = sigma_8;
        
-	logl = likelihood_log_pdf_single(config->data_extra[i], x, config->data[i], err);
+	logl = likelihood_log_pdf_single(config->data_extra[i], x, err);
 	forwardError(*err, __LINE__, 0);
 	
 	

@@ -10,22 +10,12 @@ lflags        = -L$(FFTW)/lib -L$(GSL)/lib -lm -lgsl -lgslcblas -lfftw3 $(FPIC) 
 libconfObj    = config.o nhist.o
 libparObj     = par.o
 
-ifeq ($(PMCLIB_EXT),0)
-   libmvdensObj  = maths.o mvdens.o
-   liberrorObj   = errorlist.o io.o
-else
-   libmvdenshObj  =
-   liberrorObj   =
-endif
 
 vpath %.h ../tools/include
 vpath %.c ../tools/src
 
 
 ALL = libconf.$(EXT) libpar.$(EXT)
-ifeq ($(PMCLIB_EXT),0)
-   ALL += liberrorio.$(EXT) libmvdens.$(EXT)
-endif
 
 all : check_variables $(ALL)
 
@@ -37,18 +27,6 @@ else
 check_variables:
 endif
 
-
-liberrorio.$(EXT_DYN): $(liberrorObj)
-	$(LD) $(SHARED) -o $ $@ $^
-
-liberrorio.a : $(liberrorObj)
-	$(AR) -r $@ $^
-
-libmvdens.$(EXT_DYN): $(libmvdensObj)
-	$(LD) $(SHARED) -o $ $@ $^ $(lflags)
-
-libmvdens.a: $(libmvdensObj)
-	$(AR) -r $@ $^
 
 libpar.$(EXT_DYN): $(libparObj)
 	$(LD) $(SHARED) -o $ $@ $^ $(lflags)
