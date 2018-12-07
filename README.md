@@ -22,6 +22,10 @@ Martin Kilbinger
 
 Karim Benabed, Olivier Cappé, Jean Coupon, Jean-François Cardoso, Gersende Fort, Henry Joy McCracken, Simon Prunet, Christian P. Robert, Darren Wraith 
 
+### Version
+
+1.3
+
 ### Installation
 
 `CosmoPMC` requires the libraries `nicaea` and `pmclib`. First, download and install those packages, from their respective github pages for [nicaea](https://github.com/CosmoStat/nicaea) and [pmclib](https://github.com/martinkilbinger/pmclib).
