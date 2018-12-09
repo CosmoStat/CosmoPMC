@@ -37,6 +37,9 @@ fsfinal         5
 niter           22
 nclipw          0
 
+# Tempering
+stempering      none
+
 ### Proposal section ###
 df              -1
 ncomp           10
