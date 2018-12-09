@@ -67,24 +67,24 @@ steps are recommended to set up a CosmoPMC run.
 
 1. Data and parameter files
 
-Create a new directory and copy data files. You can do this automatically for the pre-defined
-probes of `CosmoPMC` by using
+  Create a new directory and copy data files. You can do this automatically for the pre-defined
+  probes of `CosmoPMC` by using
 
 ```bash
 newdir_pmc.sh
 ```
 
-When asked, enter the likelihood/data type. More than one type can be chosen by
-adding the corresponding (bit-coded) type id’s. Symbolic links to corresponding
-files in `COSMOPMC/data` are set, and parameter files from `COSMOPMC/par_files`
-are copied to the new directory on request.
+  When asked, enter the likelihood/data type. More than one type can be chosen by
+  adding the corresponding (bit-coded) type id’s. Symbolic links to corresponding
+  files in `COSMOPMC/data` are set, and parameter files from `COSMOPMC/par_files`
+  are copied to the new directory on request.
 
 2. Configuration file
 
-Create the PMC configuration file `config_pmc`. Examples for existing data mod-
-ules can be found in `COSMOPMC/Demo/MC_Demo`. In some cases, information about
-the galaxy redshift distribution(s) have to be provided, and the corresponding
-files (`nofz*`) copied. See [Examples](#Examples) above.
+  Create the PMC configuration file `config_pmc`. Examples for existing data modules
+  can be found in `COSMOPMC/Demo/MC_Demo`. In some cases, information about
+  the galaxy redshift distribution(s) have to be provided, and the corresponding
+  files (`nofz*`) copied. See [Examples](#Examples) above.
 
 
 #### <a name="Run"></a>Run
@@ -111,8 +111,12 @@ files are being updated during run-time and can be monitored while PMC is runnin
 #### Results
 
 The results are stored in the subdirectory of the last, final PMC iteration,
-`iter_{niter-1}/`. The text file `mean` contains mean and confidence levels. The file
-`all_cont2d.pdf` (or `all_contour2d.pdf` shows plots of the 1d- and 2d-marginals. Plots can be
+`iter_{niter-1}/`. The text file `mean` contains mean and confidence levels.
+
+#### Plotting
+
+The file `all_cont2d.pdf` (when `R` is used, or `all_contour2d.pdf` for `yorick+perl`
+shows plots of the 1d- and 2d-marginals. Plots can be
 redone or refined, or created from other than the last iteration with
 `plot_confidence.R` (or `plot_contour2d.pl`), both scripts are in `/path/to/CosmoPMC/bin`.
 Note that in the default setting the posterior plots are not
@@ -122,6 +126,10 @@ smoothed.
 <p align="center">
   <img width="520" src="Manual/cosmo_pmc_flow.png">
 </p>
+
+### Further reading
+
+Check out the [manual](https://github.com/martinkilbinger/CosmoPMC/blob/master/Manual/manual.pdf) 
 
 ### References
 
