@@ -119,7 +119,9 @@ Note that in the default setting the posterior plots are not
 smoothed.
 
 
-[!flow-chart](Manual/cosmo_pmc_flow.png)
+<p align="center">
+  <img width="460" height="300" src="Manual/cosmo_pmc_flow.png">
+</p>
 
 ### References
 
