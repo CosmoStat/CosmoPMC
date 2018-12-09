@@ -120,7 +120,7 @@ smoothed.
 
 #### Flow-chart of `cosmo_pmc.pl`
 
-[!flow-chart](../Manual/cosmo_pmc_flow.pdf)
+[!flow-chart](Manual/cosmo_pmc_flow.pdf)
 
 ### References
 
