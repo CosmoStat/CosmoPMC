@@ -120,7 +120,7 @@ smoothed.
 
 
 <p align="center">
-  <img width="460" height="300" src="Manual/cosmo_pmc_flow.png">
+  <img width="520" src="Manual/cosmo_pmc_flow.png">
 </p>
 
 ### References
