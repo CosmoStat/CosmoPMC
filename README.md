@@ -51,6 +51,19 @@ After configuration, compile the code as follows:
 make
 ```
 
+### Running the code - quick guide
+
+#### Examples
+
+To get familiar with `CosmoPMC`, use the examples which are included
+in the software package. Simply change to one of the subdirectories in
+`COSMOPMCDIR/Demo/MC_Demo` and proceed on to the subsection
+[Run](#Run) below.
+
+#### <a name="Run"></a>Run
+
+
+
 
 ### References
 
