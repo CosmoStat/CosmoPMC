@@ -26,7 +26,7 @@ $f_pos_flag  = defined $options{D} ? "" : "-f";
 $adaptive    = defined $options{a} ? "-a" : "";
 $seed        = defined $options{s} ? $options{s} : -1;
 $fid_flag    = defined $options{f} ? "-f \"$options{f}\"" : "";
-$plot_mode   = defined $options{p} ? "$options{p}" : "y";
+$plot_mode   = defined $options{p} ? "$options{p}" : "R";
 $opt_plot    = defined $options{O} ? $options{O} : "";
 $quiet       = defined $options{q} ? "-q" : "";
 
@@ -255,7 +255,7 @@ sub usage {
   print STDERR "                         variable \$COSMOPMC)\n";
   print STDERR "   -e                   Create 'essential' plots\n";
   print STDERR "   -p PRO               Plotting of marginalized posterior (1d and 2d):\n";
-  print STDERR "                         PRO = 'y' (yorick; default), 'R' (R), 'n' (none),\n";
+  print STDERR "                         PRO = 'R' (R; default), 'y' (yorick+perl), 'n' (none),\n";
   print STDERR "                         'o' (only). Letters can be combined, e.g. \'yRo\'.\n";
   print STDERR "                         Combinations of letters are possible, e.g. 'yR' or 'oy'\n";
   print STDERR "   -M MULT              Output sample MULT times input (default 1).\n";
