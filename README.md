@@ -118,9 +118,8 @@ redone or refined, or created from other than the last iteration with
 Note that in the default setting the posterior plots are not
 smoothed.
 
-#### Flow-chart of `cosmo_pmc.pl`
 
-[!flow-chart](Manual/cosmo_pmc_flow.pdf)
+[!flow-chart](Manual/cosmo_pmc_flow.png)
 
 ### References
 
