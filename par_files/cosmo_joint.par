@@ -1,0 +1,78 @@
+### cosmo_joint parameter file ###
+
+
+### Lensing, including lensing n(z) ###
+cosmo_lens_file		cosmo_joint_lens.par
+
+### Clustering n(z) ###
+nofz_file		cosmo_joint_nofz_clust.par
+
+
+### cosmo_joint parameters ###
+
+# Switches for IA and mag, 0=off, 1=on
+do_IA			1
+do_mag			1
+
+
+# Galaxy bias type
+#  bias_g_const
+#  bias_g_zdep
+#  bias_g_Ldep
+#  bias_g_zLdep
+sbias_g_type		bias_g_const
+
+bias_g_amp		1.0			# Amplitude, b ~ amp
+
+# If galaxy bias type is bias_g_zdep or bias_g_zLdep:
+#bias_g_zexp		0.0			# Redshift exponent, b(z) ~ [(1+z)/(1+z_pivot)]^zexp
+
+# If galaxy bias type is bias_g_Ldep or bias_g_zLdep:
+#bias_g_Lexp		0.0 			# Luminosity exponent, b(L) ~ (L/L_pivot)^Lexp
+
+
+# IA bias type (same bias formalism for IA and galaxy clustering)
+#  bias_IA_const
+#  bias_IA_zdep
+#  bias_IA_Ldep
+#  bias_IA_zLdep
+sbias_IA_type		bias_IA_const
+
+bias_IA_amp		1.0			# Amplitude, IA ~ amp 
+
+# If IA bias type is bias_IA_zdep or bias_IA_zLdep:
+#bias_IA_zexp		0.0			# Redshift exponent, IA(z) ~ [(1+z)/(1+z_pivot)]^zexp
+
+# If IA bias type is bias_IA_Ldep or bias_IA_zLdep:
+#bias_IA_Lexp		0.0 			# Luminosity exponent, IA(L) ~ (L/L_pivot)^Lexp
+
+
+# If galaxy bias or IA types feature a redshift dependence:
+# pivot redshift
+#bias_zpivot		0.0
+
+# If galaxy bias or IA types feature a luminosity dependence:
+# pivot absolute magnitude
+#bias_Lpivot		0.0
+
+# Luminosity data
+
+# read luminosity data from file or from list in this file
+# lummode_file
+# lummode_list
+slummode		lummode_list
+
+# If IA bias type is bias_IA_Lexp/bias_IA_zLexp and do_IA is 1:
+#mean_e_absmag		0.0 0.0 0.0		# Nzbin doubles
+#mean_e_absmag_file	absmag_shape.dat	# contains Nzbin doubles
+
+# If galaxy bias type is bias_g_Lexp/bias_g_zLexp:
+#mean_n_absmag		0.0 0.0 0.0		# Nzbin doubles
+#mean_n_absmag_file	absmag_dens.dat		# contains Nzbin doubles
+
+# If do_mag is 1:
+slope_lf		0.5			# Nzbin doubles
+#slope_lf_file		slope_lf.dat		# contains Nzbin doubles
+
+
+

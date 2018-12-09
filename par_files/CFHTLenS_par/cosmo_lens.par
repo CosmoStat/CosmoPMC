@@ -1,0 +1,39 @@
+### Lensing parameter file ###
+
+### Cosmology
+cosmo_file	cosmo.par
+
+### Redshift distribution
+nofz_file	nofz.par
+
+
+### Lensing parameters
+
+# Correlations
+#  tomo_all		All correlations
+#  tomo_auto_only	Only auto-correlations (ii)
+#  tomo_cross_only	Only cross-correlations (i!=j)
+stomo		tomo_all
+
+# Reduced-shear correction
+#  none			No correction
+#  K10			Reduced-shear correction a la Kilbinger (2010)
+sreduced 	none
+
+# If sreduced!=none:
+#q_mag_size	1.0 	# q_mag_size = 2*(alpha+beta-1) (see K10 eq 16)
+
+# Intrinsic alignment
+# none			No contribution
+# HS04			Hirata & Seljak (2004) linear model
+sia		none
+#sia		HS04
+
+# If sia!=none: Which IA terms to add. (GG is always included.)
+#  GI_II		# GI + II
+#  only_II		# II
+#  only_GI		# GI
+#sia_terms	GI_II
+
+# If sia!=none:
+#A_ia		5.0

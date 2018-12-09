@@ -1,0 +1,64 @@
+################# wmap9 0.046_0.279_0.089_0.97_2.41_0.70_2.0_0.721_0.822 
+### Cosmological parameters ###
+Omega_m         0.279           # Matter density, cold dark matter + baryons
+Omega_de        0.721           # Dark-energy density
+w0_de           -1.0            # Dark-energy equation of state parameter (constant term)
+w1_de            0.0            # Dark-energy equation of state parameter (linear term)
+h_100           0.70            # Dimensionless Hubble parameter
+Omega_b         0.046           # Baryon density
+Omega_nu_mass   0.0             # Massive neutrino density (so far only for CMB)
+Neff_nu_mass    0.0             # Effective number of massive neutrinos (only CMB)
+normalization   0.822           # This is sigma_8 if normmode=0 below
+n_spec          0.97            # Scalar power-spectrum index
+
+################ wmap7
+#Omega_m		0.279		# Matter density, cold dark matter + baryons
+#Omega_de	0.721		# Dark-energy density
+#w0_de		-1.0		# Dark-energy equation of state parameter (constant term)
+#w1_de		 0.0	  	# Dark-energy equation of state parameter (linear term)
+#h_100		0.701		# Dimensionless Hubble parameter
+#Omega_b		0.046		# Baryon density
+#Omega_nu_mass	0.0		# Massive neutrino density (so far only for CMB)
+#Neff_nu_mass	0.0		# Effective number of massive neutrinos (only CMB)
+#normalization	0.817		# This is sigma_8 if normmode=0 below
+#n_spec		0.96 		# Scalar power-spectrum index
+
+### Flags ###
+
+# Power spectrum prescription
+#  linear	Linear power spectrum
+#  pd96		Peacock&Dodds (1996)
+#  smith03	Smith et al. (2003)
+#  smith03_de	Smith et al. (2003) + dark-energy correction from icosmo.org
+#  smith03_revised
+#		Takahashi et al. 2012, revised halofit parameters
+#  coyote10	Coyote emulator v1, Heitmann, Lawrence et al. 2009, 2010
+#  coyote13	Coyote emulator v2, Heitmann et al. 2013
+snonlinear	smith03_revised
+#snonlinear	coyote13
+
+# Transfer function
+#  bbks		Bardeen, Bond, Kaiser & Szalay (1986)
+#  eisenhu	Eisenstein & Hu (1998) 'shape fit'
+#  eisenhu_osc  Eisenstein & Hu (1998) with baryon wiggles
+stransfer	eisenhu
+
+# Linear growth factor
+#  heath	Heath (1977) fitting formula
+#  growth_de	Numerical integration of density ODE (recommended)
+sgrowth		growth_de
+
+# Dark-energy parametrisation
+#  jassal	w(a) = w_0 + w_1*a*(1-a)
+#  linder	w(a) = w_0 + w_1*(1-a)
+sde_param	linder
+
+#sde_param	poly_DE
+#N_poly_de	4
+#w_poly_de	-0.6 -0.2 0.2 0.1
+
+normmode	0		# Normalization mode. 0: normalization=sigma_8
+
+# Minimum scale factor
+a_min		0.1		# For late Universe stuff
+

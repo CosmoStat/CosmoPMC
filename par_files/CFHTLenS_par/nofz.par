@@ -1,0 +1,4 @@
+### Redshift parameter file ###
+Nzbin           1
+snzmode         nz_read_from_files
+nzfile          nz_sumpdf.hist
