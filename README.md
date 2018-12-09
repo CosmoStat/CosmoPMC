@@ -100,6 +100,10 @@ on the type of initial proposal, a maximum-search is started followed by a
 Fisher matrix calculation. After that, PMC is started. The figure below shows a flow
 chart of the script’s actions.
 
+<p align="center">
+  <img width="520" src="Manual/cosmo_pmc_flow.png">
+</p>
+
 
 #### Diagnostics
 
@@ -119,13 +123,13 @@ The file `all_cont2d.pdf` (when `R` is used, or `all_contour2d.pdf` for `yorick+
 shows plots of the 1d- and 2d-marginals. Plots can be
 redone or refined, or created from other than the last iteration with
 `plot_confidence.R` (or `plot_contour2d.pl`), both scripts are in `/path/to/CosmoPMC/bin`.
-Note that in the default setting the posterior plots are not
-smoothed.
 
+To have `cosmo_pmc.pl` create these plots, the program `R` (or `yorick`) have to be installed.
+For `R`, also install the libraries `coda`, `getopt`, and `optparse`.
 
-<p align="center">
-  <img width="520" src="Manual/cosmo_pmc_flow.png">
-</p>
+Note that in the default setting the posterior plots are not smoothed, this can be achieved
+using various command line options, see `plot_confidence.R -h` (or `plot_contour2d.pl -h`).
+
 
 ### Further reading
 
