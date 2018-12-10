@@ -28,7 +28,7 @@ dummy:
 tools: dummy Makefile.host
 	cd $(TOOLS) && $(MAKE)
 
-wrappers: tools
+wrappers: dummy
 	cd $(WRAPPERS) && $(MAKE)
 
 exec: dummy tools wrappers $(MYCMB)
