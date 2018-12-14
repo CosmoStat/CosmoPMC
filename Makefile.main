@@ -60,7 +60,7 @@ ifeq ($(PMCLIB_EXT),1)
    # $(PMCLIB) is set in Makefile.host
    PMC     = $(PMCLIB)
    LIB_PMC = -Wl,-rpath,$(PMC)/lib -L$(PMC)/lib 
-   INC_PMC = -I$(PMC)/include
+   INC_PMC = -I$(PMC)/include -I$(PMC)/include/pmctools -I$(PMC)/include/pmclib
 else
    PMC     = $(COSMOPMC)/pmclib
    LIB_PMC = -L$(PMC)
