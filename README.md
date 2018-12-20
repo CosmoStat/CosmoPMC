@@ -40,10 +40,10 @@ A new directory `CosmoPMC` will be created automatically. Change into that direc
 
 ```bash
 cd CosmoPMC
-./configure.py
+./configure.py [FLAGS]
 ```
 
-You will need to indicate paths to libraries and other flags. Type `./configure.py -h` to see all options.
+You will need to indicate paths to libraries and other flags. At the minimum, you probably need to specify the basic paths to the libraries `nicaea` and `pmclib`. (Specify both even if the paths are the same). Type `./configure.py -h` to see all options.
 
 After configuration, compile the code as follows:
 
