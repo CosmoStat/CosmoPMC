@@ -95,10 +95,13 @@ Type
 /path/to/CosmoPMC/bin/cosmo pmc.pl -n NCPU
 ```
 
-to run CosmoPMC on NCPU CPUs. See `cosmo pmc.pl -h` for more options. Depending
-on the type of initial proposal, a maximum-search is started followed by a
-Fisher matrix calculation. After that, PMC is started. The figure below shows a flow
-chart of the script’s actions.
+to run CosmoPMC on NCPU CPUs. See `cosmo pmc.pl -h` for more options.
+Depending on the type of initial proposal, a maximum-search is started followed by a
+Fisher matrix calculation. After that, PMC is started.
+
+Depending on the machine's architecture, the default way to use MPI (calling the executable with `mpirun`) might not be supported. In that case you will have to run the PMC part by using the executable `/path/to/CosmoPMC/bin/cosmo pmc`, or modifying the `perl` script.
+
+The figure below shows a flow chart of the script’s actions.
 
 <p align="center">
   <img width="520" src="Manual/cosmo_pmc_flow.png">
@@ -119,7 +122,7 @@ The results are stored in the subdirectory of the last, final PMC iteration,
 
 #### Plotting
 
-The file `all_cont2d.pdf` (when `R` is used, or `all_contour2d.pdf` for `yorick+perl`
+The file `all_cont2d.pdf` (when `R` is used, or `all_contour2d.pdf` for `yorick+perl`)
 shows plots of the 1d- and 2d-marginals. Plots can be
 redone or refined, or created from other than the last iteration with
 `plot_confidence.R` (or `plot_contour2d.pl`), both scripts are in `/path/to/CosmoPMC/bin`.
