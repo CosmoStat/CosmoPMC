@@ -58,7 +58,7 @@ make
 To get familiar with `CosmoPMC`, use the examples which are included
 in the software package. Simply change to one of the subdirectories in
 `Demo/MC_Demo` and proceed on to the subsection
-[Run](#Run) below.
+[Run](#Run) below. A quick-to-run likelihood is the supernova one, in `Demo/MC_Demo/SN`.
 
 #### User-defined runs
 
