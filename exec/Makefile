@@ -37,7 +37,7 @@ MKCFLAGS     = $(INC_PMC) -I$(WRAPPERS)/include -I$(TOOLS)/include -I$(CWD)  $(I
 MKLFLAGS    += -L$(WRAPPERS) -L$(TOOLS) $(LLIBDIRS) -Wl,-rpath,$(FFTW)/lib -L$(FFTW)/lib -Wl,-rpath,$(GSL)/lib \
                -L$(GSL)/lib -lparam -lwr $(LLIBS) \
 	       -lerrorio -lpar -lconf -lmvdens \
-               -lgsl -lgslcblas -lfftw3 -ldl $(SHARED) $(LAPACK) $(FLIBS) $(WMAPLIBS) $(FPIC) $(DEBUG) \
+               -lgsl -lgslcblas -lfftw3 -ldl -lm $(SHARED) $(LAPACK) $(FLIBS) $(WMAPLIBS) $(FPIC) $(DEBUG) \
 	       $(OPTIM)
 
 # MKDEBUG: On sap clusters astro?, dl has to come at the end
