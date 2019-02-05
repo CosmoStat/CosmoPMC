@@ -713,7 +713,7 @@ if (index_i == -1 && index_j == -1) {
   if (output_format == "ps") {
     system(paste(path, "/bin/ldp.sh all_cont2d.tex -q", sep=""))
   } else if (output_format == "pdf") {
-    system(paste(path, "/bin/pdflatex all_cont2d.tex", sep=""))
+    system("pdflatex all_cont2d.tex")
   }
   system("rm -f all_cont2d.{log,dvi,aux} tmptmp.ps Rplots.pdf")
 }
