@@ -349,24 +349,26 @@ def main(argv):
   print "File '" + mkhost + "' created. "
   print
 
-  # Check and set env variables
-  cosmopmc = os.environ.get("COSMOPMC")
-  if not cosmopmc:
-    pwd = os.environ.get("PWD")
-    if not pwd:
-      print "First, set environment variable '$COSMOPMC' to the directory where this script is located"
-    else:
-      print "First, set env variable '$COSMOPMC'."
-      print "In csh,tcsh:\n\n  setenv COSMOPMC " + pwd + "\n"
-      print "In bash:\n\n  export COSMOPMC=" + pwd + "\n"
-
-  # Done
   print "Now run "
   print
   print "  make clean; make"
   print
   print "If compilation fails, re-run this script with modified command line options"
   print "(see './configure.py -h' for help), or edit '" + mkhost + "' by hand."
+
+   # Check and set env variables
+  cosmopmc = os.environ.get("COSMOPMC")
+  if not cosmopmc:
+    pwd = os.environ.get("PWD")
+    print
+    print "Optional: Before running the code, for convenience, you can set the environment variable '$COSMOPMC'",
+    if not pwd:
+      print " to the directory where this script is located"
+    else:
+      print "."
+      print "In csh,tcsh:\n\n  setenv COSMOPMC " + pwd + "\n"
+      print "In bash:\n\n  export COSMOPMC=" + pwd + "\n"
+
   return 0
 
 

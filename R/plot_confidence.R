@@ -10,12 +10,10 @@
 library(lattice)
 library(MASS)
 library(coda)
-#library(emdbook)
 library(getopt)
 library(methods)
 library(optparse)
 
-#demo(plotmath)
 
 # Command line options
 parser = OptionParser(usage = "plot_confidence.R [options]") #, option_list = option_list)
@@ -62,7 +60,8 @@ parser = add_option(parser, c("--pmax"), default="",
   help="Upper limits for plot. Default: Read from config file (= sample limits). Separate items with '_'.")
 parser = add_option(parser, c("-C", "--shade"), default="1",
   help="With shade 0 or 1, default=1")
-
+parser = add_option(parser, c("-P", "--path"), default="",
+  help="Path to COSMOPMC (default: environment variable $COSMOPMC")
 
 
 cl     = parse_args(parser, positional_arguments = TRUE)
@@ -90,6 +89,13 @@ brace      = cl$options$brace
 pmins      = cl$options$pmin
 pmaxs      = cl$options$pmax
 shade     = cl$options$shade
+path      = cl$options$path
+if (path == "") {
+  path = Sys.getenv("COSMOPMC")
+}
+if (path == "") {
+  stop("Set environment variable '$COSMOPMC' or use option '-P PATH'")
+}
 
 #tmpname   = "tmptmp.ps"
 tmpname   = paste("tmptmp", output_format, sep=".")
@@ -450,7 +456,7 @@ par(las=3)
 if (file_test( "-f", configname) == F) {
   stop(c("Configuration file ", configname, " not found"))
 }
-output = system(paste("get_spar.pl -c ", configname, " R"), intern=T)
+output = system(paste(path, "/bin/get_spar.pl -c ", configname, " R", sep=""), intern=T)
 lab    = unlist(strsplit(output, "&"))
 
 
@@ -701,12 +707,11 @@ cat("\n")
 
 # New: Create triangle plot and clean up (from plot_confidence.sh)
 if (index_i == -1 && index_j == -1) {
-  #system("all_vs_all.pl -b cont2d -e ps -l like1d > all_cont2d.tex")
-  cmd = paste("all_vs_all.pl -b cont2d -e", output_format, "-l like1d > all_cont2d.tex", sep=" ")
+  cmd = paste(path, "/bin/all_vs_all.pl -b cont2d -e ", output_format, " -l like1d > all_cont2d.tex", sep="")
   system(cmd)
 
   if (output_format == "ps") {
-    system("ldp.sh all_cont2d.tex -q")
+    system(paste(path, "/bin/ldp.sh all_cont2d.tex -q", sep=""))
   } else if (output_format == "pdf") {
     system("pdflatex all_cont2d.tex")
   }

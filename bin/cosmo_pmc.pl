@@ -157,7 +157,7 @@ if ($plot_mode =~ "y") {
 }
 if ($plot_mode =~ "R") {
   # R
-  runpr("Rscript $ENV{COSMOPMC}/bin/plot_confidence.R pmcsim -c ../$config_pmc -W $opt_plot");
+  runpr("Rscript $ENV{COSMOPMC}/bin/plot_confidence.R pmcsim -c ../$config_pmc -W $opt_plot -P $ENV{COSMOPMC}");
 }
 chdir "..";
 
