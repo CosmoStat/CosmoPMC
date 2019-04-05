@@ -24,7 +24,7 @@ Karim Benabed, Olivier Cappé, Jean Coupon, Jean-François Cardoso, Gersende For
 
 ### Version
 
-1.3
+1.3 beta
 
 ### Installation
 
@@ -67,6 +67,7 @@ MKLFLAGS_LAST = <linker flags>
 
 ```
 TOPO = <path_to_topo_like_code>
+```
 
 
 ### Running the code - quick guide
