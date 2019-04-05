@@ -216,6 +216,10 @@ IINCDIRS   += -I$(NICAEA)/include
 LLIBDIRS   += -L$(NICAEA)/lib
 LLIBS      += -lnicaea
 
+# Topo
+LLIBDIRS += -L$(TOPO)
+LLIBS += -ltopo -lgfortran
+
 
 # Targets in exec
 EXEC_TARGETS  = cosmo_mcmc cosmo_pmc max_post go_fishing meanvar_sample histograms_sample meanvar_mixmvdens \

@@ -33,6 +33,9 @@ typedef struct {
 } topo_state;
 
 
+void use_like_(double *,double *);
+
+
 functions_wrapper_t *init_functions_topo(error **err);
 void read_from_config_topo(void **state, FILE *F, error **err);
 void init_topo(common_like *like, error **err);

@@ -208,11 +208,13 @@ int main(int argc, char *argv[])
          //printf(" = %g\n", y[k]);
       }
 
-      printf("# Orthgonal modes corresponding to data file '%s'\n", lensstate->datname);
-      printf("# k mode var COSEBIs\n");
-      for (k=1; k<=n_ded; k++) {
-         printf("%d %g %g  %g\n", k, y[k-1], sqrt(eigenvalue[sind[k]]), lensstate->data->data[k-1]);
-      }
+		if (!quiet) {
+			printf("# Orthgonal modes corresponding to data file '%s'\n", lensstate->datname);
+			printf("# k mode var COSEBIs\n");
+			for (k=1; k<=n_ded; k++) {
+				printf("%d %g %g  %g\n", k, y[k-1], sqrt(eigenvalue[sind[k]]), lensstate->data->data[k-1]);
+			}
+		}
 
    }
 

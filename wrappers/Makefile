@@ -16,7 +16,7 @@ ifeq ($(STATUS), "RELEASED")
    OBJ         := $(patsubst src/%.c,%.o,$(wildcard src/*.c))
 endif
 ifeq ($(STATUS), "DEVEL")
-  OBJ          = bao.o halo.o sn.o lens.o timexec.o wmap.o xcorr.o nz.o test.o topo.o wrappers.o init_wrappers.o
+  OBJ          = bao.o halo.o sn.o lens.o timexec.o wmap.o xcorr.o nz.o topo.o wrappers.o init_wrappers.o
 endif
 
 # New: the following lines were only in the 'RELEASE' loop, for an unknown reason

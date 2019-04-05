@@ -39,7 +39,7 @@ double likeli_topo(common_like *like, const double *params, error **err)
 	y[1] = params[1];
 	y[2] = params[2];
 
-	use_like(y, &res);
+	use_like_(y, &res);
 
 	/* Need to return -0.5 * chi2  = -2 ln L */
 
