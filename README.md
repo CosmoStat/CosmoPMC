@@ -50,6 +50,24 @@ After configuration, compile the code as follows:
 ```bash
 make
 ```
+1.3.1
+
+#### Topolike set-up
+
+1. Compile the `topolike` code and create the `topotest' test program.
+
+2. Copy these linker flags to `Makefile.host` and assign them to the variable
+   `MKLFLAGS_LAST`. Thus, add a new line
+
+```
+MKLFLAGS_LAST = <linker flags>
+```
+
+3. Add another line with the path to the topolike code:
+
+```
+TOPO = <path_to_topo_like_code>
+
 
 ### Running the code - quick guide
 
