@@ -24,7 +24,7 @@ Karim Benabed, Olivier Cappé, Jean Coupon, Jean-François Cardoso, Gersende For
 
 ### Version
 
-1.3
+1.3 beta
 
 ### Installation
 
@@ -67,7 +67,13 @@ MKLFLAGS_LAST = <linker flags>
 
 ```
 TOPO = <path_to_topo_like_code>
+```
 
+4. Create the topolike library. In the `topolike` code directory:
+
+```
+ar rv libtopo.a *.o
+```
 
 ### Running the code - quick guide
 
