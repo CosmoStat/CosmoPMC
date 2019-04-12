@@ -122,7 +122,6 @@ double *mean_sigma_from_psim(pmc_simu *psim, const char *pname, const par_t *par
 void write_mean(double *pmean, const char *basename, int ndata, void **data_extra, error **err)
 {
    int i;
-   double logL;
    common_like *like;
    char name[128];
 

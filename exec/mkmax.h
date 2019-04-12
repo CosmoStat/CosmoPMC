@@ -33,7 +33,7 @@
 #define fh   0.001
 
 
-double post_cg(config_base *config, const double *x, const parabox *pb, int quiet, error **err);
+double post_cg(config_base *config, double *x, const parabox *pb, int quiet, error **err);
 
 void dposterior_log_pdf(config_base *config, const double *x, double *df, error **err);
 void mnbrak(config_base *config, double *ax, double *bx, double *cx, double *fa, double *fb, double *fc, 
