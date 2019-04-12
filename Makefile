@@ -149,8 +149,7 @@ clean_links:
 	rm -f Demo/MC_Demo/SN/sne_union_marek.list Demo/MC_Demo/COSMOS-S10+SN+BAO/sne_union_marek.list
 	rm -f Demo/MC_Demo/WMAP_Distance_Priors/wmap7DistPrior_ML_covinv
 	rm -f Demo/MC_Demo/BAO/distance_A/cosmoDP.par Demo/MC_Demo/BAO/distance_d_z/cosmoDP.par Demo/MC_Demo/WMAP$(NYR)/cosmoDP.par
-	rm -f Demo/MC_Demo/BAO/distance_d_z/bao_BOSS12_d_z_0.57Demo/MC_Demo/BAO/distance_A/bao_Reid10_A_0.35
-	rm -f Demo/MC_Demo/BAO/distance_A/bao_Reid10_A_0.35
+	rm -f Demo/MC_Demo/BAO/distance_d_z/bao_BOSS12_d_z_0.57 Demo/MC_Demo/BAO/distance_A/bao_Reid10_A_0.35
 	rm -f Demo/MC_Demo/SN/cosmo_SN.par Demo/MC_Demo/SN/cosmo.par
 	rm -f Demo/MC_Demo/WMAP_Distance_Priors/cosmoDP.par
 	rm -f Demo/MC_Demo/COSMOS-S10+SN+BAO/cosmoDP.par Demo/MC_Demo/COSMOS-S10+SN+BAO/cosmo_SN.par
