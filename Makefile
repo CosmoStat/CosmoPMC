@@ -79,6 +79,9 @@ endif
 	for target in $(COSMOPMC)/data/HOD/berwein02_hexcl-PMC/*; do \
            ln -sf $$target Demo/MC_Demo/HOD/berwein02_hexcl-PMC/`basename $$target`; \
 	done
+	for target in $(COSMOPMC)/data/HOD/CFHTLS-T06/*; do \
+           ln -sf $$target Demo/MC_Demo/HOD/CFHTLS-T06/`basename $$target`; \
+        done
 	ln -sf $(COSMOPMC)/data/Sn/Union/sne_union_marek.list Demo/MC_Demo/SN
 	ln -sf $(COSMOPMC)/data/Sn/Union/sne_union_marek.list Demo/MC_Demo/COSMOS-S10+SN+BAO/
 	ln -sf $(COSMOPMC)/data/WMAP_Distance_Priors/wmap7DistPrior_ML_covinv Demo/MC_Demo/WMAP_Distance_Priors
@@ -146,6 +149,9 @@ clean_links:
 	for target in $(COSMOPMC)/data/HOD/berwein02_hexcl-PMC/*; do \
            rm -f Demo/MC_Demo/HOD/berwein02_hexcl-PMC/`basename $$target`; \
 	done
+	for target in $(COSMOPMC)/data/HOD/CFHTLS-T06/*; do \
+           rm -f Demo/MC_Demo/HOD/CFHTLS-T06/`basename $$target`; \
+        done
 	rm -f Demo/MC_Demo/SN/sne_union_marek.list Demo/MC_Demo/COSMOS-S10+SN+BAO/sne_union_marek.list
 	rm -f Demo/MC_Demo/WMAP_Distance_Priors/wmap7DistPrior_ML_covinv
 	rm -f Demo/MC_Demo/BAO/distance_A/cosmoDP.par Demo/MC_Demo/BAO/distance_d_z/cosmoDP.par Demo/MC_Demo/WMAP$(NYR)/cosmoDP.par
@@ -154,10 +160,10 @@ clean_links:
 	rm -f Demo/MC_Demo/WMAP_Distance_Priors/cosmoDP.par
 	rm -f Demo/MC_Demo/COSMOS-S10+SN+BAO/cosmoDP.par Demo/MC_Demo/COSMOS-S10+SN+BAO/cosmo_SN.par
 	rm -f Demo/MC_Demo/COSMOS-S10+SN+BAO/cosmo.par Demo/MC_Demo/COSMOS-S10+SN+BAO/bao_Reid10_A_0.35
-	rm -f Demo/MC_Demo/HOD/CFHTLS-T06/cosmo.par
 	rm -f Demo/MC_Demo/Lensing/CFHTLenS-K13/cosmo.par
 	rm -f Demo/MC_Demo/Lensing/CFHTLenS-FK14/cosmo.par
 	rm -f Demo/MC_Demo/Lensing/CFHTLenS-K13/cosmo_lens.par
 	rm -f Demo/MC_Demo/Lensing/CFHTLenS-FK14/cosmo_3rd.par
+	rm -f Demo/MC_Demo/HOD/CFHTLS-T06/cosmo.par
 
 
