@@ -53,7 +53,7 @@ ifeq ($(DOWMAP), 1)
 	ln -sf $(COSMOPMC)/data/WMAP/wmap_clsz_V_l=2-10000_v4.txt Demo
 endif
 	for par in $(PAR); do \
-	   ln -s $(COSMOPMC)/par_files/$$par Demo; \
+	   ln -sf $(COSMOPMC)/par_files/$$par Demo; \
 	done
 
 links_MC_Demo:
