@@ -28,6 +28,7 @@
 
 
 typedef struct {
+  char sspecial[128];
   mvdens *data;
   special_t special;
 } topo_state;

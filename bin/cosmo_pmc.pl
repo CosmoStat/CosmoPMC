@@ -167,13 +167,13 @@ chdir "..";
 # Proposal means
 mkdir "proposal_means";
 chdir "proposal_means";
-runpr("$ENV{COSMOPMC}/bin/proposal_mean.pl -d .. -c ../$config_pmc");
+runpr("$ENV{COSMOPMC}/bin/proposal_mean.pl -d .. -c ../$config_pmc -P $ENV{COSMOPMC}");
 chdir "..";
 
 # Proposal variances
 mkdir "proposal_vars";
 chdir "proposal_vars";
-runpr("$ENV{COSMOPMC}/bin/proposal_var.pl -d .. -c ../$config_pmc", 1);
+runpr("$ENV{COSMOPMC}/bin/proposal_var.pl -d .. -c ../$config_pmc -P $ENV{COSMOPMC}", 1);
 chdir "..";
 
 runpr("$ENV{COSMOPMC}/bin/essential_cosmo_pmc_run.pl -c $config_pmc") if defined $options{e};
@@ -276,7 +276,7 @@ sub set_ENV_COSMOPMC {
   }
 
   # Environment variable defined (in shell)
-  return if defined $ENV{COSMOPMC};
+  return if defined $ENV{COSMOPMC} and $ENV{COSMOPMC} ne "";
 
   # Use cwd
   if (-e "$cwd/bin/cosmo_pmc.pl") {

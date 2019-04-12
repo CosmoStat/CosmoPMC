@@ -79,7 +79,9 @@ foreach $idim (0 .. $ndim - 1) {
 
 
 # Read config file for parameter type
-$output = qx($ENV{COSMOPMC}/bin/get_spar.pl -c $config gnuplot $path_flag);
+$cmd = "$ENV{COSMOPMC}/bin/get_spar.pl -c $config $path_flag gnuplot";
+print "*** Running $cmd***\n";
+$output = qx($cmd);
 @parlist = split("&", $output);
 
 # Create .gnu file and call gnuplot
