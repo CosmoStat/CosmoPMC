@@ -927,9 +927,9 @@ parabox *parabox_from_config(int npar, const double *min, const double *max, err
 
 /* ============================================================ *
  * The following functions deal with the log-posterior,         *
- * log L = -0.5*chi2 + log(prior).				*
+ * log L = -0.5*chi2 + log(prior).				                   *
  * Remark: void *extra not const because of mvdens_log_pdf,     *
- * cholesky_decomposition.					*
+ * cholesky_decomposition.					                         *
  * ============================================================ */
 
 double likelihood_log_pdf_single(void *extra, const double *x, error **err)

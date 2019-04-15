@@ -47,9 +47,9 @@ double likeli_topo(common_like *like, const double *params, error **err)
 
 	use_like_(y, &res);
 
-	/* Need to return -0.5 * chi2  = -2 ln L */
+	/* Need to return -0.5 * chi2  = ln L */
 
-	return res;
+	return -0.5 * res;
 }
 
 special_t special_topo(void *state)

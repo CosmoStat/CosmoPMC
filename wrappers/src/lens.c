@@ -333,7 +333,6 @@ double likeli_Lensing(common_like *like, const double *params, error **err)
 
    fill_parameters_lens(lensmodel, lensmodel_3rd, lensstate, params, like->par, like->npar, err);
    forwardError(*err, __LINE__, -1.0);
-   //dump_param_lens(lensmodel, stderr, 0, err); forwardError(*err, __LINE__, -1.0);
 
    /* Update cosmo parameter in halomodel sub-struct (only relevant if nonlinear=3 (halomodel) */
    copy_parameters_lenshm_cosmo(lensmodel, err);                    forwardError(*err, __LINE__, -1.0);
