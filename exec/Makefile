@@ -108,10 +108,13 @@ add_deduced_cosebis: add_deduced_cosebis.o exec_helper.o
 	$(MPICC) -o $@ $@.o exec_helper.o $(MKLFLAGS) $(LFLAGS_MPI) $(PMCMPILIBFLAG)
 
 getHODModel: getHODModel.o  exec_helper.o
-	$(CC) -o getHODModel getHODModel.o  exec_helper.o $(MKLFLAGS) $(PMCLIBFLAG) $(OPTIM)
+	$(CC) -o $@ $@.o exec_helper.o $(MKLFLAGS) $(PMCLIBFLAG) $(OPTIM)
 
 sample_GalCorr: sample_GalCorr.o exec_helper.o
 	$(MPICC) -o $@ $@.o exec_helper.o $(MKLFLAGS) $(LFLAGS_MPI) $(PMCMPILIBFLAG)
+
+topolike_test: topolike_test.o
+	$(CC) -o $@ $@.o  $(MKLFLAGS) $(PMCLIBFLAG)
 
 %.o:    %.c Makefile
 	$(CC) -c -o $@ $< $(MKCFLAGS)

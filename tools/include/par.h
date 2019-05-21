@@ -27,9 +27,10 @@ typedef enum {
   p_A_SZ, p_A_ia, p_A_GGI, p_theta_GGI, p_A_GII, p_theta_GII, p_b_slc, p_gamma_slc,
   p_kb, p_kr, p_wa,
   p_bias_g_amp, p_bias_g_zexp, p_bias_g_Lexp, p_bias_IA_amp, p_bias_IA_zexp, p_bias_IA_Lexp,
+  p_phi_topo, p_cos_theta_topo, p_alpha_topo,
   p_dummy,
 } par_t;
-#define Npar_t 108
+#define Npar_t 111
 
 #define spar_t(i) ( \
   i==p_Omegam ? "Omega_m" : \
@@ -132,13 +133,16 @@ typedef enum {
   i==p_kb            ? "kb" : \
   i==p_kr            ? "kr"  : \
   i==p_wa            ? "wa" : \
-  i==p_bias_g_amp            ? "bias_g_amp" : \
-  i==p_bias_g_zexp           ? "bias_g_zexp" : \
-  i==p_bias_g_Lexp           ? "bias_g_Lexp" : \
-  i==p_bias_IA_amp            ? "bias_IA_amp" : \
-  i==p_bias_IA_zexp           ? "bias_IA_zexp" : \
-  i==p_bias_IA_Lexp           ? "bias_IA_Lexp" : \
-  i==p_dummy         ? "dummy"   :   \
+  i==p_bias_g_amp    ? "bias_g_amp" : \
+  i==p_bias_g_zexp   ? "bias_g_zexp" : \
+  i==p_bias_g_Lexp   ? "bias_g_Lexp" : \
+  i==p_bias_IA_amp   ? "bias_IA_amp" : \
+  i==p_bias_IA_zexp  ? "bias_IA_zexp" : \
+  i==p_bias_IA_Lexp  ? "bias_IA_Lexp" : \
+  i==p_phi_topo       ? "phi_topo" : \
+  i==p_cos_theta_topo ? "cos_theta_topo" : \
+  i==p_alpha_topo     ? "alpha_topo" : \
+  i==p_dummy          ? "dummy"   :   \
   "" )
 
 par_t *copy_par_t(const par_t *par, int npar, error **err);

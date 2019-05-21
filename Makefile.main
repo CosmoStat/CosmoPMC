@@ -224,7 +224,7 @@ LLIBS += -ltopo -lgfortran
 # Targets in exec
 EXEC_TARGETS  = cosmo_mcmc cosmo_pmc max_post go_fishing meanvar_sample histograms_sample meanvar_mixmvdens \
                 add_pmc_proposal cl_one_sided importance_sample  getHODModel sample_GalCorr add_deduced_halomodel \
-		add_deduced_cosebis
+		add_deduced_cosebis topolike_test
 #haloplot
 
 ifeq ($(DOWMAP),1)
