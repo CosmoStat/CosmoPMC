@@ -105,12 +105,13 @@ typedef enum {bury, revive} dead_comp_t;
   "")
 #define Ndead_comp_t 2
 
-typedef enum {tempering_none, tempering_linear} tempering_t;
+typedef enum {tempering_none, tempering_linear, tempering_log} tempering_t;
 #define stempering_t(i) ( \
   i==tempering_none   ? "none" : \
   i==tempering_linear ? "linear" : \
+  i==tempering_log    ? "log" : \
   "")
-#define Ntempering_t 2
+#define Ntempering_t 3
 
 /* Basic configuration file information */
 typedef struct {

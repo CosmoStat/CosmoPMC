@@ -308,6 +308,14 @@ void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, in
             t_iter = (double)iter / (config->niter - 2.0) * (1.0 - config->t_min) + config->t_min;
          }
          break;
+      case tempering_log :
+         if (iter == config->niter - 1) {
+            t_iter = 1.0;
+         } else {
+            t_iter = (double)iter / (config->niter - 2.0) * (- log(config->t_min)) + log(config->t_min);
+				t_iter = exp(t_iter);
+         }
+         break;
       default:
          addErrorVA(mcmc_unknown, "Unknown tempering type (%s)", *err, __LINE__, config->stempering);
          return;

@@ -325,7 +325,7 @@ void read_config_pmc_file(config_pmc *config, const char *cname, mix_mvdens **pr
       switch (config->tempering) {
          case tempering_none :
 	    break;
-         case tempering_linear :
+         case tempering_linear : case tempering_log :
             CONFIG_READ(config, t_min, d, F, c, err);
             break;
          default:
