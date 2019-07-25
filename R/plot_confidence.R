@@ -573,9 +573,11 @@ for (i in 1:npar) {
 
 }
 
-
+if (npar > 1) {
 # 2D confidence levels
 for  (i in 1:(npar-1)) {
+
+     cat("iii\n")
      xMin = min[i]
      xMax = max[i]
      xLab = lab[i]
@@ -699,6 +701,7 @@ for  (i in 1:(npar-1)) {
     system(cmd)
 
   }
+}
 }
 
 cat("\n")
