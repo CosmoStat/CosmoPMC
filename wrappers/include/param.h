@@ -53,6 +53,7 @@
 #define mk_undef         -14 + mk_base
 #define mk_range         -15 + mk_base
 #define mk_special_prior -16 + mk_base
+#define mk_data          -17 + mk_base
 
 
 /* The following is defined in pmclib. It is needed

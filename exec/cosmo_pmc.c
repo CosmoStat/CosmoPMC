@@ -55,17 +55,22 @@ void write_perplexity_and_ess(pmc_simu *psim, int iter, int sum_nsamples, double
    fflush(PERP);
 }
 
-void write_evidence(pmc_simu *psim, int iter, FILE *EVI, error **err)
+void compute_and_write_evidence(pmc_simu *psim, int iter, FILE *EVI, error **err)
 {
    double evi, ln_evi;
 
    evi = evidence(psim, &ln_evi, err);
    quitOnError(*err, __LINE__, stderr);
 
-   /* Header */
-   if (iter==0) fprintf(EVI, "# iter   log10(E)    ln(E)    E\n");
+	write_evidence(iter, EVI, ln_evi, evi);
+}
 
-   fprintf(EVI, "% 6d % g % g % g\n", iter, ln_evi*M_LOG10E, ln_evi, evi);
+void write_evidence(int iter, FILE *EVI, double ln_evi, double evi)
+{
+   /* Header */
+   if (iter<=0) fprintf(EVI, "# iter  log10(E) ln(E)    E\n");
+
+   fprintf(EVI, "% 6d % g  % g % g\n", iter, ln_evi*M_LOG10E, ln_evi, evi);
    fflush(EVI);
 }
 
@@ -133,7 +138,6 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    double det, logmaxP, ln_evi, evi, volume;
    int i;
 
-
    MVD = fopen(covname, "r");
    if (MVD==NULL) return;
 
@@ -153,15 +157,14 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    evi = exp(ln_evi);
 
    EVI = fopen_err(outname, "w",err); forwardError(*err,__LINE__,);
-   fprintf(EVI, "# iter   log10(E)    ln(E)    E\n");
-   fprintf(EVI, "%6d % g % g % g\n", -1, ln_evi*M_LOG10E, ln_evi, evi);
+	write_evidence(-1, EVI, ln_evi, evi);
 
    /* The following is unused, volume factor (=1/prior) is already in posterior */
    for (i=0,volume=0.0; i<config->npar; i++) {
       volume += log(config->max[i] - config->min[i]);
    }
-   fprintf(EVI, "# 0.5*ln2pi*n=%g 0.5*log|F|=%g logmaxP=%g (logmaxL=%g volume=%g)\n", 
-	   0.5*log(2.0*pi)*config->npar, -0.5*log(det), logmaxP, logmaxP-volume, volume);
+   fprintf(EVI, "# 0.5*ln2pi*n=%g 0.5*ln|F|=%g lnmaxP=%g (lnmaxL=%g lnvolume=%g, volume=%g)\n",
+	   0.5*log(2.0*pi)*config->npar, -0.5*log(det), logmaxP, logmaxP-volume, volume, exp(volume));
 
    fclose(EVI);
 }
@@ -170,10 +173,28 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
  * Calculates the analytical evidence for (mixture of) multi-   *
  * normal likelihood.
  * ============================================================ */
-
-void evidence_analytic(config_base *config, const char pname, error **err)
+void evidence_analytic(config_base *config, const char *outname, error **err)
 {
+	double volume, evi, ln_evi;
+	int i;
+	FILE *EVI;
 
+	testErrorRetVA(config->ndata != 1, mk_data, "Analytical evidence only defined for a single data set, found ndata=%d",
+		*err, __LINE__,, config->ndata);
+	testErrorRetVA(config->data[0]!=Mvdens && config->data[0]!=MixMvdens, mk_data,
+		"Analytical evidence only defined for Mvdens or MixMvdens, found %s", *err, __LINE__,, sdata_t(config->data[0]));
+
+   /* The following is unused, volume factor (=1/prior) is already in posterior */
+   for (i=0,volume=0.0; i<config->npar; i++) {
+      volume += log(config->max[i] - config->min[i]);
+   }
+
+	evi = 1.0 / exp(volume);
+	ln_evi = log(evi);
+
+   EVI = fopen_err(outname, "w",err); forwardError(*err,__LINE__,);
+	write_evidence(-1, EVI, ln_evi, evi);
+	fclose(EVI);
 }
 
 #define FSHIFT_DEFAULT 0.1
@@ -421,7 +442,7 @@ void post_processing(pmc_simu *psim, mix_mvdens *proposal, int iter, int sum_nsa
    double *pmean;
 
    write_perplexity_and_ess(psim, iter, sum_nsamples, sum_ess, PERP, err);  forwardError(*err, __LINE__,);
-   write_evidence(psim, iter, EVI, err);                    	             forwardError(*err, __LINE__,);
+   compute_and_write_evidence(psim, iter, EVI, err);          	             forwardError(*err, __LINE__,);
    /* Proposal is actually used in the *next* iteration */
    write_enc(proposal, iter+1, ENC, err);				    forwardError(*err, __LINE__,);
 
@@ -607,7 +628,6 @@ int main(int argc, char *argv[])
    /* New: Use _mpi init function for server and client */
    psim = pmc_simu_init_mpi(config.nsamples, config.base.npar, config.base.n_ded, err);
    quitOnError(*err, __LINE__, stderr);
-   //fprintf(stderr, "myid = %d, psim = %d %d\n", myid, psim->mpi_rank, psim->mpi_size);
 
 
    /* Initialize PMC simulation, send and receive initial proposal */
