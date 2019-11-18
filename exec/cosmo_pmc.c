@@ -81,6 +81,16 @@ void write_enc(mix_mvdens *proposal, int iter, FILE *ENC, error **err)
    fflush(ENC);
 }
 
+void write_temperature(double beta, int iter, FILE *TEMPERATURE, error **err)
+{
+   /* Header */
+   if (iter==0) fprintf(TEMPERATURE, "# iter temperature\n");
+
+   fprintf(TEMPERATURE, "    %2d  %g\n", iter, beta);
+   fflush(TEMPERATURE);
+}
+
+
 void histograms_and_covariance(pmc_simu *psim, const char *iterdirname, config_base *config, FILE *FLOG,
 			       error **err)
 {
@@ -245,7 +255,8 @@ void update_and_deal_with_dead(const config_pmc *config, mix_mvdens *proposal, p
  * exist, a PMC iteration is run. In the contrary case, the     *
  * files are read.						                            *
  * ============================================================ */
-void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, int this_nsamples, int *Nrevive, config_pmc *config,
+void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, int this_nsamples, double beta,
+		int *Nrevive, config_pmc *config,
       const char *iterdirname, int myid, int nproc, int quiet, gsl_rng *rng, parabox *pb, FILE *FLOG, error **err)
 {
    char cname[NSTR];
@@ -293,28 +304,10 @@ void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, in
 
    fprintf(FLOG, "proc %d >> work on %ld samples (iter %d)\n", myid, psim->nsamples, iter);
 
-   /* Tempering */
-   double t_iter;
-   switch (config->tempering) {
-      case tempering_none :
-         t_iter = 1.0;
-         break;
-      case tempering_linear :
-         if (iter == config->niter - 1) {
-            t_iter = 1.0;
-         } else {
-            t_iter = (double)iter / (config->niter - 2.0) * (1.0 - config->t_min) + config->t_min;
-         }
-         break;
-      default:
-         addErrorVA(mcmc_unknown, "Unknown tempering type (%s)", *err, __LINE__, config->stempering);
-         return;
-   }
-
    /* Compute importance weights */
    nok = generic_get_importance_weight_and_deduced_verb(psim, proposal, mix_mvdens_log_pdf_void,
 							posterior_log_pdf_common_void, retrieve_ded,
-							(void*)&(config->base), t_iter, quiet, err);
+							(void*)&(config->base), beta, quiet, err);
    forwardError(*err, __LINE__,);
    fprintf(FLOG, "proc %d >> finished importance weights (iter %d), nok=%d\n", myid, iter, nok);
 
@@ -432,6 +425,40 @@ void post_processing(pmc_simu *psim, mix_mvdens *proposal, int iter, int sum_nsa
    histograms_and_covariance(psim, iterdirname, config, FLOG, err);         forwardError(*err, __LINE__,);
 }
 
+/* Temperature */
+double get_tempering_beta(tempering_t tempering, int iter, double t_min, int nmax, error **err)
+{
+   double beta;
+
+   switch (tempering) {
+      case tempering_none :
+         beta= 1.0;
+         break;
+      case tempering_linear :
+         if (iter == nmax - 1) {
+            beta= 1.0;
+         } else {
+            beta= (double)iter / (nmax - 2.0) * (1.0 - t_min) + t_min;
+         }
+         break;
+      case tempering_log :
+         if (iter == nmax - 1) {
+            beta = 1.0;
+         } else {
+				testErrorRetVA(t_min <= 0, mcmc_unknown, "Minimal temperature needs to be positive, found %g",
+									*err, __LINE__, 0.0, t_min);
+            beta = (double)iter / (nmax - 2.0) * (- log(t_min)) + log(t_min);
+				beta = exp(beta);
+         }
+         break;
+      default:
+         addErrorVA(mcmc_unknown, "Unknown tempering type %d", *err, __LINE__, tempering);
+         return 0.0;
+   }
+
+	return beta;
+}
+
 void usage(int ex, const char* str, ...)
 {
    va_list ap;
@@ -462,14 +489,14 @@ int main(int argc, char *argv[])
    error *myerr = NULL, **err;
    config_pmc config;
    char *cname, pname[NSTR], iterdirname[NSTR];
-   FILE *FLOG=NULL, *EVI=NULL, *PERP=NULL, *ENC=NULL, *PMCSIM, *PROP;
+   FILE *FLOG=NULL, *EVI=NULL, *PERP=NULL, *ENC=NULL, *TEMPERATURE=NULL, *PMCSIM, *PROP;
    time_t t_start;
    parabox *pb = NULL;
    gsl_rng *rng;
    int myid, nproc, iter, c, seed, this_nsamples=0, sum_nsamples=0, Nrevive=1, quiet;
    pmc_simu *psim;
    mix_mvdens *proposal;
-   double sum_ess=0.0;
+   double sum_ess=0.0, beta;
    extern char *optarg;
    extern int optind, optopt;
 
@@ -585,6 +612,7 @@ int main(int argc, char *argv[])
       PERP = fopen_err(perplexity_name, "w", err); quitOnError(*err, __LINE__, stderr);
       EVI = fopen_err(evidence_name, "w", err);    quitOnError(*err, __LINE__, stderr);
       ENC = fopen_err(enc_name, "w", err);         quitOnError(*err, __LINE__, stderr);
+      TEMPERATURE = fopen_err(temperature_name, "w", err); quitOnError(*err, __LINE__, stderr);
 
       write_enc(proposal, 0, ENC, err);            quitOnError(*err, __LINE__, stderr);
 
@@ -619,8 +647,11 @@ int main(int argc, char *argv[])
 
          if (PMCSIM) fclose(PMCSIM); if (PROP) fclose(PROP);
 
-         run_pmc_iteration_MPI(psim, &proposal, iter, this_nsamples, &Nrevive, &config, iterdirname, myid, nproc,
-               quiet, rng, pb, FLOG, err);
+			beta = get_tempering_beta(config.tempering, iter, config.t_min, config.niter, err);
+         quitOnError(*err, __LINE__, stderr);
+
+         run_pmc_iteration_MPI(psim, &proposal, iter, this_nsamples, beta, &Nrevive, &config, iterdirname, myid, nproc,
+					quiet, rng, pb, FLOG, err);
          quitOnError(*err, __LINE__, stderr);
 
       } else {                          /* Both PMC simulation and proposal files exist -> Read PMC iteration */
@@ -638,6 +669,10 @@ int main(int argc, char *argv[])
          post_processing(psim, proposal, iter, sum_nsamples, &sum_ess, &config.base, iterdirname,
                PERP, EVI, ENC, FLOG, err);
          quitOnError(*err, __LINE__, stderr);
+
+			write_temperature(beta, iter, TEMPERATURE, err);
+         quitOnError(*err, __LINE__, stderr);
+
 
       }
 

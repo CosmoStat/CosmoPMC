@@ -40,10 +40,28 @@ void init_topo(common_like *like, error **err)
 double likeli_topo(common_like *like, const double *params, error **err)
 {
 	double y[3], res;
+	int i;
 
-	y[0] = params[0];
-	y[1] = params[1];
-	y[2] = params[2];
+	/* Default values */
+	y[0] = 0.0;
+	y[1] = 0.0;
+	y[2] = 0.0;
+
+	for (i=0; i<like->npar; i++) {
+      switch (like->par[i]) {
+			case p_phi_topo:
+				y[0] = params[i];
+				break;
+			case p_cos_theta_topo:
+				y[1] = params[i];
+				break;
+			case p_alpha_topo:
+				y[2] = params[i];
+				break;
+			default:
+				break;
+		}
+	}
 
 	use_like_(y, &res);
 

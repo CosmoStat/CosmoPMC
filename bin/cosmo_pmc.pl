@@ -251,8 +251,8 @@ sub usage {
   print STDERR "                         the current time is used as seed.\n";
   print STDERR "   -S [M|F]             Stops after maximum search ('M') or Fisher matrix ('F')\n";
   print STDERR "   -A [y|n]             Default answer to all questions on stdin\n";
-  print STDERR "   -P PATH              Use PATH as CosmoPMC directory (default: environment\n";
-  print STDERR "                         variable \$COSMOPMC)\n";
+  print STDERR "   -P PATH              Use absolute PATH as CosmoPMC directory\n";
+  print STDERR "                         (default: environment variable \$COSMOPMC)\n";
   print STDERR "   -e                   Create 'essential' plots\n";
   print STDERR "   -p PRO               Plotting of marginalized posterior (1d and 2d):\n";
   print STDERR "                         PRO = 'R' (R; default), 'y' (yorick+perl), 'n' (none),\n";

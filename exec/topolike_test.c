@@ -1,9 +1,12 @@
-#include "exec_helper.h"
+#include "pmctools/errorlist.h"
 
-int main((int argc, char** argv)
+
+int main(int argc, char** argv)
 {
 	error *myerr = NULL, **err;
-	double y[3], res, logL;
+	double y[3], res, logL, chi2;
+	int i, n;
+	double pi = 3.141592653589793;
 
 	/* initialize */
 	err = &myerr;
@@ -12,11 +15,17 @@ int main((int argc, char** argv)
 	y[1] = 0.0;
 	y[2] = 0.0;
 
-	use_like_(y, &res);
+	n = 1000;
+	for (i=0; i<n; i++) {
+		y[2] = i * 2*pi/(double)n;
 
-	logL = -0.5 * res;
+		use_like_(y, &res);
+		chi2 = res;
+		logL = -0.5 * chi2;
 
-	print("%g %g %g %g\n", y[0], y[1], y[2], logL);
+		printf("%g %g %g %g %g\n", y[0], y[1], y[2], chi2, logL);
+	}
+
 
 	return 0;
 }

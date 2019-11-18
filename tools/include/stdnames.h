@@ -100,5 +100,8 @@
 /* Effective number of proposal components */
 #define enc_name "enc"
 
+/* Temperature */
+#define temperature_name "temperature"
+
 
 #endif
