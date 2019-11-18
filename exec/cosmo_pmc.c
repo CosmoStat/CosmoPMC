@@ -124,7 +124,7 @@ void histograms_and_covariance(pmc_simu *psim, const char *iterdirname, config_b
 /* ============================================================ *
  * Calculates the Laplace approximation of the evidence,        *
  * reading the file 'covname' as inverse covariance or Fisher   *
- * matrix.							*
+ * matrix.																		 *
  * ============================================================ */
 void evidence_approx(config_base *config, const char *covname, const char *outname, error **err)
 {
@@ -164,6 +164,16 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
 	   0.5*log(2.0*pi)*config->npar, -0.5*log(det), logmaxP, logmaxP-volume, volume);
 
    fclose(EVI);
+}
+
+/* ============================================================ *
+ * Calculates the analytical evidence for (mixture of) multi-   *
+ * normal likelihood.
+ * ============================================================ */
+
+void evidence_analytic(config_base *config, const char pname, error **err)
+{
+
 }
 
 #define FSHIFT_DEFAULT 0.1
@@ -606,6 +616,11 @@ int main(int argc, char *argv[])
       /* Evidence (Laplace approximation) */
       sprintf(pname, "%s_%s", evidence_name, fisher_suf);
       evidence_approx(&config.base, fisher_name, pname, err);
+      checkPrintErr_and_continue(err, stderr, FLOG, NULL, 0);
+
+		/* Evidence (analytical, if likelihood is [mix]mvnorm */
+      sprintf(pname, "%s_%s", evidence_name, analytic_suf);
+      evidence_analytic(&config.base, pname, err);
       checkPrintErr_and_continue(err, stderr, FLOG, NULL, 0);
 
       /* Open some files for writing */

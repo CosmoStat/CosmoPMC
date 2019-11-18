@@ -93,6 +93,7 @@
 /* Bayesian evience */
 #define evidence_name "evidence"
 #define fisher_suf      "fisher"
+#define analytic_suf    "analytic"
 
 /* Perplexity */
 #define perplexity_name "perplexity"
