@@ -133,7 +133,6 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    testErrorRetVA(config->npar!=mvd->ndim, mv_dimension, "Wrong dimension %d in Fisher matrix, expected %d",
 		  *err, __LINE__,, mvd->ndim, config->npar);
 
-   //det = sm2_inverse(mvd->std, mvd->ndim, err);   forwardError(*err, __LINE__,);
    det = mvdens_inverse(mvd, err); forwardError(*err, __LINE__,);
    testErrorRet(det<=0, mcmc_negative, "Covariance matrix is not positive definite", *err, __LINE__,);
 
@@ -144,7 +143,6 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    evi = exp(ln_evi);
 
    EVI = fopen_err(outname, "w",err); forwardError(*err,__LINE__,);
-   //fprintf(EVI, "# log10(E) ln(E) E [Laplace approximation]\n");
    fprintf(EVI, "# iter   log10(E)    ln(E)    E\n");
    fprintf(EVI, "%6d % g % g % g\n", -1, ln_evi*M_LOG10E, ln_evi, evi);
 
