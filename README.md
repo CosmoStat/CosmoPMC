@@ -77,6 +77,10 @@ ar rv libtopo.a *.o
 
 ### Running the code - quick guide
 
+#### Tempering examples (new) ###
+
+See the directory `Demo/tempering` and the corresponding [readme](Demo/tempering/README.md).
+
 #### <a href="Examples"></a>Examples
 
 To get familiar with `CosmoPMC`, use the examples which are included
