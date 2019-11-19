@@ -1,9 +1,10 @@
 
 Examples to test and run tempered PMC.
 
-1. `original/1_mvnorm_centered_2D`
+1. `1_mvnorm_2D_temp_none`
 
-   No tempering, to test Bayesian evidence and approximations.
+   No tempering. Test of Bayesian evidence and approximations.
+
    Run
 
    ``` $COSMOPMC/bin/cosmo_pmc.pl -P $COSMOPMC -f "0.5 0.5"```
@@ -25,3 +26,26 @@ Examples to test and run tempered PMC.
    iteration, and written to `iter_?/evidence_covariance`. For the final iteration
    the result should be close to 1.
 
+2. `2_mixmvnorm_2D_temp_none`
+
+   No tempering. Illustration of biased evidence if only one of multi-component
+   posterior is found and sampled.
+
+   Run
+
+   ``` $COSMOPMC/bin/cosmo_pmc.pl -P $COSMOPMC -A y`
+
+   The likelihood is a 2D mixture of multi-variate normals, with two non-overlapping components.
+   The two components are far enough away that traditional PMC (or MCMC) does not always find
+   both components.
+
+   As in example 1, the likelihood and prior volume are normalised to one, and thus the
+   Bayesian evidence is unity, see `evidence_analytic`.
+
+   The Fisher matrix is necessarily computed at (or close) to one of the two component maxima.
+   Thus, the corresponding approximate likelihood contains only half of the density, and the
+   evidence is biased low by a factor of around 2.
+
+   The evidence from PMC sampling, `evidence`, is likely to approach either 0.5 or 1, dependent
+   whether one or two components have been found. Which is the case can be seen in the posterior
+   contour plots, `iter_9/all_cont2d.pdf`. To test, run the code several times.
