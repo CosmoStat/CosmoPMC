@@ -50,4 +50,10 @@ Examples to test and run tempered PMC.
    whether one or two components have been found. Which is the case can be seen in the posterior
    contour plots, `iter_9/all_cont2d.pdf`. To test, run the code several times.
 
-   <img width="520" src="2_mixmvnorm_2D_temp_none/cont2d_0_1-2comp.png">
+   Here is the output of two runs:
+
+   <img width="250" src="2_mixmvnorm_2D_temp_none/cont2d_0_1-2comp.png">
+   Both peaks are found, evidence = 0.998802.
+
+   <img width="250" src="2_mixmvnorm_2D_temp_none/cont2d_0_1-1comp.png">
+   Only one peak is found, evidence = 0.50055.
