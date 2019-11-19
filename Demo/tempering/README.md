@@ -50,6 +50,8 @@ Examples to test and run tempered PMC.
    whether one or two components have been found. Which is the case can be seen in the posterior
    contour plots, `iter_9/all_cont2d.pdf`. To test, run the code several times.
 
+![Model View Controller](2_mixmvnorm_2D_temp_none/cont2d_0_1-2comp.pdf)
+
    <object data="2_mixmvnorm_2D_temp_none/cont2d_0_1-2comp.pdf" type="application/pdf" width="100px" height="100px">
     <embed src="2_mixmvnorm_2D_temp_none/cont2d_0_1-2comp.pdf">
         <p>This browser does not support PDFs.</p>
