@@ -52,8 +52,26 @@ Examples to test and run tempered PMC.
 
    Here is the output of two runs:
 
-   <img width="250" src="2_mixmvnorm_2D_temp_none/cont2d_0_1-2comp.png">
-   Both peaks are found, evidence = 0.998802.
+   <table>
 
+   <tr>
+   <td>
+   <img width="250" src="2_mixmvnorm_2D_temp_none/cont2d_0_1-2comp.png">
+   </td>
+   <td>Both peaks are found, evidence = 0.998802.</td>
+   </tr>
+
+   <tr>
+   <td>
    <img width="250" src="2_mixmvnorm_2D_temp_none/cont2d_0_1-1comp.png">
-   Only one peak is found, evidence = 0.50055.
+   </td>
+   <td>Only the first peak is found, evidence = 0.50055.</td>
+   </tr> 
+   <tr>
+
+   <td>
+   <img width="250" src="2_mixmvnorm_2D_temp_none/cont2d_0_1-1comp2.png">
+   </td>
+   <td>Only the second peak is found, evidence = 0.499927.</td>
+   </tr> 
+   </table>
