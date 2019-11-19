@@ -153,7 +153,8 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    logmaxP = posterior_log_pdf_common(config, mvd->mean, err);
    forwardError(*err, __LINE__,);
 
-   ln_evi = 0.5*log(2.0*pi)*config->npar - 0.5*log(det) + logmaxP;
+	/* The first two terms compensate for the prefactors (normalisation) in logmaxPL */
+   ln_evi = 0.5*log(2.0*pi)*config->npar + 0.5*log(det) + logmaxP;
    evi = exp(ln_evi);
 
    EVI = fopen_err(outname, "w",err); forwardError(*err,__LINE__,);
@@ -163,8 +164,8 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    for (i=0,volume=0.0; i<config->npar; i++) {
       volume += log(config->max[i] - config->min[i]);
    }
-   fprintf(EVI, "# 0.5*ln2pi*n=%g 0.5*ln|F|=%g lnmaxP=%g (lnmaxL=%g lnvolume=%g, volume=%g)\n",
-	   0.5*log(2.0*pi)*config->npar, -0.5*log(det), logmaxP, logmaxP-volume, volume, exp(volume));
+   fprintf(EVI, "# 0.5*ln2pi*n=%g 0.5*ln|F|=-0.5*ln|C|=%g lnmaxP=%g (lnmaxL=%g lnvolume=%g, volume=%g)\n",
+	   0.5*log(2.0*pi)*config->npar, 0.5*log(det), logmaxP, logmaxP-volume, volume, exp(volume));
 
    fclose(EVI);
 }
