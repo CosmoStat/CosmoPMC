@@ -17,7 +17,7 @@ Examples to test and run tempered PMC.
 
    The Laplace approximation with the Fisher matrix replacing the input likelihood
    uses as maximum-likelihood a point very close to the
-   true value (given as starting point for the maximum-search by `-f "0.5 0.5").
+   true value (given as starting point for the maximum-search by `-f "0.5 0.5")`.
    The file `evidence_fisher` should thus also be consistent with 1.
 
    Another Laplace approximation is computed using a the sample covariance
