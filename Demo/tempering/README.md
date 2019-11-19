@@ -33,7 +33,7 @@ Examples to test and run tempered PMC.
 
    Run
 
-   ``` $COSMOPMC/bin/cosmo_pmc.pl -P $COSMOPMC -A y`
+   ``` $COSMOPMC/bin/cosmo_pmc.pl -P $COSMOPMC -A y```
 
    The likelihood is a 2D mixture of multi-variate normals, with two non-overlapping components.
    The two components are far enough away that traditional PMC (or MCMC) does not always find
