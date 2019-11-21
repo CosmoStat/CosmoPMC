@@ -90,3 +90,14 @@ void print_topo(FILE *where, void *state, error **err)
 	fprintf(rhere, "(s)special          = (%s)%d\n", sspecial_t(topostate->special), topostate->special);
 
 }
+
+/* Dummy function if topolike is not linked */
+
+#ifndef TOPO
+
+void use_like_(double *y, double *res)
+{
+
+}
+
+#endif

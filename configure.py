@@ -130,6 +130,8 @@ def get_pmclib(pmclib):
 
 
 def correct_path(path):
+  if path == '':
+     raise IndexError('path not valid')
   if path[0] is '.':
     return os.path.abspath(path)
   else:
@@ -163,6 +165,8 @@ def usage(ex):
   print "   --camb PATH        Path to camb package (if option '-c' given)"
   print "   --wmap PATH        Path to wmap likelihood package (if option '-c' given)"
   print
+  print "   --topo PATH        PATH for topolike library, default: not used"
+  print
   print "   --lapackdir PATH   PATH for Intel Math Kernel lapack libraries"
   print "   --guidedir PATH    PATH for Intel Math Kernel guide library"
   print "   --ifcoredir PATH   PATH for Intel Math Kernel ifcore library"
@@ -188,7 +192,7 @@ def main(argv):
                                                  "cflags=", "lflags=",
                                                  "lapackdir=", "guidedir=", "ifcoredir=", "cfitsiodir=",
                                                  "installdir=",
-                                                 "cmb", "camb=", "wmap=",
+                                                 "cmb", "camb=", "wmap=", "topo=",
                                                  "debug=", 
                                                  "no_save"])
   except getopt.GetoptError, err:
@@ -202,7 +206,7 @@ def main(argv):
   lapackdir = guidedir = ifcoredir = cfitsiodir = installdir = None
   debug = None
   cmb  = 0
-  camb = wmap = None
+  camb = wmap = topo = None
   nosave = 0
 
   for opt, arg in opts:
@@ -254,6 +258,8 @@ def main(argv):
       camb = arg
     elif opt == "--wmap":
       wmap = arg
+    elif opt == '--topo':
+      topo = arg
     elif opt == "--debug":
       debug = arg
     elif opt in ("-n", "--no_save"):
@@ -319,7 +325,6 @@ def main(argv):
       print "Option '--wmap' doesn't make sense without '-c' (CMB support)"
       return 1
   else:
-
     camb = get_camb(camb)
     if camb is -1:
       return 1
@@ -331,6 +336,9 @@ def main(argv):
       return 1
     path = correct_path(wmap)
     data = replace(path, "MY_WMAP", data)
+
+  if topo is not None:
+    data = replace(topo, "TOPO", data)
 
   data = replace(gsl, "GSL", data)
   data = replace(fftw, "FFTW", data)
@@ -345,7 +353,7 @@ def main(argv):
   data = replace(guidedir, "GUIDEDIR", data)
   data = replace(ifcoredir, "IFCOREDIR", data)
   data = replace(cfitsiodir, "CFITSIODIR", data)
-  data = replaceinstalldir, "INSTALLDIR", data)
+  data = replace(installdir, "INSTALLDIR", data)
 
   data = replace(debug, "DEBUG", data)
 

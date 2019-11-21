@@ -34,7 +34,7 @@ typedef struct {
 } topo_state;
 
 
-void use_like_(double *,double *);
+void use_like_(double *y, double *res);
 
 
 functions_wrapper_t *init_functions_topo(error **err);
@@ -44,4 +44,5 @@ double likeli_topo(common_like *like, const double *params, error **err);
 special_t special_topo(void *state);
 void print_topo(FILE *where, void *state, error **err);
 
-#endif
+
+# endif

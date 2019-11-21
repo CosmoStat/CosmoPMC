@@ -23,13 +23,14 @@ BASE_DIR=$PWD
 BUILD_DIR=$BASE_DIR/build
 USE_MPI=TRUE
 PMCENV="cosmopmc"
+TOPO=""
 
 # Help string
 help="$(basename "$0") [OPTIONS]\n\n
 Options:\n
 \t-h,--help\t show this help message and exit\n
 \t-v,--version\t print script version and exit\n
-\t--build-dir\t set the path to the ShapePipe build (default is \$PWD/../)\n
+\t--build-dir\t set the path to the ShapePipe build (default is \$PWD/build)\n
 
 Executable Build Options:\n
 
@@ -71,6 +72,8 @@ setup() {
   echo 'Operating system: ' $SYSOS
   echo 'Base directory (CosmoPMC clone): ' $BASE_DIR
   echo 'Build directory: ' $BUILD_DIR
+  echo 'Environment name: ' $PMCENV'
+  echo 'Topolike directory: '$TOPO'
   echo ''
 }
 
@@ -106,6 +109,10 @@ case $i in
     ;;
     --build-dir=*)
     BUILD_DIR="${i#*=}"
+    shift
+    ;;
+    --topo)
+    TOPO="${i#*=}"
     shift
     ;;
     --no-mpi)
@@ -212,6 +219,13 @@ if [ "$SYSOS" == "LINUX" ]; then
   conda install -n $PMCENV gxx_linux-64 -y
 fi
 
+#########################
+# Build external programs
+#########################
+
+# cmake
+conda install -n cosmopmc -c conda-forge cmake -y
+
 #############################
 # Build PMC-related libraries
 #############################
@@ -246,7 +260,12 @@ cd $BASE_DIR
 # CosmoPMC
 report_progress 'nicaea'
 cd $BASE_DIR
-./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib --lflags -lm
+if [ "$TOPO" == "" ]; then
+  arg_topo=""
+else
+  arg_topo="--topo $TOPO"
+fi
+python2 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX $arg_topo # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
 make && make install
 
 

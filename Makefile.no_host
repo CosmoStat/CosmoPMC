@@ -21,7 +21,7 @@
 ######################
 ### Path to nicaea ###
 ######################
-NICAEA    = ~/.local
+# NICAEA    =
 
 ### Add compiler flags
 # MKCFLAGS += ...
@@ -74,5 +74,12 @@ NICAEA    = ~/.local
 
 ### CAMB libraries
 # LIBF90 =
+
+###########################
+### Topology likelihood ###
+############################
+
+# path to topolike library
+# TOPO =
 
 ### End of file

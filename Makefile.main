@@ -217,20 +217,24 @@ LLIBDIRS   += -L$(NICAEA)/lib
 LLIBS      += -lnicaea
 
 # Topo
-LLIBDIRS += -L$(TOPO)
-LLIBS += -ltopo -lgfortran
+ifdef TOPO
+   LLIBDIRS += -L$(TOPO)
+   LLIBS += -ltopo -lgfortran
+endif
 
 
 # Targets in exec
 EXEC_TARGETS  = cosmo_mcmc cosmo_pmc max_post go_fishing meanvar_sample histograms_sample meanvar_mixmvdens \
                 add_pmc_proposal cl_one_sided importance_sample  getHODModel sample_GalCorr add_deduced_halomodel \
-		add_deduced_cosebis topolike_test
-#haloplot
+		add_deduced_cosebis
 
 ifeq ($(DOWMAP),1)
    EXEC_TARGETS += sample_cmb
 endif
 
+ifdef TOPO
+   EXEC_TARGETS += topolike_test
+endif
 
 # Avoid some common 'icc' compiler warnings
 ifeq ($(CC),icc)

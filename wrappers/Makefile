@@ -16,18 +16,15 @@ ifeq ($(STATUS), "RELEASED")
    OBJ         := $(patsubst src/%.c,%.o,$(wildcard src/*.c))
 endif
 ifeq ($(STATUS), "DEVEL")
-  OBJ          = bao.o halo.o sn.o lens.o timexec.o wmap.o xcorr.o nz.o topo.o wrappers.o init_wrappers.o
+  OBJ          = bao.o halo.o sn.o lens.o timexec.o wmap.o xcorr.o nz.o wrappers.o init_wrappers.o topo.o
 endif
 
-# New: the following lines were only in the 'RELEASE' loop, for an unknown reason
 ifeq ($(DOWMAP),1)
    CFLAGS  += -DDOWMAP
 endif
 
-
 vpath %.h ../wrappers/include
 vpath %.c ../wrappers/src
-
 
 
 all: $(OBJ) libparam.a libwr.$(EXT) libpar.$(EXT)
