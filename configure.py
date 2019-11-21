@@ -168,6 +168,8 @@ def usage(ex):
   print "   --ifcoredir PATH   PATH for Intel Math Kernel ifcore library"
   print "   --cfitsiodir PATH  PATH for cfitsio library"
   print
+  print "   --installdir PATH  Base path to copy binaries and executables"
+  print
   print "   --debug FLAGS      Add debug flags FLAGS"
   print "   -n, --nosave       Do not save file previous setting in 'Makefile.host.save[n]'"
 
@@ -185,6 +187,7 @@ def main(argv):
                                                  "inc_mpi=", "ldirs_mpi=",
                                                  "cflags=", "lflags=",
                                                  "lapackdir=", "guidedir=", "ifcoredir=", "cfitsiodir=",
+                                                 "installdir=",
                                                  "cmb", "camb=", "wmap=",
                                                  "debug=", 
                                                  "no_save"])
@@ -196,7 +199,7 @@ def main(argv):
   pmclib = nicaea = None
   inc_mpi = ldirs_mpi = None
   cflags = lflags = None
-  lapackdir = guidedir = ifcoredir = cfitsiodir = None
+  lapackdir = guidedir = ifcoredir = cfitsiodir = installdir = None
   debug = None
   cmb  = 0
   camb = wmap = None
@@ -242,6 +245,8 @@ def main(argv):
       ifcoredir = arg
     elif opt == "--cfitsiodir":
       cfitsiodir = arg
+    elif opt == "--installdir":
+      installdir = arg
 
     elif opt in ("-c", "--cmb"):
       cmb = 1
@@ -340,6 +345,7 @@ def main(argv):
   data = replace(guidedir, "GUIDEDIR", data)
   data = replace(ifcoredir, "IFCOREDIR", data)
   data = replace(cfitsiodir, "CFITSIODIR", data)
+  data = replaceinstalldir, "INSTALLDIR", data)
 
   data = replace(debug, "DEBUG", data)
 

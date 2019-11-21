@@ -118,6 +118,12 @@ ifeq ($(DOWMAP),1)
    subdirs += $(CMB)
 endif
 
+install:
+	mkdir -p $(INSTALLDIR)/bin
+	for t in $(EXEC_TARGETS); do \
+	   cp $(EXEC)/$$t $(INSTALLDIR)/bin; \
+	done
+
 
 .PHONY : clean clean_links
 
