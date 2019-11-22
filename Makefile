@@ -123,6 +123,9 @@ install:
 	for t in $(EXEC_TARGETS); do \
 	   cp $(EXEC)/$$t $(INSTALLDIR)/bin; \
 	done
+	for t in bin/*; do \
+	   cp $$t $(INSTALLDIR)/bin; \
+	done
 
 
 .PHONY : clean clean_links
@@ -133,6 +136,7 @@ clean:
 	done
 	$(MAKE) clean_links
 	cd Manual; $(MAKE) clean
+	rm -rf build
 
 clean_links:
 	for target in $(EXEC_TARGETS); do \

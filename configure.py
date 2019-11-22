@@ -338,7 +338,8 @@ def main(argv):
     data = replace(path, "MY_WMAP", data)
 
   if topo is not None:
-    data = replace(topo, "TOPO", data)
+    path = correct_path(topo)
+    data = replace(path, "TOPO", data)
 
   data = replace(gsl, "GSL", data)
   data = replace(fftw, "FFTW", data)

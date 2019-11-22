@@ -51,7 +51,7 @@ PMCLIBFLAG    = $(LIB_PMC) -lpmc -ldl
 PMCMPILIBFLAG = $(PMCLIBFLAG) -lpmc_mpi
 
 # Add topolike linking flags
-OPTIM := $(OPTIM) $(MKLFLAGS_LAST)
+#OPTIM := $(OPTIM) $(MKLFLAGS_LAST)
 
 
 # EXEC_TARGETS are defined in Makefile.main

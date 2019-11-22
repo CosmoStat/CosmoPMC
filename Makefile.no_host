@@ -32,6 +32,11 @@
 ### Debug info
 # DEBUG =
 
+##############################
+### Installation directory ###
+##############################
+INSTALLDIR = ~/.local
+
 ###############################################
 ### Directories for external packages       ###
 ### Path for include files: $(FFTW)/include ###

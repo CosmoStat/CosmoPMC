@@ -8,6 +8,8 @@
 use Getopt::Std;
 use Fatal qw/ open close unlink /;
 use Cwd;
+use File::Basename;
+use File::Which;
 
 getopts("c:d:P:h", \%options);
 
@@ -21,14 +23,14 @@ my $out = "proposal_var";
 
 
 my $cwd = cwd;
-set_ENV_COSMOPMC($cwd);
+my $path_bin = dirname(__FILE__);
 $yok = check_for_yorick();
-die "'yorick' not found" if $yok != 0;
+die "'yorick' not found in search path" if $yok != 0;
 
 # Get variances with yorick calls
 foreach $iter (0 .. $niter - 1) {
 
-  `$ENV{COSMOPMC}/bin/fisher_to_meanvar.pl -x -n $dir/iter_$iter/proposal > itmp.tmp`;
+  `$path_bin/fisher_to_meanvar.pl -x -n $dir/iter_$iter/proposal > itmp.tmp`;
   die "Proposal not valid" unless -s "itmp.tmp";
   open(my $in_fh, "itmp.tmp");
   foreach $icomp (0 .. $ncomp - 1) {
@@ -79,7 +81,7 @@ foreach $idim (0 .. $ndim - 1) {
 
 
 # Read config file for parameter type
-$cmd = "$ENV{COSMOPMC}/bin/get_spar.pl -c $config $path_flag gnuplot";
+$cmd = "$path_bin/get_spar.pl -c $config $path_flag gnuplot";
 print "*** Running $cmd***\n";
 $output = qx($cmd);
 @parlist = split("&", $output);
@@ -113,8 +115,7 @@ close GNU;
 
 #if (! defined $options{n}) {
 `gnuplot $gname`;
-`$ENV{COSMOPMC}/bin/allps2tex.pl -f pdf -t "Proposal variances" > all_vars.tex`;
-#`$ENV{COSMOPMC}/bin/ldp.sh all_vars -q`;
+`$path_bin/allps2tex.pl -f pdf -t "Proposal variances" > all_vars.tex`;
 `pdflatex all_vars -q`;
 `rm -f all_vars.log all_vars.dvi all_vars.aux`;
 #}
@@ -148,39 +149,22 @@ sub get_info {
   return ($nit, $ncomp, $ndim);
 }
 
-sub set_ENV_COSMOPMC {
-  my ($cwd) = @_;
-
-  # Environment variable defined (in shell)
-  return if defined $ENV{COSMOPMC};
-
-  # Copy from command argument
-  if (defined $options{P}) {
-    $ENV{COSMOPMC} = $options{P};
-    return;
-  }
-
-  # Use cwd
-  if (-e "$cwd/bin/cosmo_pmc.pl") {
-    $ENV{COSMOPMC} = $cwd;
-    return;
-  }
-
-  die "Set environment variable '\$COSMOPMC' or use option '-P PATH'";
-}
-
 # Returns if yorick exists and seems to work well
 sub check_for_yorick {
-  open(my $tmp_fh, ">cytmp.i");
-  print {$tmp_fh} "write, 2 * 3\nquit\n";
-  close $tmp_fh;
-  $res = qx(yorick -batch cytmp.i);
-  $ex = $?;
-  chomp($res);
-  unlink "cytmp.i";
 
-  if ($res ne "" and $res == 6 and $ex == 0) { return 0; }
-  return 1;
+  #open(my $tmp_fh, ">cytmp.i");
+  #print {$tmp_fh} "write, 2 * 3\nquit\n";
+  #close $tmp_fh;
+  # shell prints error if yorick does not exist
+  #$res = qx(yorick -batch cytmp.i > /dev/null); 
+  #$ex = $?;
+  #unlink "cytmp.i";
+  #chomp($res);
+
+  $res = which("yorick");
+
+  return 1 unless defined $res;
+  return 0;
 }
 
 sub usage {
@@ -191,8 +175,6 @@ sub usage {
   print STDERR "  -d DIR         Directory DIR containing the sub-directories 'iter_*'\n";
   print STDERR "                  with the proposal files (default '.')\n";
   print STDERR "  -c CONFIG      Configuration file CONFIG (default 'DIR/config_pmc')\n";
-  print STDERR "  -P PATH        Use PATH as CosmoPMC root directory (default: environment\n";
-  print STDERR "                  variable \$COSMOPMC)\n";
   print STDERR "  -h             This message\n";
 
   exit $ex unless $ex < 0;

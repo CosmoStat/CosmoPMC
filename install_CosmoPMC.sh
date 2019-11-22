@@ -16,7 +16,7 @@
 line="########################################################################"
 
 # Version
-version=0.1
+version=0.2
 
 # Default values for variables
 BASE_DIR=$PWD
@@ -28,15 +28,15 @@ TOPO=""
 # Help string
 help="$(basename "$0") [OPTIONS]\n\n
 Options:\n
-\t-h,--help\t show this help message and exit\n
-\t-v,--version\t print script version and exit\n
-\t--build-dir\t set the path to the ShapePipe build (default is \$PWD/build)\n
-
+\t-h, --help           show this help message and exit\n
+\t--build-dir PATH    set CosmoPMC build path (default is \$PWD/build)\n
+\n
 Executable Build Options:\n
-
+\t--topo PATH         topology likelihood path (default not used)\n
+\n
 MPI Build Options:\n
-\t--no_mpi\t do not use MPI\n
-\t--mpi_root\t path to MPI installation\n\n
+\t--no_mpi            do not use MPI\n
+\t--mpi_root          path to MPI package installation\n\n
 
 "
 
@@ -68,12 +68,12 @@ check_conda() {
   fi
 } 
 
-setup() {
+print_setup() {
   echo 'Operating system: ' $SYSOS
   echo 'Base directory (CosmoPMC clone): ' $BASE_DIR
   echo 'Build directory: ' $BUILD_DIR
-  echo 'Environment name: ' $PMCENV'
-  echo 'Topolike directory: '$TOPO'
+  echo 'Environment name: ' $PMCENV
+  echo 'Topolike directory: ' $TOPO
   echo ''
 }
 
@@ -102,16 +102,11 @@ case $i in
     shift
     exit
     ;;
-    -v|--version)
-    echo $(basename "$0") $version
-    shift
-    exit
-    ;;
     --build-dir=*)
     BUILD_DIR="${i#*=}"
     shift
     ;;
-    --topo)
+    --topo=*)
     TOPO="${i#*=}"
     shift
     ;;
@@ -158,7 +153,7 @@ then
 fi
 
 # Print script set-up
-setup
+print_setup
 
 # Build conda environment
 conda info --envs | grep $PMCENV > /dev/null
@@ -258,14 +253,14 @@ make && make install
 cd $BASE_DIR
 
 # CosmoPMC
-report_progress 'nicaea'
+report_progress 'CosmoPMC'
 cd $BASE_DIR
 if [ "$TOPO" == "" ]; then
   arg_topo=""
 else
   arg_topo="--topo $TOPO"
 fi
-python2 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX $arg_topo # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
+python2 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX --installdir=$CONDA_PREFIX $arg_topo # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
 make && make install
 
 

@@ -1,0 +1,1 @@
+ /local/home/mkilbing/miniconda3/envs/cosmopmc/bin/plot_contour2d.pl -c ../config_pmc -1 m1t -o pdf -T 3_topolike_1D_temp_log

@@ -182,8 +182,11 @@ void evidence_analytic(config_base *config, const char *outname, error **err)
 
 	testErrorRetVA(config->ndata != 1, mk_data, "Analytical evidence only defined for a single data set, found ndata=%d",
 		*err, __LINE__,, config->ndata);
-	testErrorRetVA(config->data[0]!=Mvdens && config->data[0]!=MixMvdens, mk_data,
-		"Analytical evidence only defined for Mvdens or MixMvdens, found %s", *err, __LINE__,, sdata_t(config->data[0]));
+
+	if (config->data[0]!=Mvdens && config->data[0]!=MixMvdens) {
+		/* Analytical evidence only defined for Mvdens or MixMvdens */
+		return;
+	}
 
    /* The following is unused, volume factor (=1/prior) is already in posterior */
    for (i=0,volume=0.0; i<config->npar; i++) {

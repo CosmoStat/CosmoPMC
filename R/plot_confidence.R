@@ -13,6 +13,8 @@ library(coda)
 library(getopt)
 library(methods)
 library(optparse)
+library(funr)
+
 
 
 # Command line options
@@ -60,9 +62,6 @@ parser = add_option(parser, c("--pmax"), default="",
   help="Upper limits for plot. Default: Read from config file (= sample limits). Separate items with '_'.")
 parser = add_option(parser, c("-C", "--shade"), default="1",
   help="With shade 0 or 1, default=1")
-parser = add_option(parser, c("-P", "--path"), default="",
-  help="Path to COSMOPMC (default: environment variable $COSMOPMC")
-
 
 cl     = parse_args(parser, positional_arguments = TRUE)
 
@@ -89,13 +88,8 @@ brace      = cl$options$brace
 pmins      = cl$options$pmin
 pmaxs      = cl$options$pmax
 shade     = cl$options$shade
-path      = cl$options$path
-if (path == "") {
-  path = Sys.getenv("COSMOPMC")
-}
-if (path == "") {
-  stop("Set environment variable '$COSMOPMC' or use option '-P PATH'")
-}
+
+path <- get_script_path()
 
 #tmpname   = "tmptmp.ps"
 tmpname   = paste("tmptmp", output_format, sep=".")
@@ -395,7 +389,7 @@ args = commandArgs(TRUE)
 
 
 log<-file("log_plot_confidence.R")
-cat(c("Rscript $COSMOPMC/R/plot_confidence.R ", args, "\n"), file=log)
+cat(c("Rscript plot_confidence.R ", args, "\n"), file=log)
 close(log)
 
 samples = list()
