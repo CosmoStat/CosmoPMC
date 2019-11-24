@@ -126,7 +126,10 @@ install:
 	for t in bin/*; do \
 	   cp $$t $(INSTALLDIR)/bin; \
 	done
-
+	mkdir -p $(INSTALLDIR)/yorick
+	for t in yorick/*; do \
+	   cp $$t $(INSTALLDIR)/yorick; \
+	done
 
 .PHONY : clean clean_links
 

@@ -78,8 +78,6 @@ def parse_options(p_def):
         help='number of runs, default = {}'.format(p_def.nrun))
     parser.add_option('-m', '--mode', dest='mode', default=p_def.mode,
         help='run mode, combination of chars \'r\' (run) \'t\' (tar) = {}'.format(p_def.mode))
-    parser.add_option('-P', '--path', dest='path',
-        help='path to CosmoPMC, default=\$COSMOPMC env variable')
 
     parser.add_option('-n', '--dry_run', dest='dry_run', action='store_true', help='do not run, only print commands')
     parser.add_option('-v', '--verbose', dest='verbose', action='store_true', help='verbose output')
@@ -141,12 +139,6 @@ def update_param(p_def, options):
     # Do extra stuff 
     param.nrun = int(param.nrun)
 
-    if param.path is None:
-        if 'COSMOPMC' in os.environ:
-            param.path = os.environ['COSMOPMC']
-        else:
-            raise ValueError('Path (option \'-P\') or environment variable \'COSMOPMC\' not defined')
-
     return param
 
 
@@ -200,7 +192,7 @@ def main(argv=None):
 
             test_file = 'evidence'
             if os.path.isfile(test_file) == False or os.path.getsize(test_file) == 0:
-                cmd = '{0}/bin/cosmo_pmc.pl -p R -n 1 -P {0}'.format(param.path)
+                cmd = 'cosmo_pmc.pl -p R -n 1'
                 stuff.run_cmd(cmd, verbose=param.verbose, run=(not param.dry_run))
             else:
                 if param.verbose:

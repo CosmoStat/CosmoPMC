@@ -3,12 +3,6 @@
 version		1.3
 
 ### Parameter section ###
-#npar		3
-#n_ded		0
-#spar		phi_topo cos_theta_topo alpha_topo
-#min             0.0    -1.0   0.0
-#max             6.2832  1.0   6.2832
-
 npar            1
 n_ded           0
 spar		alpha_topo
@@ -29,7 +23,7 @@ sprior		-
 ### PMC part ###
 nsamples        1000
 fsfinal         1
-niter           10
+niter           30
 nclipw          0
 
 # Tempering
@@ -46,3 +40,4 @@ fmin		0.02
 
 ### Histogram section ###
 nbinhist        512
+

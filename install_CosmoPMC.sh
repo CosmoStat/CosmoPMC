@@ -200,11 +200,9 @@ fi
 # Build external libraries
 ##########################
 
-# fftw3
 report_progress 'fftw3'
 conda install -n $PMCENV -c conda-forge fftw -y
 
-# gsl
 report_progress 'gsl'
 conda install -n $PMCENV -c conda-forge gsl=1.16 -y
 
@@ -218,8 +216,11 @@ fi
 # Build external programs
 #########################
 
-# cmake
+report_progress "cmake"
 conda install -n cosmopmc -c conda-forge cmake -y
+
+report_progress "gnuplot"
+conda install -n cosmopmc -c conda-forge gnuplot -y
 
 #############################
 # Build PMC-related libraries

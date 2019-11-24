@@ -24,13 +24,13 @@ my $out = "proposal_var";
 
 my $cwd = cwd;
 my $path_bin = dirname(__FILE__);
-$yok = check_for_yorick();
-die "'yorick' not found in search path" if $yok != 0;
+exit_if_not_yorick();
 
 # Get variances with yorick calls
 foreach $iter (0 .. $niter - 1) {
 
-  `$path_bin/fisher_to_meanvar.pl -x -n $dir/iter_$iter/proposal > itmp.tmp`;
+  #`$path_bin/fisher_to_meanvar.pl -x -n $dir/iter_$iter/proposal > itmp.tmp`;
+  runpr("$path_bin/fisher_to_meanvar.pl -x -n $dir/iter_$iter/proposal > itmp.tmp");
   die "Proposal not valid" unless -s "itmp.tmp";
   open(my $in_fh, "itmp.tmp");
   foreach $icomp (0 .. $ncomp - 1) {
@@ -149,22 +149,12 @@ sub get_info {
   return ($nit, $ncomp, $ndim);
 }
 
-# Returns if yorick exists and seems to work well
-sub check_for_yorick {
-
-  #open(my $tmp_fh, ">cytmp.i");
-  #print {$tmp_fh} "write, 2 * 3\nquit\n";
-  #close $tmp_fh;
-  # shell prints error if yorick does not exist
-  #$res = qx(yorick -batch cytmp.i > /dev/null); 
-  #$ex = $?;
-  #unlink "cytmp.i";
-  #chomp($res);
+# Exits if yorick does not exist
+sub exit_if_not_yorick {
 
   $res = which("yorick");
 
-  return 1 unless defined $res;
-  return 0;
+  die "'yorick' not found in search path" unless defined $res;
 }
 
 sub usage {
@@ -178,4 +168,20 @@ sub usage {
   print STDERR "  -h             This message\n";
 
   exit $ex unless $ex < 0;
+}
+
+sub runpr {
+  my ($command, $no_exit) = @_;
+  print STDERR "*** Running $command ***\n";
+  system($command);
+
+  $no_exit = 0 if ! defined $no_exit;
+  if ($?) {
+    if (! $no_exit) {
+      print STDERR "Last command returned error code $?. Stopping cosmo_pmc.pl\n";
+      exit $?;
+    } else {
+      print STDERR "Last command returned error code $?, continuing...\n";
+    }
+  }
 }

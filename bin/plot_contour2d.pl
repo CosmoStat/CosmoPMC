@@ -44,6 +44,7 @@ $path_flag     = defined $options{P} ? "-P $options{P}" : "";
 
 my $cwd = cwd;
 my $path_bin = dirname(__FILE__);
+my $yor_inc = "$path_bin/../yorick";
 
 $title = " " if $title eq "";
 
@@ -143,7 +144,7 @@ $dir0 = $ARGV[0];
 ### Read config file
 $configname = "config_pmc" if -e "config_pmc";
 $configname = $options{c} if defined $options{c};
-#die "No configuration file found. Use option '-c CONFIG_FILE'." unless defined $configname;
+die "No configuration file found. Use option '-c CONFIG_FILE'." unless defined $configname;
 
 open(CONFIG, "$configname");
 while (<CONFIG>) {
@@ -195,8 +196,8 @@ if ($#parlist<$npar+$n_ded) {
 ### Create yorick file
 open(YOUT, ">plot_contour2d.i");
 
-print YOUT "include, \"likeli.i\"\n";
-print YOUT "include, \"stuff.i\"\n\n";
+print YOUT "include, \"$yor_inc/likeli.i\"\n";
+print YOUT "include, \"$yor_inc/stuff.i\"\n\n";
 
 # Read covariance or Fisher matrix
 if ($do_covar==1) {

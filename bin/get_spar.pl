@@ -13,8 +13,6 @@ use File::Basename;
 
 getopt("c:i:P:h", \%options);
 
-my $path_bin = dirname(__FILE__);
-
 usage(0) if defined $options{h};
 usage(1) if $#ARGV==-1;
 usage(2) if $#ARGV==0 && !defined $options{c};

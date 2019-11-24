@@ -22,10 +22,11 @@ usage(2) if defined $options{n} and defined $options{m};
 $fname = $ARGV[0];
 
 $cwd = cwd;
-set_ENV_COSMOPMC($cwd);
+my $path_bin = dirname(__FILE__);
+my $yor_inc = "$path_bin/../yorick";
 
 open(my $out_fh, ">fishtmp.i");
-print {$out_fh} "include, \"$ENV{COSMOPMC}/yorick/stuff.i\"\n";
+print {$out_fh} "include, \"$yor_inc/stuff.i\"\n";
 
 if (defined $options{x}) {
 
@@ -89,28 +90,6 @@ sub print_cov {
   print {$out_fh} "writeNL\n";
 }
 
-sub set_ENV_COSMOPMC {
-  my ($cwd) = @_;
-
-  # Copy from command argument
-  if (defined $options{P}) {
-    $ENV{COSMOPMC} = $options{P};
-    return;
-  }
-
-  # Environment variable defined (in shell)
-  return if defined $ENV{COSMOPMC} and $ENV{COSMOPMC} ne "";
-
-  # Use cwd
-  if (-e "$cwd/bin/cosmo_pmc.pl") {
-    $ENV{COSMOPMC} = $cwd;
-    return;
-  }
-
-  die "Set environment variable '\$COSMOPMC' or use option '-P PATH'";
-}
-
-
 sub usage {
   my ($ex) = @_;
 
@@ -120,8 +99,6 @@ sub usage {
   print STDERR "    -m             Marginal errors (don't invert matrix)\n";
   print STDERR "    -x             mixmvdens format (default: mvdens format)\n";
   print STDERR "    -k             Keep temporary file 'fishtmp.i'\n";
-  print STDERR "    -P PATH        Use PATH as CosmoPMC directory (default: environment\n";
-  print STDERR "                    variable \$COSMOPMC)\n";
   print STDERR "    -h             This message\n";
   print STDERR "Options '-m' and '-n' exclude each other\n";
 

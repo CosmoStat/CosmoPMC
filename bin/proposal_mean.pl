@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # proposal_means.pl
 # Martin Kilbinger 2008
@@ -8,6 +8,7 @@
 
 use Getopt::Std;
 use File::Basename;
+use File::Which;
 
 %options=();
 getopts("d:c:niIP:h", \%options);
@@ -152,15 +153,26 @@ close GNU;
 if (! defined $options{n}) {
     `gnuplot $gname`;
     `$path_bin/allps2tex.pl -f pdf -t "Proposal means" > all_means.tex`;
-    `pdflatex all_means -q`;
+     exit_if_not_cmd("pdflatex");
+    `pdflatex -halt-on-error all_means`;
     `rm -f all_means.log all_means.dvi all_means.aux`;
 
 }
 
-
 $#var = 0;
 $weight = 0;
 $header = 0;
+
+# Exits if command does not exist
+sub exit_if_not_cmd {
+
+  my ($cmd) = @_;
+
+  $res = which("$cmd");
+
+  die "$cmd not found in search path" unless defined $res;
+}
+
 
 sub usage {
     print STDERR "Usage: proposal_mean.pl [OPTIONS]\n";

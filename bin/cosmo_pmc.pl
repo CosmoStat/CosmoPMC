@@ -256,8 +256,7 @@ sub usage {
   print STDERR "   -e                   Create 'essential' plots\n";
   print STDERR "   -p PRO               Plotting of marginalized posterior (1d and 2d):\n";
   print STDERR "                         PRO = 'R' (R; default), 'y' (yorick+perl), 'n' (none),\n";
-  print STDERR "                         'o' (only). Letters can be combined, e.g. \'yRo\'.\n";
-  print STDERR "                         Combinations of letters are possible, e.g. 'yR' or 'oy'\n";
+  print STDERR "                         'o' (only plotting, no PMC [re-]run). Letters can be combined, e.g. \'yRo\'.\n";
   print STDERR "   -M MULT              Output sample MULT times input (default 1).\n";
   print STDERR "                         Valid if plotting script is 'R'\n";
   print STDERR "   -O OPT               Pass options OPT to 'plot_contour2d.pl'\n";
