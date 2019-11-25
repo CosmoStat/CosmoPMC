@@ -49,6 +49,14 @@ cd CosmoPMC
 
 Type `./install_CosmoPMC -h` for help.
 
+You might need to activate the `cosmopmc` conda environment after installation, with
+
+```bash
+conda activate cosmopmc
+```
+
+On success, the command line prompt should start now with the string `(cosmopmc)`.
+
 
 #### Installation by hand (advanced)
 
