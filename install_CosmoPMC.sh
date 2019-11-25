@@ -21,7 +21,6 @@ version=0.3
 # Default values for variables
 BASE_DIR=$PWD
 BUILD_DIR=$BASE_DIR/build
-USE_MPI=TRUE
 PMCENV="cosmopmc"
 TOPO=""
 LFLAGS=""
@@ -36,10 +35,6 @@ Executable and library options:\n
 \t--lflags LFLAGS\t\t linker flags\n
 \t--topo PATH\t\t topology likelihood path (default not used)\n
 \n
-MPI options:\n
-\t--no_mpi\t\t do not use MPI\n
-\t--mpi_root\t\t path to MPI package installation\n\n
-
 "
 
 #############
@@ -116,16 +111,6 @@ case $i in
     --topo=*)
     TOPO="${i#*=}"
     shift
-    ;;
-    --no-mpi)
-    USE_MPI=FALSE
-    shift
-    ;;
-    --mpi-root=*)
-    MPI_ROOT="${i#*=}"
-    shift
-    echo "Invalid option, see help!"
-    exit 1
     ;;
 esac
 done
@@ -212,6 +197,10 @@ conda install -n $PMCENV -c conda-forge fftw -y
 
 report_progress 'gsl'
 conda install -n $PMCENV -c conda-forge gsl=1.16 -y
+
+report_progress 'lacpack'
+conda install -n $PMCENV -c conda-forge liblapack -y
+
 
 # C-compiler stuff
 if [ "$SYSOS" == "LINUX" ]; then
