@@ -16,7 +16,7 @@
 line="########################################################################"
 
 # Version
-version=0.2
+version=0.3
 
 # Default values for variables
 BASE_DIR=$PWD
@@ -263,6 +263,3 @@ else
 fi
 python2 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX --installdir=$CONDA_PREFIX $arg_topo # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
 make && make install
-
-
-
