@@ -30,20 +30,35 @@ Karim Benabed, Olivier Cappé, Jean Coupon, Jean-François Cardoso, Gersende For
 
 #### Automatic installation (recommended)
 
-`CosmoPMC` requires the libraries `nicaea`, `pmclib`, and third-party libraries and programs such as `gsl`, `fftw3`, `lacpack`, or `cmake`.
-Download and run the automatic script [install_CosmoPMC.sh] to install all required packages and programs into a `conda` virtual environment.
-The only prerequisite (apart from the `bash` shell) is `conda`, which can be downloaded and installed from `https://docs.conda.io/en/latest/miniconda.html`.
+`CosmoPMC` requires the libraries
+[nicaea](https://github.com/CosmoStat/nicaea),
+[pmclib](https://github.com/cosmostat/pmclib), and third-party libraries and
+programs such as `gsl`, `fftw3`, `lacpack`, or `cmake`. Download and run the
+automatic script [install_CosmoPMC.sh](install_CosmoPMC.sh) to build all
+dependent packages and programs into a `conda` virtual environment. The only
+prerequisite (apart from the `bash` shell) is `conda`, which can be downloaded
+and installed from
+[https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html).
+
+Once `conda` is installed and in the search path, the installation of `CosmoPMC` should be easy:
+```bash
+git clone https://github.com/CosmoStat/CosmoPMC
+cd CosmoPMC
+./install_CosmoPMC.s [OPTIONS]
+```
+
+Type `./install_CosmoPMC -h` for help.
 
 
 #### Installation by hand (advanced)
 
 You can also install all packages by hand.
-First, download and install the CosmoPMC-adjacent packages, from their respective github pages for [nicaea](https://github.com/CosmoStat/nicaea) and [pmclib](https://github.com/martinkilbinger/pmclib).
+First, download and install the CosmoPMC-adjacent packages, from their respective github pages for [nicaea](https://github.com/CosmoStat/nicaea) and [pmclib](https://github.com/CosmoStat/pmclib).
 
 Next, if not alreay done, download the `CosmoPMC` package from the github repository:
 
 ```bash
-git clone https://github.com/martinkilbinger/CosmoPMC
+git clone https://github.com/CosmoStat/CosmoPMC
 ```
 
 A new directory `CosmoPMC` will be created automatically. Change into that directory, and configure the code with the (poor-man's) python configuration script.
@@ -165,7 +180,7 @@ using various command line options, see `plot_confidence.R -h` (or `plot_contour
 
 ### Further reading
 
-Check out the [manual](https://github.com/martinkilbinger/CosmoPMC/blob/master/Manual/manual.pdf) 
+Check out the [manual](https://github.com/CosmoStat/CosmoPMC/blob/master/Manual/manual.pdf) 
 
 ### References
 

@@ -183,10 +183,7 @@ fi
 # install mpi requirements
 ##########################
 
-if [ "$USE_MPI" == TRUE ]
-then
-  conda install -n $PMCENV -c conda-forge mpich -y
-fi
+conda install -n $PMCENV -c conda-forge mpich -y
 
 ##########################
 # Build external libraries
