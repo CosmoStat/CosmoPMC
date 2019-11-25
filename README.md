@@ -30,9 +30,12 @@ Karim Benabed, Olivier Cappé, Jean Coupon, Jean-François Cardoso, Gersende For
 
 #### Automatic installation (recommended)
 
-`CosmoPMC` requires the libraries `nicaea`, `pmclib`, and third-party libraries and programs such as `gsl`, `fftw3`, `lacpack`, or `cmake`.
-Download and run the automatic script [install_CosmoPMC.sh] to install all required packages and programs into a `conda` virtual environment.
-The only prerequisite (apart from the `bash` shell) is `conda`, which can be downloaded and installed from `https://docs.conda.io/en/latest/miniconda.html`.
+`CosmoPMC` requires the libraries `nicaea`, `pmclib`, and third-party libraries
+and programs such as `gsl`, `fftw3`, `lacpack`, or `cmake`. Download and run
+the automatic script [install_CosmoPMC.sh](install_CosmoPMC.sh) to install all
+required packages and programs into a `conda` virtual environment. The only
+prerequisite (apart from the `bash` shell) is `conda`, which can be downloaded
+and installed from `https://docs.conda.io/en/latest/miniconda.html`.
 
 
 #### Installation by hand (advanced)
