@@ -44,7 +44,7 @@ Once `conda` is installed and in the search path, the installation of `CosmoPMC`
 ```bash
 git clone https://github.com/CosmoStat/CosmoPMC
 cd CosmoPMC
-./install_CosmoPMC.s --no-R [OPTIONS]
+./install_CosmoPMC.sh --no-R [OPTIONS]
 ```
 
 Type `./install_CosmoPMC -h` for help.
