@@ -24,13 +24,23 @@ Karim Benabed, Olivier Cappé, Jean Coupon, Jean-François Cardoso, Gersende For
 
 ### Version
 
-1.3 beta
+1.4
 
 ### Installation
 
-`CosmoPMC` requires the libraries `nicaea` and `pmclib`. First, download and install those packages, from their respective github pages for [nicaea](https://github.com/CosmoStat/nicaea) and [pmclib](https://github.com/martinkilbinger/pmclib).
+#### Automatic installation (recommended)
 
-Next, download the `CosmoPMC` package from the github repository:
+`CosmoPMC` requires the libraries `nicaea`, `pmclib`, and third-party libraries and programs such as `gsl`, `fftw3`, `lacpack`, or `cmake`.
+Download and run the automatic script [install_CosmoPMC.sh] to install all required packages and programs into a `conda` virtual environment.
+The only prerequisite (apart from the `bash` shell) is `conda`, which can be downloaded and installed from `https://docs.conda.io/en/latest/miniconda.html`.
+
+
+#### Installation by hand (advanced)
+
+You can also install all packages by hand.
+First, download and install the CosmoPMC-adjacent packages, from their respective github pages for [nicaea](https://github.com/CosmoStat/nicaea) and [pmclib](https://github.com/martinkilbinger/pmclib).
+
+Next, if not alreay done, download the `CosmoPMC` package from the github repository:
 
 ```bash
 git clone https://github.com/martinkilbinger/CosmoPMC
@@ -50,30 +60,21 @@ After configuration, compile the code as follows:
 ```bash
 make
 ```
-1.3.1
 
 #### Topolike set-up
 
+If you need to `topolike` external module, the following steps are required.
+
 1. Compile the `topolike` code and create the `topotest' test program.
 
-2. Copy these linker flags to `Makefile.host` and assign them to the variable
-   `MKLFLAGS_LAST`. Thus, add a new line
-
-```
-MKLFLAGS_LAST = <linker flags>
-```
-
-3. Add another line with the path to the topolike code:
-
-```
-TOPO = <path_to_topo_like_code>
-```
-
-4. Create the topolike library. In the `topolike` code directory:
-
+2. Create the topolike library. In the `topolike` code directory:
 ```
 ar rv libtopo.a *.o
 ```
+
+3. On some computing architectures, the linker flags need to be communicated to `CosmoPMC`. This can be done by using
+   the option `--lflags LFLAGS` for `install_CosmoPMC.sh`, and setting all flags as `LFLAGS`.
+
 
 ### Running the code - quick guide
 
