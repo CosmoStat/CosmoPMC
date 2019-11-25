@@ -93,12 +93,16 @@
 /* Bayesian evience */
 #define evidence_name "evidence"
 #define fisher_suf      "fisher"
+#define analytic_suf    "analytic"
 
 /* Perplexity */
 #define perplexity_name "perplexity"
 
 /* Effective number of proposal components */
 #define enc_name "enc"
+
+/* Temperature */
+#define temperature_name "temperature"
 
 
 #endif

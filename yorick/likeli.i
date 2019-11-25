@@ -13,7 +13,12 @@
 */
 
    
-#include "stuff.i"
+/* New (11/2019). Include file "stuff.i"
+ * should be loaded external to this file, this allows to be
+ * flexible with the file location.
+ */
+//include, "./stuff.i"
+
 #include "spline.i"
 
 ludo = 0;

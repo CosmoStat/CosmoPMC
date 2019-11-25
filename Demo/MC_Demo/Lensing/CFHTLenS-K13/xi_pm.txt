@@ -1,1 +1,0 @@
-/Users/mkilbing/astro/CosmoPMC/versions/github/CosmoPMC/data/lens/CFHTLenS-K13/xi_pm.txt

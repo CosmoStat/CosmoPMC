@@ -6,7 +6,7 @@
 #include "mkmax.h"
 
 /* Posterior log pdf for the cg maximum search */
-double post_cg(config_base *config, const double *x, const parabox *pb, int quiet, error **err)
+double post_cg(config_base *config, double *x, const parabox *pb, int quiet, error **err)
 {
    double val;
    int inside;

@@ -16,11 +16,12 @@ typedef enum {Mvdens,
               GalCorr,
 	      ClusterMass,
               Bias,
+              Topo,
 //	      newmodule
 } data_t;
 
 // Increase Ndata_t when adding new module:
-#define Ndata_t 14
+#define Ndata_t 15
 
 /* Data type identifier strings */
 #define sdata_t(i) ( \
@@ -38,6 +39,7 @@ typedef enum {Mvdens,
  i==GalCorr      ? "GalCorr" : \
  i==ClusterMass  ? "ClusterMass" : \
  i==Bias         ? "Bias" : \
+ i==Topo         ? "Topo" : \
  "" )
 
 // Add name of new module to the above pre-processor macro:

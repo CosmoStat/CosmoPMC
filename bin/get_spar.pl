@@ -9,6 +9,7 @@
 use Fatal qw/open/;
 use Getopt::Std;
 use Cwd;
+use File::Basename;
 
 getopt("c:i:P:h", \%options);
 
@@ -20,9 +21,9 @@ usage(3) if $#ARGV>0 && defined $options{c};
 $mylang = $ARGV[0];
 
 my $cwd = cwd;
-set_ENV_COSMOPMC($cwd);
+my $path_bin = dirname(__FILE__);
 
-open(IN, "$ENV{'COSMOPMC'}/bin/spar.txt");
+open(IN, "$path_bin/spar.txt");
 
 $ilang = -1;
 
@@ -88,8 +89,6 @@ sub usage {
   print STDERR "OPTIONS:\n";
   print STDERR "   -c CONFIG          Configuration file ONFIG (default 'config_pmc')\n";
   print STDERR "   -i INDEX	          Returns only par[INDEX]\n";
-  print STDERR "   -P PATH            Use PATH as CosmoPMC directory (default: environment\n";
-  print STDERR "                       variable \$COSMOPMC)\n";
   print STDERR "   -p                 Print 'p<i> for unknown parameters instead of input string\n";
   print STDERR "   LANG               One of 'yorick', 'gnuplot', 'TeX', 'R'.\n";
   print STDERR "                       More languages can be defined in spar.txt\n";
@@ -105,25 +104,3 @@ sub trim {
   $string =~ s/\s+$//;
   return $string;
 }
-
-sub set_ENV_COSMOPMC {
-  my ($cwd) = @_;
-
-  # Environment variable defined (in shell)
-  return if defined $ENV{COSMOPMC};
-
-  # Copy from command argument
-  if (defined $options{P}) {
-    $ENV{COSMOPMC} = $options{P};
-    return;
-  }
-
-  # Use cwd
-  if (-e "$cwd/bin/cosmo_pmc.pl") {
-    $ENV{COSMOPMC} = $cwd;
-    return;
-  }
-
-  die "Set environment variable '\$COSMOPMC' or use option '-P PATH'";
-}
-

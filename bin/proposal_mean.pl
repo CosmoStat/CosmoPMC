@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # proposal_means.pl
 # Martin Kilbinger 2008
@@ -7,6 +7,9 @@
 
 
 use Getopt::Std;
+use File::Basename;
+use File::Which;
+
 %options=();
 getopts("d:c:niIP:h", \%options);
 
@@ -16,10 +19,10 @@ $dir  = defined $options{d} ? $options{d} : ".";
 $inverted = defined $options{i} ? 1 : 0;
 $Inverted = defined $options{I} ? 1 : 0;
 
-set_ENV_COSMOPMC();
-
 $base = "proposal";
 $out  = "proposal_mean";
+
+my $path_bin = dirname(__FILE__);
 
 # Read proposal files
 $iter = 0;
@@ -81,7 +84,7 @@ $configname = "$dir/config_pmc" if -e "$dir/config_pmc";
 $configname = $options{c} if defined $options{c};
 die "No configuration file found" unless defined $configname;
 
-$output = qx($ENV{COSMOPMC}/bin/get_spar.pl -c $configname gnuplot);
+$output = qx($path_bin/get_spar.pl -c $configname gnuplot);
 @parlist = split("&", $output);
 
 # Create .gnu file and call gnuplot
@@ -149,17 +152,27 @@ close GNU;
 
 if (! defined $options{n}) {
     `gnuplot $gname`;
-    `$ENV{COSMOPMC}/bin/allps2tex.pl -f pdf -t "Proposal means" > all_means.tex`;
-    #`$ENV{COSMOPMC}/bin/ldp.sh all_means -q`;
-    `pdflatex all_means -q`;
+    `$path_bin/allps2tex.pl -f pdf -t "Proposal means" > all_means.tex`;
+     exit_if_not_cmd("pdflatex");
+    `pdflatex -halt-on-error all_means`;
     `rm -f all_means.log all_means.dvi all_means.aux`;
 
 }
 
-
 $#var = 0;
 $weight = 0;
 $header = 0;
+
+# Exits if command does not exist
+sub exit_if_not_cmd {
+
+  my ($cmd) = @_;
+
+  $res = which("$cmd");
+
+  die "$cmd not found in search path" unless defined $res;
+}
+
 
 sub usage {
     print STDERR "Usage: proposal_mean.pl [OPTIONS]\n";
@@ -170,13 +183,7 @@ sub usage {
     print STDERR "  -n             No plotting, only creates '.gnu' file\n";
     print STDERR "  -i             x- and y-axes inverted\n";
     print STDERR "  -I             x- and y-labels on top/right\n";
-    print STDERR "  -P PATH        Use PATH as CosmoPMC root directory (default: environment\n";
     print STDERR "                  variable \$COSMOPMC)\n";
     print STDERR "  -h             This message\n";
     exit 0;
-}
-
-sub set_ENV_COSMOPMC {
-  $ENV{COSMOPMC} = $options{P} if defined $options{P};
-  die "Set environment variable '\$COSMOPMC' or use option '-P PATH'" unless -e "$ENV{COSMOPMC}";
 }

@@ -70,7 +70,7 @@ if (resample==0) {
 } else if (resample==1) {
 
   # Residual resampling
-  cat("Redisual resampling\n")
+  cat("Residual resampling\n")
   rw = floor(nsample * prob)
   indices1 = rep.int(1:nsample, times=rw)
   suppressWarnings(sample)

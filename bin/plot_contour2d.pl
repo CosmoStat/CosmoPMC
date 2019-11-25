@@ -7,6 +7,7 @@
 use Fatal qw/ open /;
 use Getopt::Std;
 use Cwd;
+use File::Basename;
 
 @command =  " $0 @ARGV\n";
 
@@ -42,7 +43,8 @@ $quiet         = defined $options{q} ? 1 : 0;
 $path_flag     = defined $options{P} ? "-P $options{P}" : "";
 
 my $cwd = cwd;
-set_ENV_COSMOPMC($cwd);
+my $path_bin = dirname(__FILE__);
+my $yor_inc = "$path_bin/../yorick";
 
 $title = " " if $title eq "";
 
@@ -142,7 +144,7 @@ $dir0 = $ARGV[0];
 ### Read config file
 $configname = "config_pmc" if -e "config_pmc";
 $configname = $options{c} if defined $options{c};
-#die "No configuration file found. Use option '-c CONFIG_FILE'." unless defined $configname;
+die "No configuration file found. Use option '-c CONFIG_FILE'." unless defined $configname;
 
 open(CONFIG, "$configname");
 while (<CONFIG>) {
@@ -180,7 +182,8 @@ close CONFIG;
 
 
 # Get yorick parameter names
-$output = qx($ENV{COSMOPMC}/bin/get_spar.pl -c $configname yorick $path_flag);
+$cmd = "$path_bin/get_spar.pl -c $configname yorick $path_flag";
+$output = qx($cmd);
 die "'get_spar.pl' didn't finish successfully" unless $?==0;
 @parlist = split("&", $output);
 if ($#parlist<$npar+$n_ded) {
@@ -193,8 +196,8 @@ if ($#parlist<$npar+$n_ded) {
 ### Create yorick file
 open(YOUT, ">plot_contour2d.i");
 
-print YOUT "include, \"$ENV{COSMOPMC}/yorick/likeli.i\"\n";
-print YOUT "include, \"$ENV{COSMOPMC}/yorick/stuff.i\"\n\n";
+print YOUT "include, \"$yor_inc/likeli.i\"\n";
+print YOUT "include, \"$yor_inc/stuff.i\"\n\n";
 
 # Read covariance or Fisher matrix
 if ($do_covar==1) {
@@ -453,12 +456,14 @@ system("yorick -batch plot_contour2d.i");
 exit($?<<8) if $?!=0;
 
 if (-e "likeli1d_0.$output_format") {
-    `$ENV{COSMOPMC}/bin/all_vs_all.pl -t \"$TITLE\" -b contour2d -e $output_format -l likeli1d > all_contour2d.tex`;
+    $cmd = "$path_bin/all_vs_all.pl -t \"$TITLE\" -b contour2d -e $output_format -l likeli1d > all_contour2d.tex";
 } else {
-    `$ENV{COSMOPMC}/bin/all_vs_all.pl -t \"$TITLE\" -b contour2d -e $output_format > all_contour2d.tex`;
+    $cmd = "$path_bin/all_vs_all.pl -t \"$TITLE\" -b contour2d -e $output_format > all_contour2d.tex";
 }
+`$cmd`;
 if (-e "density_0_1.$output_format") {
-  `$ENV{COSMOPMC}/bin/all_vs_all.pl -t \"$TITLE\" -b density -e $output_format > all_density.tex`;
+  $cmd = "$path_bin/all_vs_all.pl -t \"$TITLE\" -b density -e $output_format > all_density.tex";
+  `$cmd`;
 }
 
 # Change line styles in eps files
@@ -469,7 +474,8 @@ if ($output_format eq "eps") {
     while ($j < $npar+$n_ded) {
       $suff = "$i" . "_" . "$j";
       $name = "contour2d_$suff.eps";
-      `$ENV{COSMOPMC}/bin/change_lt_yor.pl $name > tmp.eps`;
+      my $cmd = "$path_bin/change_lt_yor.pl $name > tmp.eps";
+      `$cmd`;
       `mv tmp.eps $name`;
       $j++;
     }
@@ -481,14 +487,16 @@ if ($output_format eq "eps") {
 print STDERR "Calling latex...\n" unless $quiet;
 
 if (-s "all_contour2d.tex") {
-  `$ENV{COSMOPMC}/bin/ldp.sh all_contour2d.tex -q` if $output_format eq "eps";
-  `pdflatex all_contour2d.tex > /dev/null` if $output_format eq "pdf";
+  $cmd = "$path_bin/ldp.sh all_contour2d.tex -q" if $output_format eq "eps";
+  $cmd = "pdflatex all_contour2d.tex > /dev/null" if $output_format eq "pdf";
+  `$cmd`;
   `rm -f all_contour2d.{log,dvi,aux}`;
 }
 
 if (-s "all_density.tex") {
-  `$ENV{COSMOPMC}/bin/ldp.sh all_density.tex -q` if $output_format eq "eps";
-  `pdflatex all_density.tex > /dev/null` if $output_format eq "pdf";
+  $cmd = "ldp.sh all_density.tex -q" if $output_format eq "eps";
+  $cmd = "pdflatex all_density.tex > /dev/null" if $output_format eq "pdf";
+  `$cmd`;
   `rm -f all_density.{log,dvi,aux}`;
 }
 
@@ -606,33 +614,9 @@ sub usage {
     print STDERR "  -b             Writes the chi2 files in block format\n";
     print STDERR "  -m PAR         Plots a mark at position PAR (e.g. best-fit). PAR is white-space\n";
     print STDERR "                  separated list (use quotes or '\\ ', e.g. '0.3 0.8')\n";
-    print STDERR "  -P PATH        Use PATH as CosmoPMC root directory (default: environment\n";
-    print STDERR "                  variable \$COSMOPMC)\n";
     print STDERR "  -q             Run quietly, no verbose\n";
     print STDERR "  -h             This message\n";
     print STDERR "  DIR1 ...       List of directories containing histogram files (chi2_*_*)\n";
     print STDERR "                  Default: DIR1 = '.'\n";
     exit 1;
 }
-
-sub set_ENV_COSMOPMC {
-  my ($cwd) = @_;
-
-  # Environment variable defined (in shell)
-  return if defined $ENV{COSMOPMC};
-
-  # Copy from command argument
-  if (defined $options{P}) {
-    $ENV{COSMOPMC} = $options{P};
-    return;
-  }
-
-  # Use cwd
-  if (-e "$cwd/bin/cosmo_pmc.pl") {
-    $ENV{COSMOPMC} = $cwd;
-    return;
-  }
-
-  die "Set environment variable '\$COSMOPMC' or use option '-P PATH'";
-}
-

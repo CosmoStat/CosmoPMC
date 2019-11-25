@@ -53,6 +53,7 @@
 #define mk_undef         -14 + mk_base
 #define mk_range         -15 + mk_base
 #define mk_special_prior -16 + mk_base
+#define mk_data          -17 + mk_base
 
 
 /* The following is defined in pmclib. It is needed
@@ -105,12 +106,13 @@ typedef enum {bury, revive} dead_comp_t;
   "")
 #define Ndead_comp_t 2
 
-typedef enum {tempering_none, tempering_linear} tempering_t;
+typedef enum {tempering_none, tempering_linear, tempering_log} tempering_t;
 #define stempering_t(i) ( \
   i==tempering_none   ? "none" : \
   i==tempering_linear ? "linear" : \
+  i==tempering_log    ? "log" : \
   "")
-#define Ntempering_t 2
+#define Ntempering_t 3
 
 /* Basic configuration file information */
 typedef struct {

@@ -1,0 +1,43 @@
+### Basic part ###
+
+version		1.3
+
+### Parameter section ###
+npar		3
+n_ded		0
+spar		dummy dummy dummy
+min             0.0    -1.0   0.0
+max             6.2832  1.0   6.2832
+
+### Data section
+ndata		1
+sdata		Topo
+
+# Data: Topo
+sspecial        none
+# data end
+
+### Prior section ###
+sprior		-
+
+### PMC part ###
+nsamples        100
+fsfinal         1
+niter           8
+nclipw          0
+
+# Tempering
+stempering	linear
+t_min		0.1
+
+### Proposal section ###
+df              -1
+ncomp           5
+sdead_comp	bury
+
+sinitial        random_pos
+fmin		0.05
+
+### Histogram section ###
+nbinhist        64
+

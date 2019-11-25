@@ -13,6 +13,8 @@ library(coda)
 library(getopt)
 library(methods)
 library(optparse)
+library(funr)
+
 
 
 # Command line options
@@ -60,9 +62,6 @@ parser = add_option(parser, c("--pmax"), default="",
   help="Upper limits for plot. Default: Read from config file (= sample limits). Separate items with '_'.")
 parser = add_option(parser, c("-C", "--shade"), default="1",
   help="With shade 0 or 1, default=1")
-parser = add_option(parser, c("-P", "--path"), default="",
-  help="Path to COSMOPMC (default: environment variable $COSMOPMC")
-
 
 cl     = parse_args(parser, positional_arguments = TRUE)
 
@@ -89,13 +88,8 @@ brace      = cl$options$brace
 pmins      = cl$options$pmin
 pmaxs      = cl$options$pmax
 shade     = cl$options$shade
-path      = cl$options$path
-if (path == "") {
-  path = Sys.getenv("COSMOPMC")
-}
-if (path == "") {
-  stop("Set environment variable '$COSMOPMC' or use option '-P PATH'")
-}
+
+path <- get_script_path()
 
 #tmpname   = "tmptmp.ps"
 tmpname   = paste("tmptmp", output_format, sep=".")
@@ -395,7 +389,7 @@ args = commandArgs(TRUE)
 
 
 log<-file("log_plot_confidence.R")
-cat(c("Rscript $COSMOPMC/R/plot_confidence.R ", args, "\n"), file=log)
+cat(c("Rscript plot_confidence.R ", args, "\n"), file=log)
 close(log)
 
 samples = list()
@@ -456,7 +450,7 @@ par(las=3)
 if (file_test( "-f", configname) == F) {
   stop(c("Configuration file ", configname, " not found"))
 }
-output = system(paste(path, "/bin/get_spar.pl -c ", configname, " R", sep=""), intern=T)
+output = system(paste(path, "/get_spar.pl -c ", configname, " R", sep=""), intern=T)
 lab    = unlist(strsplit(output, "&"))
 
 
@@ -573,9 +567,10 @@ for (i in 1:npar) {
 
 }
 
-
+if (npar > 1) {
 # 2D confidence levels
 for  (i in 1:(npar-1)) {
+
      xMin = min[i]
      xMax = max[i]
      xLab = lab[i]
@@ -700,6 +695,7 @@ for  (i in 1:(npar-1)) {
 
   }
 }
+}
 
 cat("\n")
 
@@ -707,11 +703,11 @@ cat("\n")
 
 # New: Create triangle plot and clean up (from plot_confidence.sh)
 if (index_i == -1 && index_j == -1) {
-  cmd = paste(path, "/bin/all_vs_all.pl -b cont2d -e ", output_format, " -l like1d > all_cont2d.tex", sep="")
+  cmd = paste(path, "/all_vs_all.pl -b cont2d -e ", output_format, " -l like1d > all_cont2d.tex", sep="")
   system(cmd)
 
   if (output_format == "ps") {
-    system(paste(path, "/bin/ldp.sh all_cont2d.tex -q", sep=""))
+    system(paste(path, "/ldp.sh all_cont2d.tex -q", sep=""))
   } else if (output_format == "pdf") {
     system("pdflatex all_cont2d.tex")
   }

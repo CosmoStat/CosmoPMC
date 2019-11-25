@@ -48,7 +48,7 @@ void print_mean_sigma(const char *pname, const double *pmean, const double *pvar
       F = fopen_err(pname, "w", err);
       forwardError(*err,__LINE__,);
    }
-   fprintf(F, "# i   spar                % 6s +68.27/2%% -68.27/2%%   +95.45/2%% -95.45/2%%   +99.73/2%% -99.73/2%%\n",
+   fprintf(F, "# i   spar                 %6s +68.27/2%% -68.27/2%%   +95.45/2%% -95.45/2%%   +99.73/2%% -99.73/2%%\n",
             savg_t(avgtype));
    for (i=0; i<ntot; i++) {
       fprintf(F, " %2d   %-15s %10.5g", i, spar_t(par[i]), pmean[i]);
@@ -122,7 +122,7 @@ double *mean_sigma_from_psim(pmc_simu *psim, const char *pname, const par_t *par
 void write_mean(double *pmean, const char *basename, int ndata, void **data_extra, error **err)
 {
    int i;
-   double logL;
+	double logL = 0.0;
    common_like *like;
    char name[128];
 
@@ -367,7 +367,7 @@ void write_header_cosmo_pmc(FILE *OUT, const par_t *par, int npar, int n_ded)
 
    fprintf(OUT, "#                               ");
    for (i=0; i<npar; i++) {
-      fprintf(OUT, "% 16s", spar_t(par[i]));
+      fprintf(OUT, "%16s", spar_t(par[i]));
    }
    for (i=0; i<n_ded; i++) {
       //fprintf(OUT, "    param_ded[%d]", i);

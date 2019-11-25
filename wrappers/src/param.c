@@ -325,7 +325,7 @@ void read_config_pmc_file(config_pmc *config, const char *cname, mix_mvdens **pr
       switch (config->tempering) {
          case tempering_none :
 	    break;
-         case tempering_linear :
+         case tempering_linear : case tempering_log :
             CONFIG_READ(config, t_min, d, F, c, err);
             break;
          default:
@@ -927,9 +927,9 @@ parabox *parabox_from_config(int npar, const double *min, const double *max, err
 
 /* ============================================================ *
  * The following functions deal with the log-posterior,         *
- * log L = -0.5*chi2 + log(prior).				*
+ * log L propto -0.5*chi2 + log(prior).				             *
  * Remark: void *extra not const because of mvdens_log_pdf,     *
- * cholesky_decomposition.					*
+ * cholesky_decomposition.					                         *
  * ============================================================ */
 
 double likelihood_log_pdf_single(void *extra, const double *x, error **err)

@@ -37,7 +37,7 @@ MKCFLAGS     = $(INC_PMC) -I$(WRAPPERS)/include -I$(TOOLS)/include -I$(CWD)  $(I
 MKLFLAGS    += -L$(WRAPPERS) -L$(TOOLS) $(LLIBDIRS) -Wl,-rpath,$(FFTW)/lib -L$(FFTW)/lib -Wl,-rpath,$(GSL)/lib \
                -L$(GSL)/lib -lparam -lwr $(LLIBS) \
 	       -lerrorio -lpar -lconf -lmvdens \
-               -lgsl -lgslcblas -lfftw3 -ldl -lm $(SHARED) $(LAPACK) $(FLIBS) $(WMAPLIBS) $(FPIC) $(DEBUG) \
+               -lgsl -lgslcblas -lfftw3 -lm $(SHARED) $(LAPACK) $(FLIBS) $(WMAPLIBS) $(FPIC) $(DEBUG) \
 	       $(OPTIM)
 
 # MKDEBUG: On sap clusters astro?, dl has to come at the end
@@ -47,8 +47,11 @@ ifeq ($(DOWMAP),1)
    MKCFLAGS    += -DDOWMAP
 endif
 
-PMCLIBFLAG    = $(LIB_PMC) -lpmc
+PMCLIBFLAG    = $(LIB_PMC) -lpmc -ldl
 PMCMPILIBFLAG = $(PMCLIBFLAG) -lpmc_mpi
+
+# Add topolike linking flags
+OPTIM := $(OPTIM) $(MKLFLAGS_EXTRA)
 
 
 # EXEC_TARGETS are defined in Makefile.main
@@ -105,10 +108,13 @@ add_deduced_cosebis: add_deduced_cosebis.o exec_helper.o
 	$(MPICC) -o $@ $@.o exec_helper.o $(MKLFLAGS) $(LFLAGS_MPI) $(PMCMPILIBFLAG)
 
 getHODModel: getHODModel.o  exec_helper.o
-	$(CC) -o getHODModel getHODModel.o  exec_helper.o $(MKLFLAGS) $(PMCLIBFLAG) $(OPTIM)
+	$(CC) -o $@ $@.o exec_helper.o $(MKLFLAGS) $(PMCLIBFLAG) $(OPTIM)
 
 sample_GalCorr: sample_GalCorr.o exec_helper.o
 	$(MPICC) -o $@ $@.o exec_helper.o $(MKLFLAGS) $(LFLAGS_MPI) $(PMCMPILIBFLAG)
+
+topolike_test: topolike_test.o
+	$(CC) -o $@ $@.o  $(MKLFLAGS) $(PMCLIBFLAG)
 
 %.o:    %.c Makefile
 	$(CC) -c -o $@ $< $(MKCFLAGS)
