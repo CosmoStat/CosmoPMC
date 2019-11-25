@@ -88,12 +88,8 @@ DOWMAP     = 1
 # WMAP3, WMAP5 or WMAP7
 NYR	   = 7
 
-# Intel math kernel linker flags, needed by WMAP likelihood
-LAPACKDIR  = /usr/local/lib
+# Intel math kernel libraries, needed by WMAP likelihood
 LIBLAPACK  =  -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide  -lpthread 
-GUIDEDIR   = /usr/local/lib
-CFITSIODIR = /usr/local/lib
-IFCOREDIR  = /usr/local/lib
 
 # F90 flags for CAMB
 LIBF90     = -lifcore -limf  -lsvml -lirc 
@@ -216,17 +212,25 @@ IINCDIRS   += -I$(NICAEA)/include
 LLIBDIRS   += -L$(NICAEA)/lib
 LLIBS      += -lnicaea
 
+# Topo
+ifdef TOPO
+   LLIBDIRS += -L$(TOPO)
+   LLIBS += -ltopo -lgfortran
+endif
+
 
 # Targets in exec
 EXEC_TARGETS  = cosmo_mcmc cosmo_pmc max_post go_fishing meanvar_sample histograms_sample meanvar_mixmvdens \
                 add_pmc_proposal cl_one_sided importance_sample  getHODModel sample_GalCorr add_deduced_halomodel \
 		add_deduced_cosebis
-#haloplot
 
 ifeq ($(DOWMAP),1)
    EXEC_TARGETS += sample_cmb
 endif
 
+ifdef TOPO
+   EXEC_TARGETS += topolike_test
+endif
 
 # Avoid some common 'icc' compiler warnings
 ifeq ($(CC),icc)

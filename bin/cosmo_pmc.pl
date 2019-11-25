@@ -6,10 +6,12 @@
 use Fatal qw/ open /;
 use Getopt::Std;
 use Cwd;
+use File::Basename;
+
 
 ### Command line options
 %options=();
-getopts("p:c:f:rm:dDaA:n:S:s:P:eO:qh", \%options);
+getopts("p:c:f:rm:dDaA:n:S:s:eO:qh", \%options);
 
 usage() if defined $options{h};
 
@@ -36,7 +38,7 @@ $cwd = cwd;
 my $title = qx(basename $cwd);
 chomp($title);
 
-set_ENV_COSMOPMC($cwd);
+my $path_bin = dirname(__FILE__);
 
 if (!($max_method eq "c") && !($max_method eq "a")) {
   print STDERR "Wrong maximum-search method (option '-m')\n";
@@ -97,20 +99,20 @@ if (!$ex_pmcsim) {
 	      $ex_conf_max = existence("$config_max", "Delete and recreate '$config_max' from '$config_pmc'", "$config_max");
 
 	      if (!$ex_conf_max) {
-	        runpr("$ENV{COSMOPMC}/bin/config_pmc_to_max_and_fish.pl -M $random_flag $fid_flag -c $config_pmc > $config_max");
+	        runpr("$path_bin/config_pmc_to_max_and_fish.pl -M $random_flag $fid_flag -c $config_pmc > $config_max");
 	      }
 
-	      runpr("$ENV{COSMOPMC}/exec/max_post -t -m $max_method -s $seed");
+	      runpr("$path_bin/max_post -t -m $max_method -s $seed");
 
 	      goto end if $options{S} eq "M";
 	    }
 
-	    runpr("$ENV{COSMOPMC}/bin/config_pmc_to_max_and_fish.pl -F -p $maxlogP -c $config_pmc $diag_flag > $config_fish");
+	    runpr("$path_bin/config_pmc_to_max_and_fish.pl -F -p $maxlogP -c $config_pmc $diag_flag > $config_fish");
       }
 
 	  goto end if $options{S} eq "M";
 
-      runpr("$mpi_cmd$ENV{COSMOPMC}/exec/go_fishing $adaptive $f_pos_flag", 1);
+      runpr("$mpi_cmd $path_bin/go_fishing $adaptive $f_pos_flag", 1);
       if (! -e "fisher") {
 	    print STDERR "Calculation of Fisher matrix failed. Stopping cosmo_pmc.pl\n";
 	    exit 1;
@@ -131,7 +133,7 @@ rename "perplexity", "perplexity.prev" if -s "perplexity";
 # Run PMC
 if (!($plot_mode =~ "o")) {
   # do not run cosmo_pmc if only plot
-  runpr("$mpi_cmd$ENV{COSMOPMC}/exec/cosmo_pmc -c $config_pmc $quiet -s $seed");
+  runpr("$mpi_cmd $path_bin/cosmo_pmc -c $config_pmc $quiet -s $seed");
 }
 
 ### Plotting ###
@@ -153,30 +155,30 @@ chdir "$dir";
 print "Creating plots in directory '$dir'\n";
 if ($plot_mode =~ "y") {
   # yorick
-  runpr("$ENV{COSMOPMC}/bin/plot_contour2d.pl -c ../$config_pmc -1 m1t -o pdf -T \"$title\" $quiet $opt_plot");
+  runpr("$path_bin/plot_contour2d.pl -c ../$config_pmc -1 m1t -o pdf -T \"$title\" $quiet $opt_plot");
 }
 if ($plot_mode =~ "R") {
   # R
-  runpr("Rscript $ENV{COSMOPMC}/bin/plot_confidence.R pmcsim -c ../$config_pmc -W $opt_plot -P $ENV{COSMOPMC}");
+  runpr("Rscript $path_bin/plot_confidence.R pmcsim -c ../$config_pmc -W $opt_plot");
 }
 chdir "..";
 
 # Weight plots
-#runpr("$ENV{COSMOPMC}/plot_pmc_final.sh -c $config_pmc");
+#runpr("$path_bin/plot_pmc_final.sh -c $config_pmc");
 
 # Proposal means
 mkdir "proposal_means";
 chdir "proposal_means";
-runpr("$ENV{COSMOPMC}/bin/proposal_mean.pl -d .. -c ../$config_pmc");
+runpr("$path_bin/proposal_mean.pl -d .. -c ../$config_pmc");
 chdir "..";
 
 # Proposal variances
 mkdir "proposal_vars";
 chdir "proposal_vars";
-runpr("$ENV{COSMOPMC}/bin/proposal_var.pl -d .. -c ../$config_pmc", 1);
+runpr("$path_bin/proposal_var.pl -d .. -c ../$config_pmc", 1);
 chdir "..";
 
-runpr("$ENV{COSMOPMC}/bin/essential_cosmo_pmc_run.pl -c $config_pmc") if defined $options{e};
+runpr("$path_bin/essential_cosmo_pmc_run.pl -c $config_pmc") if defined $options{e};
 
 end:
 print "cosmo_pmc.pl finished\n";
@@ -251,13 +253,10 @@ sub usage {
   print STDERR "                         the current time is used as seed.\n";
   print STDERR "   -S [M|F]             Stops after maximum search ('M') or Fisher matrix ('F')\n";
   print STDERR "   -A [y|n]             Default answer to all questions on stdin\n";
-  print STDERR "   -P PATH              Use PATH as CosmoPMC directory (default: environment\n";
-  print STDERR "                         variable \$COSMOPMC)\n";
   print STDERR "   -e                   Create 'essential' plots\n";
   print STDERR "   -p PRO               Plotting of marginalized posterior (1d and 2d):\n";
   print STDERR "                         PRO = 'R' (R; default), 'y' (yorick+perl), 'n' (none),\n";
-  print STDERR "                         'o' (only). Letters can be combined, e.g. \'yRo\'.\n";
-  print STDERR "                         Combinations of letters are possible, e.g. 'yR' or 'oy'\n";
+  print STDERR "                         'o' (only plotting, no PMC [re-]run). Letters can be combined, e.g. \'yRo\'.\n";
   print STDERR "   -M MULT              Output sample MULT times input (default 1).\n";
   print STDERR "                         Valid if plotting script is 'R'\n";
   print STDERR "   -O OPT               Pass options OPT to 'plot_contour2d.pl'\n";
@@ -265,25 +264,3 @@ sub usage {
   print STDERR "   -h                   This message\n";
   exit 1;
 }
-
-sub set_ENV_COSMOPMC {
-  my ($cwd) = @_;
-
-  # Copy from command argument
-  if (defined $options{P}) {
-    $ENV{COSMOPMC} = $options{P};
-    return;
-  }
-
-  # Environment variable defined (in shell)
-  return if defined $ENV{COSMOPMC};
-
-  # Use cwd
-  if (-e "$cwd/bin/cosmo_pmc.pl") {
-    $ENV{COSMOPMC} = $cwd;
-    return;
-  }
-
-  die "Set environment variable '\$COSMOPMC' or use option '-P PATH'";
-}
-

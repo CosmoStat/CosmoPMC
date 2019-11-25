@@ -1,17 +1,19 @@
 #!/usr/bin/perl -w
 
 
-# Martin Kilbinger 2010
-# Replaces the obsolete script 'fisher_to_meanvar.pl'.
+# Name: fisher_to_meanvar.pl 
+# Author: Martin Kilbinger <martin.kilbinger@cea.fr>
+# Date: 2010
 
 
 use Fatal qw/ open close unlink /;
 use Getopt::Std;
+use Cwd;
 use File::Basename;
 
 
 %options = ();
-getopts("nxmkh", \%options);
+getopts("nxmkP:h", \%options);
 
 usage(0) if defined $options{h};
 usage(1) if $#ARGV != 0;
@@ -19,9 +21,12 @@ usage(2) if defined $options{n} and defined $options{m};
 
 $fname = $ARGV[0];
 
+$cwd = cwd;
+my $path_bin = dirname(__FILE__);
+my $yor_inc = "$path_bin/../yorick";
 
 open(my $out_fh, ">fishtmp.i");
-print {$out_fh} "include, \"stuff.i\"\n";
+print {$out_fh} "include, \"$yor_inc/stuff.i\"\n";
 
 if (defined $options{x}) {
 

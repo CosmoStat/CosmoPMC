@@ -55,17 +55,22 @@ void write_perplexity_and_ess(pmc_simu *psim, int iter, int sum_nsamples, double
    fflush(PERP);
 }
 
-void write_evidence(pmc_simu *psim, int iter, FILE *EVI, error **err)
+void compute_and_write_evidence(pmc_simu *psim, int iter, FILE *EVI, error **err)
 {
    double evi, ln_evi;
 
    evi = evidence(psim, &ln_evi, err);
    quitOnError(*err, __LINE__, stderr);
 
-   /* Header */
-   if (iter==0) fprintf(EVI, "# iter   log10(E)    ln(E)    E\n");
+	write_evidence(iter, EVI, ln_evi, evi);
+}
 
-   fprintf(EVI, "% 6d % g % g % g\n", iter, ln_evi*M_LOG10E, ln_evi, evi);
+void write_evidence(int iter, FILE *EVI, double ln_evi, double evi)
+{
+   /* Header */
+   if (iter<=0) fprintf(EVI, "# iter  log10(E) ln(E)    E\n");
+
+   fprintf(EVI, "% 6d % g  % g % g\n", iter, ln_evi*M_LOG10E, ln_evi, evi);
    fflush(EVI);
 }
 
@@ -80,6 +85,16 @@ void write_enc(mix_mvdens *proposal, int iter, FILE *ENC, error **err)
    fprintf(ENC, "    %2d  %g\n", iter, enc);
    fflush(ENC);
 }
+
+void write_temperature(double beta, int iter, FILE *TEMPERATURE, error **err)
+{
+   /* Header */
+   if (iter==0) fprintf(TEMPERATURE, "# iter temperature\n");
+
+   fprintf(TEMPERATURE, "    %2d  %g\n", iter, beta);
+   fflush(TEMPERATURE);
+}
+
 
 void histograms_and_covariance(pmc_simu *psim, const char *iterdirname, config_base *config, FILE *FLOG,
 			       error **err)
@@ -114,7 +129,7 @@ void histograms_and_covariance(pmc_simu *psim, const char *iterdirname, config_b
 /* ============================================================ *
  * Calculates the Laplace approximation of the evidence,        *
  * reading the file 'covname' as inverse covariance or Fisher   *
- * matrix.							*
+ * matrix.																		 *
  * ============================================================ */
 void evidence_approx(config_base *config, const char *covname, const char *outname, error **err)
 {
@@ -122,7 +137,6 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    mvdens *mvd;
    double det, logmaxP, ln_evi, evi, volume;
    int i;
-
 
    MVD = fopen(covname, "r");
    if (MVD==NULL) return;
@@ -133,29 +147,58 @@ void evidence_approx(config_base *config, const char *covname, const char *outna
    testErrorRetVA(config->npar!=mvd->ndim, mv_dimension, "Wrong dimension %d in Fisher matrix, expected %d",
 		  *err, __LINE__,, mvd->ndim, config->npar);
 
-   //det = sm2_inverse(mvd->std, mvd->ndim, err);   forwardError(*err, __LINE__,);
    det = mvdens_inverse(mvd, err); forwardError(*err, __LINE__,);
    testErrorRet(det<=0, mcmc_negative, "Covariance matrix is not positive definite", *err, __LINE__,);
 
    logmaxP = posterior_log_pdf_common(config, mvd->mean, err);
    forwardError(*err, __LINE__,);
 
-   ln_evi = 0.5*log(2.0*pi)*config->npar - 0.5*log(det) + logmaxP;
+	/* The first two terms compensate for the prefactors (normalisation) in logmaxPL */
+   ln_evi = 0.5*log(2.0*pi)*config->npar + 0.5*log(det) + logmaxP;
    evi = exp(ln_evi);
 
    EVI = fopen_err(outname, "w",err); forwardError(*err,__LINE__,);
-   //fprintf(EVI, "# log10(E) ln(E) E [Laplace approximation]\n");
-   fprintf(EVI, "# iter   log10(E)    ln(E)    E\n");
-   fprintf(EVI, "%6d % g % g % g\n", -1, ln_evi*M_LOG10E, ln_evi, evi);
+	write_evidence(-1, EVI, ln_evi, evi);
 
    /* The following is unused, volume factor (=1/prior) is already in posterior */
    for (i=0,volume=0.0; i<config->npar; i++) {
       volume += log(config->max[i] - config->min[i]);
    }
-   fprintf(EVI, "# 0.5*ln2pi*n=%g 0.5*log|F|=%g logmaxP=%g (logmaxL=%g volume=%g)\n", 
-	   0.5*log(2.0*pi)*config->npar, -0.5*log(det), logmaxP, logmaxP-volume, volume);
+   fprintf(EVI, "# 0.5*ln2pi*n=%g 0.5*ln|F|=-0.5*ln|C|=%g lnmaxP=%g (lnmaxL=%g lnvolume=%g, volume=%g)\n",
+	   0.5*log(2.0*pi)*config->npar, 0.5*log(det), logmaxP, logmaxP-volume, volume, exp(volume));
 
    fclose(EVI);
+}
+
+/* ============================================================ *
+ * Calculates the analytical evidence for (mixture of) multi-   *
+ * normal likelihood.
+ * ============================================================ */
+void evidence_analytic(config_base *config, const char *outname, error **err)
+{
+	double volume, evi, ln_evi;
+	int i;
+	FILE *EVI;
+
+	testErrorRetVA(config->ndata != 1, mk_data, "Analytical evidence only defined for a single data set, found ndata=%d",
+		*err, __LINE__,, config->ndata);
+
+	if (config->data[0]!=Mvdens && config->data[0]!=MixMvdens) {
+		/* Analytical evidence only defined for Mvdens or MixMvdens */
+		return;
+	}
+
+   /* The following is unused, volume factor (=1/prior) is already in posterior */
+   for (i=0,volume=0.0; i<config->npar; i++) {
+      volume += log(config->max[i] - config->min[i]);
+   }
+
+	evi = 1.0 / exp(volume);
+	ln_evi = log(evi);
+
+   EVI = fopen_err(outname, "w",err); forwardError(*err,__LINE__,);
+	write_evidence(-1, EVI, ln_evi, evi);
+	fclose(EVI);
 }
 
 #define FSHIFT_DEFAULT 0.1
@@ -247,7 +290,8 @@ void update_and_deal_with_dead(const config_pmc *config, mix_mvdens *proposal, p
  * exist, a PMC iteration is run. In the contrary case, the     *
  * files are read.						                            *
  * ============================================================ */
-void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, int this_nsamples, int *Nrevive, config_pmc *config,
+void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, int this_nsamples, double beta,
+		int *Nrevive, config_pmc *config,
       const char *iterdirname, int myid, int nproc, int quiet, gsl_rng *rng, parabox *pb, FILE *FLOG, error **err)
 {
    char cname[NSTR];
@@ -295,28 +339,10 @@ void run_pmc_iteration_MPI(pmc_simu *psim, mix_mvdens **proposal_p, int iter, in
 
    fprintf(FLOG, "proc %d >> work on %ld samples (iter %d)\n", myid, psim->nsamples, iter);
 
-   /* Tempering */
-   double t_iter;
-   switch (config->tempering) {
-      case tempering_none :
-         t_iter = 1.0;
-         break;
-      case tempering_linear :
-         if (iter == config->niter - 1) {
-            t_iter = 1.0;
-         } else {
-            t_iter = (double)iter / (config->niter - 2.0) * (1.0 - config->t_min) + config->t_min;
-         }
-         break;
-      default:
-         addErrorVA(mcmc_unknown, "Unknown tempering type (%s)", *err, __LINE__, config->stempering);
-         return;
-   }
-
    /* Compute importance weights */
    nok = generic_get_importance_weight_and_deduced_verb(psim, proposal, mix_mvdens_log_pdf_void,
 							posterior_log_pdf_common_void, retrieve_ded,
-							(void*)&(config->base), t_iter, quiet, err);
+							(void*)&(config->base), beta, quiet, err);
    forwardError(*err, __LINE__,);
    fprintf(FLOG, "proc %d >> finished importance weights (iter %d), nok=%d\n", myid, iter, nok);
 
@@ -420,7 +446,7 @@ void post_processing(pmc_simu *psim, mix_mvdens *proposal, int iter, int sum_nsa
    double *pmean;
 
    write_perplexity_and_ess(psim, iter, sum_nsamples, sum_ess, PERP, err);  forwardError(*err, __LINE__,);
-   write_evidence(psim, iter, EVI, err);                    	             forwardError(*err, __LINE__,);
+   compute_and_write_evidence(psim, iter, EVI, err);          	             forwardError(*err, __LINE__,);
    /* Proposal is actually used in the *next* iteration */
    write_enc(proposal, iter+1, ENC, err);				    forwardError(*err, __LINE__,);
 
@@ -432,6 +458,40 @@ void post_processing(pmc_simu *psim, mix_mvdens *proposal, int iter, int sum_nsa
 
    /* Histograms (if config->nbinhist!=0) */
    histograms_and_covariance(psim, iterdirname, config, FLOG, err);         forwardError(*err, __LINE__,);
+}
+
+/* Temperature */
+double get_tempering_beta(tempering_t tempering, int iter, double t_min, int nmax, error **err)
+{
+   double beta;
+
+   switch (tempering) {
+      case tempering_none :
+         beta= 1.0;
+         break;
+      case tempering_linear :
+         if (iter == nmax - 1) {
+            beta= 1.0;
+         } else {
+            beta= (double)iter / (nmax - 2.0) * (1.0 - t_min) + t_min;
+         }
+         break;
+      case tempering_log :
+         if (iter == nmax - 1) {
+            beta = 1.0;
+         } else {
+				testErrorRetVA(t_min <= 0, mcmc_unknown, "Minimal temperature needs to be positive, found %g",
+									*err, __LINE__, 0.0, t_min);
+            beta = (double)iter / (nmax - 2.0) * (- log(t_min)) + log(t_min);
+				beta = exp(beta);
+         }
+         break;
+      default:
+         addErrorVA(mcmc_unknown, "Unknown tempering type %d", *err, __LINE__, tempering);
+         return 0.0;
+   }
+
+	return beta;
 }
 
 void usage(int ex, const char* str, ...)
@@ -464,14 +524,14 @@ int main(int argc, char *argv[])
    error *myerr = NULL, **err;
    config_pmc config;
    char *cname, pname[NSTR], iterdirname[NSTR];
-   FILE *FLOG=NULL, *EVI=NULL, *PERP=NULL, *ENC=NULL, *PMCSIM, *PROP;
+   FILE *FLOG=NULL, *EVI=NULL, *PERP=NULL, *ENC=NULL, *TEMPERATURE=NULL, *PMCSIM, *PROP;
    time_t t_start;
    parabox *pb = NULL;
    gsl_rng *rng;
    int myid, nproc, iter, c, seed, this_nsamples=0, sum_nsamples=0, Nrevive=1, quiet;
    pmc_simu *psim;
    mix_mvdens *proposal;
-   double sum_ess=0.0;
+   double sum_ess=0.0, beta;
    extern char *optarg;
    extern int optind, optopt;
 
@@ -572,7 +632,6 @@ int main(int argc, char *argv[])
    /* New: Use _mpi init function for server and client */
    psim = pmc_simu_init_mpi(config.nsamples, config.base.npar, config.base.n_ded, err);
    quitOnError(*err, __LINE__, stderr);
-   //fprintf(stderr, "myid = %d, psim = %d %d\n", myid, psim->mpi_rank, psim->mpi_size);
 
 
    /* Initialize PMC simulation, send and receive initial proposal */
@@ -583,10 +642,16 @@ int main(int argc, char *argv[])
       evidence_approx(&config.base, fisher_name, pname, err);
       checkPrintErr_and_continue(err, stderr, FLOG, NULL, 0);
 
+		/* Evidence (analytical, if likelihood is [mix]mvnorm */
+      sprintf(pname, "%s_%s", evidence_name, analytic_suf);
+      evidence_analytic(&config.base, pname, err);
+      checkPrintErr_and_continue(err, stderr, FLOG, NULL, 0);
+
       /* Open some files for writing */
       PERP = fopen_err(perplexity_name, "w", err); quitOnError(*err, __LINE__, stderr);
       EVI = fopen_err(evidence_name, "w", err);    quitOnError(*err, __LINE__, stderr);
       ENC = fopen_err(enc_name, "w", err);         quitOnError(*err, __LINE__, stderr);
+      TEMPERATURE = fopen_err(temperature_name, "w", err); quitOnError(*err, __LINE__, stderr);
 
       write_enc(proposal, 0, ENC, err);            quitOnError(*err, __LINE__, stderr);
 
@@ -621,8 +686,11 @@ int main(int argc, char *argv[])
 
          if (PMCSIM) fclose(PMCSIM); if (PROP) fclose(PROP);
 
-         run_pmc_iteration_MPI(psim, &proposal, iter, this_nsamples, &Nrevive, &config, iterdirname, myid, nproc,
-               quiet, rng, pb, FLOG, err);
+			beta = get_tempering_beta(config.tempering, iter, config.t_min, config.niter, err);
+         quitOnError(*err, __LINE__, stderr);
+
+         run_pmc_iteration_MPI(psim, &proposal, iter, this_nsamples, beta, &Nrevive, &config, iterdirname, myid, nproc,
+					quiet, rng, pb, FLOG, err);
          quitOnError(*err, __LINE__, stderr);
 
       } else {                          /* Both PMC simulation and proposal files exist -> Read PMC iteration */
@@ -640,6 +708,10 @@ int main(int argc, char *argv[])
          post_processing(psim, proposal, iter, sum_nsamples, &sum_ess, &config.base, iterdirname,
                PERP, EVI, ENC, FLOG, err);
          quitOnError(*err, __LINE__, stderr);
+
+			write_temperature(beta, iter, TEMPERATURE, err);
+         quitOnError(*err, __LINE__, stderr);
+
 
       }
 

@@ -1,1 +1,4 @@
-Makefile.host
+*.o
+*.a
+Makefile.host*
+log_pmc

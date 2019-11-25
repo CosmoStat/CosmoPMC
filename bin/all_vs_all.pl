@@ -64,7 +64,8 @@ if (defined $options{o}) {
 # tex header & preambel
 print {$fh_out} "% Created by allps2tex.pl v", $version, " ($author, $email)\n\n";
 print {$fh_out} "\\documentclass[a4paper]{article}\n\n";
-print {$fh_out} "\\usepackage{epsfig,a4wide}\n";
+#print {$fh_out} "\\usepackage{epsfig,a4wide}\n";
+print {$fh_out} "\\usepackage{epsfig}\n";
 print {$fh_out} "\\pagestyle{empty}\n";
 print {$fh_out} "\\setlength{\\parindent}{0ex}\n\n";
 print {$fh_out} "\\newlength{\\pswidth}\n";
