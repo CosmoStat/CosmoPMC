@@ -88,12 +88,8 @@ DOWMAP     = 1
 # WMAP3, WMAP5 or WMAP7
 NYR	   = 7
 
-# Intel math kernel linker flags, needed by WMAP likelihood
-LAPACKDIR  = /usr/local/lib
+# Intel math kernel libraries, needed by WMAP likelihood
 LIBLAPACK  =  -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide  -lpthread 
-GUIDEDIR   = /usr/local/lib
-CFITSIODIR = /usr/local/lib
-IFCOREDIR  = /usr/local/lib
 
 # F90 flags for CAMB
 LIBF90     = -lifcore -limf  -lsvml -lirc 

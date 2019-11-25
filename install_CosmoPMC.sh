@@ -24,19 +24,21 @@ BUILD_DIR=$BASE_DIR/build
 USE_MPI=TRUE
 PMCENV="cosmopmc"
 TOPO=""
+LFLAGS=""
 
 # Help string
 help="$(basename "$0") [OPTIONS]\n\n
 Options:\n
-\t-h, --help           show this help message and exit\n
-\t--build-dir PATH    set CosmoPMC build path (default is \$PWD/build)\n
+\t-h, --help\t\t show this help message and exit\n
+\t--build-dir PATH\t set CosmoPMC build path (default is \$PWD/build)\n
 \n
-Executable Build Options:\n
-\t--topo PATH         topology likelihood path (default not used)\n
+Executable and library options:\n
+\t--lflags LFLAGS\t\t linker flags\n
+\t--topo PATH\t\t topology likelihood path (default not used)\n
 \n
-MPI Build Options:\n
-\t--no_mpi            do not use MPI\n
-\t--mpi_root          path to MPI package installation\n\n
+MPI options:\n
+\t--no_mpi\t\t do not use MPI\n
+\t--mpi_root\t\t path to MPI package installation\n\n
 
 "
 
@@ -74,6 +76,7 @@ print_setup() {
   echo 'Build directory: ' $BUILD_DIR
   echo 'Environment name: ' $PMCENV
   echo 'Topolike directory: ' $TOPO
+  echo 'Linker flags: ' $LFLAGS
   echo ''
 }
 
@@ -104,6 +107,10 @@ case $i in
     ;;
     --build-dir=*)
     BUILD_DIR="${i#*=}"
+    shift
+    ;;
+    --lapackdir=*)
+    TOPO="${i#*=}"
     shift
     ;;
     --topo=*)
@@ -256,10 +263,17 @@ cd $BASE_DIR
 # CosmoPMC
 report_progress 'CosmoPMC'
 cd $BASE_DIR
+
 if [ "$TOPO" == "" ]; then
   arg_topo=""
 else
   arg_topo="--topo $TOPO"
 fi
-python2 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX --installdir=$CONDA_PREFIX $arg_topo # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
+if [ "$LFLAGS" == "" ]; then
+  lflags=""
+else
+  lflags="$LFLAGS"
+fi
+
+python2 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX --installdir=$CONDA_PREFIX $arg_topo $LFLAGS  # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
 make && make install
