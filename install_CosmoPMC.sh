@@ -215,6 +215,16 @@ conda install -n cosmopmc -c conda-forge cmake -y
 report_progress "gnuplot"
 conda install -n cosmopmc -c conda-forge gnuplot -y
 
+report_progress "R"
+conda install -n cosmopmc -c r r -y
+conda install -n cosmopmc -c r r-lattice -y
+conda install -n cosmopmc -c r r-MASS -y
+conda install -n cosmopmc -c r r-coda -y
+conda install -n cosmopmc -c r r-getopt -y
+conda install -n cosmopmc -c r r-methods -y
+conda install -n cosmopmc -c r r-optparse -y
+conda install -n cosmopmc -c r r-funr -y
+
 #############################
 # Build PMC-related libraries
 #############################
