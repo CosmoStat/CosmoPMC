@@ -24,12 +24,14 @@ BUILD_DIR=$BASE_DIR/build
 PMCENV="cosmopmc"
 TOPO=""
 LFLAGS=""
+BUILD_R=""
 
 # Help string
 help="$(basename "$0") [OPTIONS]\n\n
 Options:\n
 \t-h, --help\t\t show this help message and exit\n
 \t--build-dir PATH\t set CosmoPMC build path (default is \$PWD/build)\n
+\t--no-R\t\t\t do not build R\n
 \n
 Executable and library options:\n
 \t--lflags LFLAGS\t\t linker flags\n
@@ -72,6 +74,7 @@ print_setup() {
   echo 'Environment name: ' $PMCENV
   echo 'Topolike directory: ' $TOPO
   echo 'Linker flags: ' $LFLAGS
+  echo 'Build R: ' $BUILD_R
   echo ''
 }
 
@@ -102,6 +105,10 @@ case $i in
     ;;
     --build-dir=*)
     BUILD_DIR="${i#*=}"
+    shift
+    ;;
+    --no-R)
+    BUILD_R=FALSE
     shift
     ;;
     --lapackdir=*)
@@ -215,15 +222,16 @@ conda install -n cosmopmc -c conda-forge cmake -y
 report_progress "gnuplot"
 conda install -n cosmopmc -c conda-forge gnuplot -y
 
-report_progress "R"
-conda install -n cosmopmc -c r r -y
-conda install -n cosmopmc -c r r-lattice -y
-conda install -n cosmopmc -c r r-MASS -y
-conda install -n cosmopmc -c r r-coda -y
-conda install -n cosmopmc -c r r-getopt -y
-conda install -n cosmopmc -c r r-methods -y
-conda install -n cosmopmc -c r r-optparse -y
-conda install -n cosmopmc -c r r-funr -y
+if [ "$BUILD_R" == TRUE ]; then
+    report_progress "R"
+    conda install -n cosmopmc -c r r -y
+    conda install -n cosmopmc -c r r-lattice -y
+    conda install -n cosmopmc -c r r-MASS -y
+    conda install -n cosmopmc -c r r-coda -y
+    conda install -n cosmopmc -c r r-getopt -y
+    conda install -n cosmopmc -c r r-optparse -y
+    conda install -n cosmopmc -c r r-funr -y
+fi
 
 #############################
 # Build PMC-related libraries
