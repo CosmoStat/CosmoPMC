@@ -8,7 +8,7 @@ Cosmology sampling with Population Monte Carlo (PMC)
 CosmoPMC is a Monte-Carlo sampling method to explore the likelihood of various
 cosmological probes. The sampling engine is implemented with the package
 pmclib. It is called Population MonteCarlo (PMC), which is a novel technique to
-sample from the posterior [Cappé et al 208])(http://arxiv.org/abs/0710.4242).
+sample from the posterior [Capp'{e} et al. 2008](http://arxiv.org/abs/0710.4242).
 PMC is an adaptive importance sampling method which iteratively improves the
 proposal to approximate the posterior. This code has been introduced, tested
 and applied to various cosmology data sets in
