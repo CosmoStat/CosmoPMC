@@ -189,7 +189,11 @@ using various command line options, see `plot_confidence.R -h` (or `plot_contour
 
 ### Further reading
 
-Check out the [manual](https://github.com/CosmoStat/CosmoPMC/blob/master/Manual/manual.pdf) 
+Check out the latest version of the [manual](https://github.com/CosmoStat/CosmoPMC/blob/master/Manual/manual.pdf) 
+
+The manual for v1.2 can be found on arXiv, at [http://arxiv.org/abs/1101.0950](http://arxiv.org/abs/1101.0950).
+
+CosmoPMC is also listed in ASCL at [ascl:1212.006](http://asterisk.apod.com/viewtopic.php?f=35&t=30375).
 
 ### References
 
