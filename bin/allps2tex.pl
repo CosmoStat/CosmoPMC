@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # allps2tex.pl
 # Martin Kilbinger 2004
@@ -13,6 +13,7 @@
 # v1.6 2016, does not include <output>.<suff> (output file created by this script), creates LaTeX problem.
 
 
+use warnings;
 use Getopt::Std;
 use File::Basename;
 

@@ -1,8 +1,9 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # cosmo_pmc.pl
 # Martin Kilbinger 2010 - 2011
 
+use warnings;
 use Fatal qw/ open /;
 use Getopt::Std;
 use Cwd;

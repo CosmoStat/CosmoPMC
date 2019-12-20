@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # xip_xim2xi.pl
 # Martin Kilbinger 2014
@@ -7,7 +7,8 @@
 #
 # 04/2015:  Added input, output tomo types as separate options
 
-
+  
+use warnings;
 use Fatal qw/ open /;
 use Getopt::Std;
 

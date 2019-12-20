@@ -1,6 +1,13 @@
 
 Examples to test and run tempered PMC.
 
+If the `cosmopmc` conda enviroment is not running, activate it now:
+
+```bash
+conda activate cosmopmc
+```
+
+
 1. `1_mvnorm_2D_temp_none`
 
    No tempering. Test of Bayesian evidence and approximations.

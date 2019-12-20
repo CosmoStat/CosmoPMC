@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # xi2xipm.pl
 # Martin Kilbinger 2009
@@ -6,7 +6,8 @@
 # 04/20??: Default name correctly 'XI.pm' (was 'XI.out')
 # 06/2014: Renamed from xi2xi.pl to xi2xipm.pl 
 
-
+  
+use warnings;
 use Fatal qw/ open /;
 use Getopt::Std;
 

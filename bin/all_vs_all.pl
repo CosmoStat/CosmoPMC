@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # all_vs_all.pl
 # Martin Kilbinger 2009
@@ -6,6 +6,7 @@
 # base_i_j.ending.
 
 
+use warnings;
 use Getopt::Std;
 %options=();
 getopts("b:e:l:s:t:dB:S:o:h", \%options);

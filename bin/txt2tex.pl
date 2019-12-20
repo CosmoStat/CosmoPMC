@@ -1,5 +1,6 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
+use warnings;
 $version = 0.1;
 
 # tex header & preambel

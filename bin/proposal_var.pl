@@ -1,10 +1,11 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # proposal_var.pl
 # Martin Kilbinger 2010
 # Plots the variance of proposal files as function
 # of iteration.
 
+use warnings;
 use Getopt::Std;
 use Fatal qw/ open close unlink /;
 use Cwd;

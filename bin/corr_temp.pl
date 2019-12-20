@@ -1,7 +1,8 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # MK 11/2007
 
+use warnings;
 use Getopt::Std;
 %options=();
 getopts("m:", \%options);

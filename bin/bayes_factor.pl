@@ -1,10 +1,11 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # Martin Kilbinger 2008
 # Calculates the Bayes factor for two models. The file evidence should be of the format
 #   iter log(sum_i w_i) ...
 # where the second column is log of the sum of all (PMC) weights (= log of the evidence).
 
+use warnings;
 use Fatal qw/ open /;
 use Getopt::Std;
 

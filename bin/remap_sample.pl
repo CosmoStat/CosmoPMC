@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # remap_sample.pl
 # Martin Kilbinger 2012
@@ -6,6 +6,7 @@
 # Usage: remap_sample.pl remap.dat sample
 
 
+use warnings;
 use Fatal qw/open/;
 
 

@@ -1,7 +1,8 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # Returns 1 if a file is empty or contains only comment lines
 # (with '#' at beginning of line)
+use warnings;
 
 if ($#ARGV!=0) {
   die "Usage: empty.pl file";

@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # remap_config.pl
 # Martin Kilbinger 2009
@@ -7,6 +7,7 @@
 # Usage: remap_config.pl remap.dat config [npar [n_ded]]
 
 
+use warnings;
 use Fatal qw/open/;
 
 

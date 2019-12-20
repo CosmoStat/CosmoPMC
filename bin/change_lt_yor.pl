@@ -1,8 +1,9 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # Martin Kilbinger 2008
 # Shortens dashes and gaps for dotted style for
 # yorick ps output files
+use warnings;
 
 while (<>) {
 

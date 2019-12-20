@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # add_ded.pl
 # Martin Kilbinger 2010
@@ -8,6 +8,7 @@
 #           to determine pivot w_p
 
 
+use warnings;
 use Fatal qw/open/;
 use Getopt::Std;
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # config_pmc_to_max_and_fish.pl
 # Martin Kilbinger 2010
@@ -9,6 +9,7 @@
 
 
 
+use warnings;
 use Fatal qw/ open /;
 use Getopt::Std;
 

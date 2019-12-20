@@ -8,12 +8,13 @@ Cosmology sampling with Population Monte Carlo (PMC)
 CosmoPMC is a Monte-Carlo sampling method to explore the likelihood of various
 cosmological probes. The sampling engine is implemented with the package
 pmclib. It is called Population MonteCarlo (PMC), which is a novel technique to
-sample from the posterior (Cappé et al. 2008). PMC is an adaptive importance
-sampling method which iteratively improves the proposal to approximate the
-posterior. This code has been introduced, tested and applied to various
-cosmology data sets in Wraith, Kilbinger, Benabed et al. (2009). Results on the
-Bayesian evidence using PMC are discussed in Kilbinger, Wraith, Benabed et al.
-(2010). 
+sample from the posterior [Cappé et al 208])(http://arxiv.org/abs/0710.4242).
+PMC is an adaptive importance sampling method which iteratively improves the
+proposal to approximate the posterior. This code has been introduced, tested
+and applied to various cosmology data sets in
+[Wraith, Kilbinger, Benabed et al.(2009)](http://arxiv.org/abs/0903.0837).
+Results on the Bayesian evidence using PMC are discussed in 
+[Kilbinger, Wraith, Benabed et al. (2010)](http://arxiv.org/abs/0912.1614).
 
 
 ### Authors
@@ -58,7 +59,7 @@ conda activate cosmopmc
 On success, the command line prompt should start now with the string `(cosmopmc)`.
 
 
-#### Installation by hand (advanced)
+#### Installation by hand (for advanced users)
 
 You can also install all packages by hand.
 First, download and install the CosmoPMC-adjacent packages, from their respective github pages for [nicaea](https://github.com/CosmoStat/nicaea) and [pmclib](https://github.com/CosmoStat/pmclib).

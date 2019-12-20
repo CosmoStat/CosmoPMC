@@ -1,8 +1,9 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # essential_cosmo_pmc_run.pl
 # Martin Kilbinger 2010-2011
 
+use warnings;
 
 use Cwd;
 use Fatal qw/ open close unlink /;

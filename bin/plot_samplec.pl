@@ -1,6 +1,7 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 use Fatal qw/ open /;
+use warnings;
 use Getopt::Std;
 use Cwd;
 

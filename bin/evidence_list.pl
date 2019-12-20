@@ -1,6 +1,7 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # Martin Kilbinger 2009
+use warnings;
 
 use Fatal qw/ open /;
 use Getopt::Std;

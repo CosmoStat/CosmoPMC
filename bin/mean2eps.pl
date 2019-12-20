@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # mean2eps.pl
 # Martin Kilbinger 2012
@@ -7,6 +7,7 @@
 # and errors from a 'mean' file
 
 
+use warnings;
 use Cwd;
 use Fatal qw/ open close unlink /;
 use Getopt::Std;

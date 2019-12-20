@@ -1,10 +1,11 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # add_comment_to_ps.pl
 # Martin Kilbinger 2011
 
 
 use Fatal qw/ open /;
+use warnings;
 use Cwd;
 use Getopt::Std;
 

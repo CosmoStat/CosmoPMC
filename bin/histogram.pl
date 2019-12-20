@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 # Creates a histogram from a data file.
 # See histogram.pl -h for options.
@@ -8,6 +8,7 @@
 #  v2.3   04/2014 (added column name, read from header)
 
 
+use warnings;
 use lib("$ENV{'HOME'}/perl");
 use stuff;
 use Fatal qw/ open /;

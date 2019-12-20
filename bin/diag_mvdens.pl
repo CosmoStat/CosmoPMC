@@ -1,5 +1,6 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
+use warnings;
 use Getopt::Std;
 
 ### Command line options
