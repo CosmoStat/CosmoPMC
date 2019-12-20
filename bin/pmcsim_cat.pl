@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 use Fatal qw/ open opendir /;
 use Getopt::Std;

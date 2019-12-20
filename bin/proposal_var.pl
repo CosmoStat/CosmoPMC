@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # proposal_var.pl
 # Martin Kilbinger 2010

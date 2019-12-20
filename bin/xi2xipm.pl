@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # xi2xipm.pl
 # Martin Kilbinger 2009

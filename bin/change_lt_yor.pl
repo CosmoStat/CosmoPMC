@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # Martin Kilbinger 2008
 # Shortens dashes and gaps for dotted style for

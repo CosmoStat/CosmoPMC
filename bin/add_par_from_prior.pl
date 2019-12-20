@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # add_par_from_prior.pl
 # Martin Kilbinger 2012

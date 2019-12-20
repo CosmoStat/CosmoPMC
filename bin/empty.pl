@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # Returns 1 if a file is empty or contains only comment lines
 # (with '#' at beginning of line)

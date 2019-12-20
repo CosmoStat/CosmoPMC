@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # test_suite_cosmo_pmc.pl
 # Martin Kilbinger 2010

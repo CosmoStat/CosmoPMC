@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # meanvar2tabl.pl
 # Martin Kilbinger 2008-2009

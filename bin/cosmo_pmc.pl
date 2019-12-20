@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # cosmo_pmc.pl
 # Martin Kilbinger 2010 - 2011

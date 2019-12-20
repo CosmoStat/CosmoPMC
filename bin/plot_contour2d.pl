@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # plot_contour2d.pl
 # Martin Kilbinger 2008-2010

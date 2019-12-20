@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # config_pmc_to_max_and_fish.pl
 # Martin Kilbinger 2010

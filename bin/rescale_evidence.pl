@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # Rescales the evidence if the prior changes. This is only correct if the posterior
 # is close to zero near the (old and new) prior boundaries.

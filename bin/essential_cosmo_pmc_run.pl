@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # essential_cosmo_pmc_run.pl
 # Martin Kilbinger 2010-2011

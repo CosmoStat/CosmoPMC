@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # remap_sample.pl
 # Martin Kilbinger 2012

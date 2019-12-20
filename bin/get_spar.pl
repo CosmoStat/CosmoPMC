@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # get_spar.pl
 # Martin Kilbinger 2008

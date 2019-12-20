@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # add_par_to_mvdens.pl
 # Martin Kilbinger 2011

@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # all_vs_all.pl
 # Martin Kilbinger 2009

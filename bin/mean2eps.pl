@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # mean2eps.pl
 # Martin Kilbinger 2012

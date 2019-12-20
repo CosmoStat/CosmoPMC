@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # Creates a histogram from a data file.
 # See histogram.pl -h for options.

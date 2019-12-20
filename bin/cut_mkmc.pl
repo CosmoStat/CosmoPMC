@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # MK 6/2008
 # Cuts a MCM chain (chain.fin) in pieces i=1..niter of length i*nsample. Writes the chains in

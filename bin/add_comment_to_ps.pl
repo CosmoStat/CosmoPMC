@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # add_comment_to_ps.pl
 # Martin Kilbinger 2011

@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # Martin Kilbinger 2008
 # Calculates the Bayes factor for two models. The file evidence should be of the format

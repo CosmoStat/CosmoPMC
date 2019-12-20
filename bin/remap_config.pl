@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # remap_config.pl
 # Martin Kilbinger 2009

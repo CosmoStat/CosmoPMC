@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # ascii2sample.pl
 # Martin Kilbinger 2013
