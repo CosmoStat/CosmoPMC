@@ -67,3 +67,5 @@ ngal_den	& n_gal		& n_{gal}				& n_{\textrm{gal}}		& n[gal]	&
 A_SZ		& A_SZ		& A_{SZ}				& A_{\textrm{SZ}}		& A[SZ]		&
 A_ia		& A_IA		& A_{IA}				& A_{\textrm{IA}}		& A[IA]		&
 kb		& b		& b					& b				& b		&
+tilt            & t             & t                                     & t                             & t             &
+ampl            & A             & A                                     & A                             & A             &
