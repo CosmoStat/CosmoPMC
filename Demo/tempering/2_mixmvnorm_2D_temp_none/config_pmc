@@ -19,11 +19,13 @@ ndim		2
 
 # Component 1
 mean		0.2 0.2
+# std = covariance matrix
 std		0.002 0.0 0.0 0.002
 df		-1
 
 # Component 2
 mean		0.6 0.7
+# std = covariance matrix
 std		0.003 0.001 0.001 0.003
 df		-1
 
