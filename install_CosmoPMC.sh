@@ -188,8 +188,8 @@ fi
 # Set up macOS environment
 if [ "$SYSOS" == "macOS" ]; then
   report_progress 'macOS Requirements'
-  conda install -n shapepipe wget -y
-  conda install -n shapepipe automake autoconf libtool -y
+  conda install -n $PMCENV wget -y
+  conda install -n $PMCENV automake autoconf libtool -y
   export C_INCLUDE_PATH=$CONDA_PREFIX/include
   export CFLAGS="-Wl,-rpath,$CONDA_PREFIX/lib"
 fi
