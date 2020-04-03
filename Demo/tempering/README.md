@@ -7,7 +7,7 @@ Examples to test and run tempered PMC.
 
    Run
 
-   ``` cosmo_pmc.pl -P $COSMOPMC -f "0.5 0.5"```
+   ```cosmo_pmc.pl -f "0.5 0.5"```
 
    The likelihood is a 2D multi-variate normal. The prior volume is
    the unit square. Since the likelihood is normalised, the Bayesian evidence
@@ -61,7 +61,7 @@ Examples to test and run tempered PMC.
 
    Run
 
-   ``` cosmo_pmc.pl -P $COSMOPMC -A y```
+   ``` cosmo_pmc.pl -A y```
 
    The likelihood is a 2D mixture of multi-variate normals, with two non-overlapping components.
    The two components are far enough away that traditional PMC (or MCMC) does not always find

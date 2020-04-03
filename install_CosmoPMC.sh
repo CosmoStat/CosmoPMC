@@ -21,25 +21,22 @@ version=0.3
 # Default values for variables
 BASE_DIR=$PWD
 BUILD_DIR=$BASE_DIR/build
-USE_MPI=TRUE
 PMCENV="cosmopmc"
 TOPO=""
 LFLAGS=""
+BUILD_R=""
 
 # Help string
 help="$(basename "$0") [OPTIONS]\n\n
 Options:\n
 \t-h, --help\t\t show this help message and exit\n
 \t--build-dir PATH\t set CosmoPMC build path (default is \$PWD/build)\n
+\t--no-R\t\t\t do not build R\n
 \n
 Executable and library options:\n
 \t--lflags LFLAGS\t\t linker flags\n
 \t--topo PATH\t\t topology likelihood path (default not used)\n
 \n
-MPI options:\n
-\t--no_mpi\t\t do not use MPI\n
-\t--mpi_root\t\t path to MPI package installation\n\n
-
 "
 
 #############
@@ -77,6 +74,7 @@ print_setup() {
   echo 'Environment name: ' $PMCENV
   echo 'Topolike directory: ' $TOPO
   echo 'Linker flags: ' $LFLAGS
+  echo 'Build R: ' $BUILD_R
   echo ''
 }
 
@@ -109,6 +107,10 @@ case $i in
     BUILD_DIR="${i#*=}"
     shift
     ;;
+    --no-R)
+    BUILD_R=FALSE
+    shift
+    ;;
     --lapackdir=*)
     TOPO="${i#*=}"
     shift
@@ -116,16 +118,6 @@ case $i in
     --topo=*)
     TOPO="${i#*=}"
     shift
-    ;;
-    --no-mpi)
-    USE_MPI=FALSE
-    shift
-    ;;
-    --mpi-root=*)
-    MPI_ROOT="${i#*=}"
-    shift
-    echo "Invalid option, see help!"
-    exit 1
     ;;
 esac
 done
@@ -198,10 +190,7 @@ fi
 # install mpi requirements
 ##########################
 
-if [ "$USE_MPI" == TRUE ]
-then
-  conda install -n $PMCENV -c conda-forge mpich -y
-fi
+conda install -n $PMCENV -c conda-forge mpich -y
 
 ##########################
 # Build external libraries
@@ -213,6 +202,10 @@ conda install -c eumetsat fftw3 -y
 
 report_progress 'gsl'
 conda install -n $PMCENV -c conda-forge gsl=1.16 -y
+
+report_progress 'lacpack'
+conda install -n $PMCENV -c conda-forge liblapack -y
+
 
 # C-compiler stuff
 if [ "$SYSOS" == "LINUX" ]; then
@@ -229,6 +222,17 @@ conda install -n cosmopmc -c conda-forge cmake -y
 
 report_progress "gnuplot"
 conda install -n cosmopmc -c conda-forge gnuplot -y
+
+if [ "$BUILD_R" == TRUE ]; then
+    report_progress "R"
+    conda install -n cosmopmc -c r r -y
+    conda install -n cosmopmc -c r r-lattice -y
+    conda install -n cosmopmc -c r r-MASS -y
+    conda install -n cosmopmc -c r r-coda -y
+    conda install -n cosmopmc -c r r-getopt -y
+    conda install -n cosmopmc -c r r-optparse -y
+    conda install -n cosmopmc -c r r-funr -y
+fi
 
 #############################
 # Build PMC-related libraries
