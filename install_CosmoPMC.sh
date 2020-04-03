@@ -208,7 +208,8 @@ fi
 ##########################
 
 report_progress 'fftw3'
-conda install -n $PMCENV -c conda-forge fftw -y
+#conda install -n $PMCENV -c conda-forge fftw -y
+conda install -c eumetsat fftw3 -y
 
 report_progress 'gsl'
 conda install -n $PMCENV -c conda-forge gsl=1.16 -y
