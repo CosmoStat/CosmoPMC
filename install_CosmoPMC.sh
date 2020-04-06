@@ -247,8 +247,8 @@ git clone https://github.com/CosmoStat/pmclib.git
 cd pmclib
 python -c 'import sys; print(open("wscript").read().replace("MK_TO_REPLACE", sys.argv[1]))' $CONDA_PREFIX > wscript.new
 mv wscript.new wscript
-python2 ./waf configure --prefix=$CONDA_PREFIX --m64
-python2 ./waf build install
+python2.7 ./waf configure --prefix=$CONDA_PREFIX --m64
+python2.7 ./waf build install
 cd $BASE_DIR
 
 # nicaea
@@ -257,10 +257,11 @@ cd $BUILD_DIR
 if [ -e nicaea ]; then
   rm -rf nicaea
 fi
-git clone https://github.com/CosmoStat/nicaea.git
+#git clone https://github.com/CosmoStat/nicaea.git
+git clone -b develop202004 https://github.com/martinkilbinger/nicaea.git
 mkdir nicaea/build
 cd nicaea/build
-cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_INSTALL_RPATH_USE_LINK_PATH="ON"
 make && make install
 cd $BASE_DIR
 
@@ -279,5 +280,7 @@ else
   lflags="$LFLAGS"
 fi
 
-python2 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX --installdir=$CONDA_PREFIX $arg_topo $LFLAGS  # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
+cmd="python2.7 ./configure.py --pmclib=$CONDA_PREFIX --nicaea=$CONDA_PREFIX --installdir=$CONDA_PREFIX $arg_topo $LFLAGS"  # --inc_mpi -I/usr/include/mpich-x86_64 --ldirs_mpi=-L/usr/lib64/mpich/lib # --lflags -lm
+echo "Running $cmd"
+$cmd
 make && make install
