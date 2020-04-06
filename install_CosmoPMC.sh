@@ -258,8 +258,7 @@ cd $BUILD_DIR
 if [ -e nicaea ]; then
   rm -rf nicaea
 fi
-#git clone https://github.com/CosmoStat/nicaea.git
-git clone -b develop202004 https://github.com/martinkilbinger/nicaea.git
+git clone https://github.com/CosmoStat/nicaea.git
 mkdir nicaea/build
 cd nicaea/build
 cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_INSTALL_RPATH_USE_LINK_PATH="ON"
