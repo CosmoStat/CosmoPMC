@@ -33,6 +33,34 @@ conda activate cosmopmc
    iteration, and written to `iter_?/evidence_covariance`. For the final iteration
    the result should be close to 1.
 
+   The final triangle contour plot is `iter_4/all_contour2D.pdf`, which is produced automatically
+   if `R` is installed and working. The contours are not smoothed, and can look quite noisy. To make a nicer
+   plot with smoothed 68% and 95% contours, similar to GetDist  change to `iter_4` and run the command
+
+   ``` Rscript `which plot_confidence.R ` pmcsim -c ../config_pmc -g 10 -s 2```
+
+   The output should look like this:
+
+   <table>
+   <tr>
+   <td>
+   <img width="500" src="1_mvnorm_2D_temp_none/all_cont2d.png">
+   </td>
+   </tr>
+   </table>
+
+   For comparison, this is the output of `cobaya/GetDist` of the same posterior (see the cobaya
+   config file `1_mvnorm_2D_temp_none/gaussian.yaml`) with MCMC:
+
+   <table>
+   <tr>
+   <td>
+   <img width="500" src="1_mvnorm_2D_temp_none/contours_getdist_mcmc.png">
+   </td>
+   </tr>
+   </table>
+
+
 2. `2_mixmvnorm_2D_temp_none`
 
    No tempering. Illustration of biased evidence if only one of multi-component

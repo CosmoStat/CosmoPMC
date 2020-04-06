@@ -450,7 +450,7 @@ par(las=3)
 if (file_test( "-f", configname) == F) {
   stop(c("Configuration file ", configname, " not found"))
 }
-output = system(paste(path, "/get_spar.pl -c ", configname, " R", sep=""), intern=T)
+output = system(paste("get_spar.pl -c ", configname, " R", sep=""), intern=T)
 lab    = unlist(strsplit(output, "&"))
 
 
@@ -585,7 +585,6 @@ for  (i in 1:(npar-1)) {
     cat(str)
 
 
-
     yMin = min[j]
     yMax = max[j]
     yLab = lab[j]
@@ -677,8 +676,8 @@ for  (i in 1:(npar-1)) {
     if (nchar(marker) > 0) {
        if (marker_error == "") {
           # Set default error bar
-	  for (i in 1:npar) {
-             marker_error = paste(marker_error, (pmax[i]-pmin[i])/20, "_", sep="")
+	  for (k in 1:npar) {
+             marker_error = paste(marker_error, (pmax[k]-pmin[k])/20, "_", sep="")
 	  }
        }
        do_mark(marker, marker_error, npar, i, j)
@@ -703,11 +702,11 @@ cat("\n")
 
 # New: Create triangle plot and clean up (from plot_confidence.sh)
 if (index_i == -1 && index_j == -1) {
-  cmd = paste(path, "/all_vs_all.pl -b cont2d -e ", output_format, " -l like1d > all_cont2d.tex", sep="")
+  cmd = paste("all_vs_all.pl -b cont2d -e ", output_format, " -l like1d > all_cont2d.tex", sep="")
   system(cmd)
 
   if (output_format == "ps") {
-    system(paste(path, "/ldp.sh all_cont2d.tex -q", sep=""))
+    system(paste("ldp.sh all_cont2d.tex -q", sep=""))
   } else if (output_format == "pdf") {
     system("pdflatex all_cont2d.tex")
   }

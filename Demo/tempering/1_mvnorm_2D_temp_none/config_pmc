@@ -16,6 +16,7 @@ sdata		Mvdens
 # Data: Mvdens
 ndim		2
 mean            0.5 0.5
+# std = covariance matrix
 std             0.01 0.0 0.0 0.02
 df              -1
 # data end

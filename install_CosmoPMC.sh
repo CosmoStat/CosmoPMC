@@ -180,8 +180,8 @@ fi
 # Set up macOS environment
 if [ "$SYSOS" == "macOS" ]; then
   report_progress 'macOS Requirements'
-  conda install -n shapepipe wget -y
-  conda install -n shapepipe automake autoconf libtool -y
+  conda install -n $PMCENV wget -y
+  conda install -n $PMCENV automake autoconf libtool -y
   export C_INCLUDE_PATH=$CONDA_PREFIX/include
   export CFLAGS="-Wl,-rpath,$CONDA_PREFIX/lib"
 fi
@@ -197,7 +197,8 @@ conda install -n $PMCENV -c conda-forge mpich -y
 ##########################
 
 report_progress 'fftw3'
-conda install -n $PMCENV -c conda-forge fftw -y
+#conda install -n $PMCENV -c conda-forge fftw -y
+conda install -c eumetsat fftw3 -y
 
 report_progress 'gsl'
 conda install -n $PMCENV -c conda-forge gsl=1.16 -y

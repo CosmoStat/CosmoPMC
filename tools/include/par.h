@@ -28,9 +28,10 @@ typedef enum {
   p_kb, p_kr, p_wa,
   p_bias_g_amp, p_bias_g_zexp, p_bias_g_Lexp, p_bias_IA_amp, p_bias_IA_zexp, p_bias_IA_Lexp,
   p_phi_topo, p_cos_theta_topo, p_alpha_topo,
+  p_tilt, p_ampl,
   p_dummy,
 } par_t;
-#define Npar_t 111
+#define Npar_t 113
 
 #define spar_t(i) ( \
   i==p_Omegam ? "Omega_m" : \
@@ -142,6 +143,8 @@ typedef enum {
   i==p_phi_topo       ? "phi_topo" : \
   i==p_cos_theta_topo ? "cos_theta_topo" : \
   i==p_alpha_topo     ? "alpha_topo" : \
+  i==p_tilt           ? "t" : \
+  i==p_ampl           ? "A" : \
   i==p_dummy          ? "dummy"   :   \
   "" )
 

@@ -86,14 +86,16 @@ print "\n";
 sub usage {
   my ($ex) = @_;
 
-  print STDERR "Usage: get_spar.pl [OPTIONS] LANG [PAR1 [PAR2 [...]]]\n";
+  print STDERR "Usage:\n";
+  print STDERR "  get_spar.pl [OPTIONS] LANG PAR1 [PAR2 [...]]\n";
+  print STDERR "  get_spar.pl -c CONFIG LANG\n";
   print STDERR "OPTIONS:\n";
-  print STDERR "   -c CONFIG          Configuration file ONFIG (default 'config_pmc')\n";
+  print STDERR "   -c CONFIG          Configuration file CONFIG (default 'config_pmc')\n";
   print STDERR "   -i INDEX	          Returns only par[INDEX]\n";
   print STDERR "   -p                 Print 'p<i> for unknown parameters instead of input string\n";
   print STDERR "   LANG               One of 'yorick', 'gnuplot', 'TeX', 'R'.\n";
   print STDERR "                       More languages can be defined in spar.txt\n";
-  print STDERR "   PAR1 ...           Prameter strings\n";
+  print STDERR "   PAR1 ...           Parameter strings\n";
 
   exit $ex if defined $ex;
 }
