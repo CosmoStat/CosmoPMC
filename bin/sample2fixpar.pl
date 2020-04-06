@@ -1,10 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 
 # sample2fixpar.pl
 # Martin Kilbinger 2008
 # Marginalizes PMC sample/MCM chain over a parameter with flat prior.
 
+use warnings;
 
 if ($#ARGV!=3 || join(@ARGV) =~ /-h/) {
   print STDERR "Usage: sample2fixpar.pl SAMPLE_IN COL MIN MAX\n";

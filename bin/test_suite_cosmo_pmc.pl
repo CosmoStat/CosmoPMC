@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # test_suite_cosmo_pmc.pl
 # Martin Kilbinger 2010
@@ -7,6 +7,7 @@
 # consistency.
 
 
+use warnings;
 use Fatal qw/ open close unlink chdir /;
 use Getopt::Std;
 use Cwd qw/ cwd abs_path /;

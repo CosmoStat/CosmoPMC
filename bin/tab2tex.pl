@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 #
 # tab2tex.pl
 # Martin Kilbinger
@@ -9,6 +9,7 @@
 # Temp version! For ValP
 
 
+use warnings;
 use Getopt::Std;
 %options=();
 getopts("abs:S:ml:L:t:r:h",\%options);

@@ -1,10 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 
 # Name: fisher_to_meanvar.pl 
 # Author: Martin Kilbinger <martin.kilbinger@cea.fr>
 # Date: 2010
 
+use warnings;
 
 use Fatal qw/ open close unlink /;
 use Getopt::Std;

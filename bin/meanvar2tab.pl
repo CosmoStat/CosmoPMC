@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # meanvar2tabl.pl
 # Martin Kilbinger 2008-2009
@@ -7,6 +7,7 @@
 # To transform into a latex table, use 'tab2tex.pl' as
 # second step.
 
+use warnings;
 use Getopt::Std;
 
 %options=();

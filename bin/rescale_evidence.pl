@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # Rescales the evidence if the prior changes. This is only correct if the posterior
 # is close to zero near the (old and new) prior boundaries.
@@ -6,6 +6,7 @@
 # To rescale the posterior P from p1 to p2:
 # P2 = P1 * p2/p1 = P1 * V1/V2.
 
+use warnings;
 use Getopt::Std;
 %options=();
 getopts("c:C:e:h", \%options);

@@ -1,10 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # add_par_from_prior.pl
 # Martin Kilbinger 2012
 # Adds a new parameter to a PMC simulation or sample file.
 # The parameter is drawn from a prior distribution.
 
+use warnings;
 use Fatal qw/open opendir/;
 use Getopt::Std;
 

@@ -1,5 +1,6 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
+use warnings;
 use Fatal qw/ open /;
 
 if ($#ARGV!=2) {

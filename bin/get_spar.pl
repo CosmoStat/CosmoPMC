@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # get_spar.pl
 # Martin Kilbinger 2008
@@ -6,6 +6,7 @@
 # Prints the names of parameters readable by various (script) languages.
 # The input parameters are strings defined in par.h
 
+use warnings;
 use Fatal qw/open/;
 use Getopt::Std;
 use Cwd;

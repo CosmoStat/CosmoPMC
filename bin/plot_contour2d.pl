@@ -1,9 +1,10 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # plot_contour2d.pl
 # Martin Kilbinger 2008-2010
 # Version 1.2
 
+use warnings;
 use Fatal qw/ open /;
 use Getopt::Std;
 use Cwd;

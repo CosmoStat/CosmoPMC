@@ -1,10 +1,11 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # add_par_to_mvdens.pl
 # Martin Kilbinger 2011
 #  July 2012:   added mixmvdens support
 
 
+use warnings;
 use Getopt::Std;
 use Fatal qw/ open /;
 

@@ -22,7 +22,7 @@ all: $(ALL)
 PAR = cosmo.par cosmo_SN.par cosmo_lens.par cosmoDP.par halomodel.par cosmo_3rd.par
 
 Makefile.host:
-	@echo "Run '[python] ./configure.py' to create 'Makefile.host'"
+	@echo "Run '[python2] ./configure.py' to create 'Makefile.host'"
 	@exit 1
 
 dummy:

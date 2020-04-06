@@ -11,7 +11,7 @@ library(lattice)
 library(MASS)
 library(coda)
 library(getopt)
-library(methods)
+#library(methods)
 library(optparse)
 library(funr)
 

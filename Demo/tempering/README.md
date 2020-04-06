@@ -1,6 +1,13 @@
 
 Examples to test and run tempered PMC.
 
+If the `cosmopmc` conda enviroment is not running, activate it now:
+
+```bash
+conda activate cosmopmc
+```
+
+
 1. `1_mvnorm_2D_temp_none`
 
    No tempering. Test of Bayesian evidence and approximations.
@@ -100,3 +107,13 @@ Examples to test and run tempered PMC.
    </tr>
 
    </table>
+
+3. `3_topolike_1D_temp_log`
+
+   For this example, the topology likelihood needs to be installed and linked with `CosmoPMC`.
+   Run
+
+   ``` cosmo_pmc.pl```
+
+   In this 1D example, only one of the three angles is varied. The multi-modal posterior should
+   be visible.

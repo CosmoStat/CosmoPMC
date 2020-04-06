@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # ascii2sample.pl
 # Martin Kilbinger 2013
@@ -6,6 +6,7 @@
 # into a PMC-compatible sample.
 
 
+use warnings;
 use Getopt::Std;
 
 my %options = ();

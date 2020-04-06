@@ -1,8 +1,9 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # remap_cov.pl
 # Martin Kilbinger 2008
 
+use warnings;
 use Fatal qw/ open /;
 
 if ($#ARGV!=1) {

@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # Martin Kilbinger 2008-2010
 #
@@ -9,6 +9,7 @@
 # Usage: config_pmc_to_mcmc.pl config_pmc > config_mcmc
 
 
+use warnings;
 use Fatal qw/ open /;
 use Getopt::Std;
 

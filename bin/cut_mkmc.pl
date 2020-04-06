@@ -1,9 +1,10 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 # MK 6/2008
 # Cuts a MCM chain (chain.fin) in pieces i=1..niter of length i*nsample. Writes the chains in
 # directories iter_<iter>/chain.fin.
 
+use warnings;
 
 use Getopt::Std;
 %options=();
