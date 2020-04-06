@@ -371,19 +371,6 @@ def main(argv):
   print "If compilation fails, re-run this script with modified command line options"
   print "(see './configure.py -h' for help), or edit '" + mkhost + "' by hand."
 
-   # Check and set env variables
-  cosmopmc = os.environ.get("COSMOPMC")
-  if not cosmopmc:
-    pwd = os.environ.get("PWD")
-    print
-    print "Optional: Before running the code, for convenience, you can set the environment variable '$COSMOPMC'",
-    if not pwd:
-      print " to the directory where this script is located"
-    else:
-      print "."
-      print "In csh,tcsh:\n\n  setenv COSMOPMC " + pwd + "\n"
-      print "In bash:\n\n  export COSMOPMC=" + pwd + "\n"
-
   return 0
 
 
